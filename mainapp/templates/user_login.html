@@ -1,4 +1,5 @@
-<!-- home.html -->
+<!-- user_login.html -->
+
 
 {% load static %}
 <!DOCTYPE html>
@@ -21,7 +22,7 @@
   <!-- navebar ---------------------->
     
     
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary" style="position: fixed; width: 100%;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary" style=" width: 100%;">
         <div class="container-fluid">
           <a class="navbar-brand" href="#" style="font-size:40px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-left: 50px;" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">FIXIT</a>
 
@@ -55,12 +56,7 @@
                       <li class="nav-item"style="padding-left: 30px;">
                         <a class="nav-link" href="#contact">ContactUs</a>
                       </li>
-                      <!-- <li class="nav-item">
-                        <a class="nav-link" href="#login">Login</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#register">Register</a>
-                      </li> -->
+                      
                     </ul>
             </div>    
         </div>    
@@ -68,62 +64,33 @@
     
   </nav>
 
-<!-- offcanvas -------------------------->
 
 
-  <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel" style="background-color: #cdc9f8;">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="staticBackdropLabel">FIXIT</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-      <div class="d-flex flex-column gap-3">
-        <a href="user_reg/" class="btn btn-primary">User Registration</a>
-        <a href="workerreg/" class="btn btn-success">Worker Registration</a>
-        
-      </div>
-    </div>
-  </div>
-            
-    
-    <!-- homepage ---------------------------------->
-
-
-
-    <section class="slider_section " style="background-color: #cdc9f8;">
-        <div class="container ">
-          <div class="row">
-            <div class="col-md-6 ">
-              <div class="detail-box">
-                <h1>
-                  Repair and <br>
-                  Maintenance <br>
-                  Services
-                </h1>
-                <p style="font-size: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                    We provide the best repair and maintenance services in the city. Our services are available 24/7. We provide services like plumbing, electrician, gardening, cleaning, painting, etc.
-                </p>
-                <a href="" style="text-decoration: none; ">
-                  Book Our Service
-                </a>
-              </div>
+  <!-- Login Form -->
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card shadow p-4">
+                <h2 class="text-center">Login</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                    {% if error %}
+                        <div class="alert alert-danger mt-3">{{ error }}</div>
+                    {% endif %}
+                </form>
             </div>
-            <div class="col-md-6">
-              <div class="img-box">
-                <img style="height: 800px; width: 500px; margin-left: 50px; margin-top: 120px;" src="{% static 'images/slider-img.png' %}" alt="">
-              </div>
-            </div>
-          </div>
         </div>
-      </section>
-
-      <!-- homepage end----------------------------- -->
-
-
-      
-    
-      
-      
+    </div>
+</div>
 
 
 
@@ -133,7 +100,16 @@
 
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+
+
+
+
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
