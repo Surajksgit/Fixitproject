@@ -14,6 +14,11 @@ urlpatterns = [
     path('services/', views.services, name='services'),
     path('about/', views.about, name='about'),  # About Page
     path('plumbing/', views.plumbing, name='plumbing'),  # New plumbing route
+    path('electrician/', views.electrician, name='electrician'),  # New electrician route
+    path('gardening/', views.gardening, name='gardening'),  # New gardening route
+    path('cleaning/', views.cleaning, name='cleaning'),  # New gardening route
+    path('painting/', views.painting, name='painting'),  # New gardening route
+    
 
     
 ]

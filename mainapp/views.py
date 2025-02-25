@@ -27,6 +27,21 @@ def plumbing(request):
     return render(request, 'plumbing.html')  # Render plumbing.html
 
 
+def electrician(request):
+    return render(request, 'electrician.html')  # Render plumbing.html
+
+def gardening(request):
+    return render(request, 'gardening.html')  # Render plumbing.html
+
+def cleaning(request):
+    return render(request, 'cleaning.html')  # Render plumbing.html
+
+
+def painting(request):
+    return render(request, 'painting.html')  # Render plumbing.html
+
+
+
 def worker_register(request):
     if request.method == 'POST':
         title = request.POST.get('title')

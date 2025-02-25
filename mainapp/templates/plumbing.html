@@ -1,3 +1,6 @@
+<!-- plumbing.html -->
+
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -138,6 +141,12 @@ p {
     content: '\2714';
     font-size: 18px;
 }
+.text-center{
+    position: relative;
+    bottom: 350px;
+    text-shadow:0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
 
 
 
@@ -173,10 +182,10 @@ p {
                         <div>
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"  href="#service">Services</a>
                         <ul class="dropdown-menu" style="margin-left: 1200px; background-color: #cdc9f8;">
-                            <li><a class="dropdown-item" href="#">ELECTRICIAN</a></li>
-                            <li><a class="dropdown-item" href="#">GARDENING</a></li>
-                            <li><a class="dropdown-item" href="#">CLEANING</a></li>
-                            <li><a class="dropdown-item" href="#">PAINTING</a></li>
+                            <li><a class="dropdown-item" href="{% url 'electrician' %}">ELECTRICIAN</a></li>
+                            <li><a class="dropdown-item" href="{% url 'gardening' %}">GARDENING</a></li>
+                            <li><a class="dropdown-item" href="{% url 'cleaning' %}">CLEANING</a></li>
+                            <li><a class="dropdown-item" href="{% url 'painting' %}">PAINTING</a></li>
                           </ul>
                     </div>
                       </li>
@@ -198,30 +207,17 @@ p {
 
 
   <!-- Plumbing Service Content -->
+
+   
   <section class="container  ">
-    <h1 class="text-center mt-5">Plumbing Services In Kochi , Kozhikode</h1>
-    <p class="text-center">We provide expert plumbing services for all types of home and commercial needs.</p>
+    <div class="plumber-cover">
+        <img style="height: 700px; width: 1155px; position: relative; bottom: 20px;" src="{% static 'images/plumbing.jpg' %}" alt="cover">
+        <h1 class="text-center ">Plumbing Services At Kochi , Kozhikode</h1>
+        <p class="text-center">We provide expert plumbing services for all types of home and commercial needs.</p>
+    
+    </div>
 
-    <!-- <div>
-        <img src="{% static 'images/plumbing_cover.jpg' %}" alt="plumbing_cover" style="height: 700px; width: 1400px; position: relative;right: 120px; ">
-
-    </div> -->
-
-
-    <section class="why-choose">
-        <h3 class="highlight">WHAT MAKES US THE BEST</h3>
-        <h1>Why Choose <span class="blue">FIXIT</span> Service</h1>
-        <div class="features">
-            <div class="feature"><span></span> Get service within 60 minutes</div>
-            <div class="feature"><span></span> Quality assured services</div>
-            <div class="feature"><span></span> Professional and highly trained technicians</div>
-            <div class="feature"><span></span> Extra 30 Days warranty</div>
-            <div class="feature"><span></span> 100% Genuine Spare Replacement</div>
-            <div class="feature"><span></span> Low / Best Price Guaranteed</div>
-        </div>
-    </section>
-
-    <section class="how-it-works">
+    <!-- <section class="how-it-works">
         <h2>How It Works</h2>
         <div class="steps">
             <div class="step"><span>📄</span> <h3>Book Service on Website</h3>Submit your requirement & preferred service time.</div>
@@ -229,7 +225,7 @@ p {
             <div class="step"><span>🔧</span> <h3>Repair Done</h3>Get service done after your approval.</div>
             <div class="step"><span>💳</span> <h3>Make Payment</h3>With any UPI app or cash.</div>
         </div>
-    </section>
+    </section> -->
 
     <section class="services">
         <h2>What We Do</h2>
@@ -245,10 +241,8 @@ p {
         </ul>
     </section>
 
-
-
-    <div class="text-center mt-4">
-        <a href="#" class="btn btn-primary">Book Now</a>
+<div class="text-center mt-4">
+        <a href="#" style="position: relative; top: 350px;" class="btn btn-primary">Book Now</a>
     </div>
 </section>
 
