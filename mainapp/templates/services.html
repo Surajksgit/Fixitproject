@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+   <!-- navebar ---------------------->
+    
+    
+   <nav class="navbar navbar-expand-lg navbar-light bg-primary" style=" width: 100%;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#" style="font-size:40px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-left: 50px;" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">FIXIT</a>
+
+      
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+     
+        <div class="container" style="margin-left: 850px; font-size: 20px;">
+            <ul class="navbar-nav" >
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                  </li>
+                  <li class="nav-item" style="padding-left: 30px;">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                  </li>
+                  
+                  <li class="nav-item"style="padding-left: 30px;">
+                    <a class="nav-link" href="#contact">ContactUs</a>
+                  </li>
+                 
+                </ul>
+        </div>    
+    </div>    
+</div>    
+
+</nav>
+
+    <!-- Services Section -->
+    <div style="background-color: #cdc9f8; padding-top: 10px; padding-bottom: 250px;">
+    <div class="container mt-5">
+        <h2 class="text-center">Our Services</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="{% static 'images/plumbing.jpg' %}" class="card-img-top" alt="Plumbing">
+                    <div class="card-body">
+                        <h5 class="card-title">Plumbing</h5>
+                        <p class="card-text">Professional plumbing services available 24/7.</p>
+                        <a href="{% url 'plumbing' %}" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="{% static 'images/electrician.jpg' %}" class="card-img-top" alt="Electrician">
+                    <div class="card-body">
+                        <h5 class="card-title">Electrician</h5>
+                        <p class="card-text">Expert electricians for all electrical works.</p>
+                        <a href="#" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="{% static 'images/gardening.jpg' %}" class="card-img-top" alt="Gardening">
+                    <div class="card-body">
+                        <h5 class="card-title">Gardening</h5>
+                        <p class="card-text">Beautiful garden maintenance and landscaping.</p>
+                        <a href="#" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-4">
+                <div class="card">
+                    <img src="{% static 'images/cleaning.jpg' %}" class="card-img-top" alt="Cleaning">
+                    <div class="card-body">
+                        <h5 class="card-title">Cleaning</h5>
+                        <p class="card-text">Professional home and office cleaning services.</p>
+                        <a href="#" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-4">
+                <div class="card">
+                    <img src="{% static 'images/painting.jpg' %}" class="card-img-top" alt="Painting">
+                    <div class="card-body">
+                        <h5 class="card-title">Painting</h5>
+                        <p class="card-text">Quality painting services for your home and office.</p>
+                        <a href="#" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

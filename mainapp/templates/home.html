@@ -38,13 +38,13 @@
                         <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
                       </li>
                       <li class="nav-item" style="padding-left: 30px;">
-                        <a class="nav-link" href="#about">About</a>
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
                       </li>
                       <li class="nav-item" style="padding-left: 30px;">
                         <div>
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"  href="#service">Services</a>
                         <ul class="dropdown-menu" style="margin-left: 1200px; background-color: #cdc9f8;">
-                            <li><a class="dropdown-item" href="#">PLUMPING</a></li>
+                            <li><a class="dropdown-item" href="{% url 'plumbing' %}">PLUMBING</a></li>
                             <li><a class="dropdown-item" href="#">ELECTRICIAN</a></li>
                             <li><a class="dropdown-item" href="#">GARDENING</a></li>
                             <li><a class="dropdown-item" href="#">CLEANING</a></li>
@@ -79,6 +79,7 @@
     <div class="offcanvas-body">
       <div class="d-flex flex-column gap-3">
         <a href="user_reg/" class="btn btn-primary">User Registration</a>
+        <a href="user_login/">Already a user?</a>
         <a href="workerreg/" class="btn btn-success">Worker Registration</a>
         
       </div>
@@ -96,14 +97,14 @@
             <div class="col-md-6 ">
               <div class="detail-box">
                 <h1>
-                  Repair and <br>
+                  Renovation and <br>
                   Maintenance <br>
                   Services
                 </h1>
                 <p style="font-size: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                    We provide the best repair and maintenance services in the city. Our services are available 24/7. We provide services like plumbing, electrician, gardening, cleaning, painting, etc.
+                    We provide the best renovation and maintenance services in the city. Our services are available 24/7. We provide services like plumbing, electrician, gardening, cleaning, painting, etc.
                 </p>
-                <a href="" style="text-decoration: none; ">
+                <a href="{% url 'services' %}" style="text-decoration: none; ">
                   Book Our Service
                 </a>
               </div>

@@ -11,6 +11,9 @@ urlpatterns = [
     path('workerregister/', views.worker_register, name='workerregister'),
     path('user_reg/', views.user_register, name='user_reg'),
     path('user_login/', views.user_login, name='user_login'),
+    path('services/', views.services, name='services'),
+    path('about/', views.about, name='about'),  # About Page
+    path('plumbing/', views.plumbing, name='plumbing'),  # New plumbing route
 
     
 ]

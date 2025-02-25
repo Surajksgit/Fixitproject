@@ -3,9 +3,10 @@
 
 from django.shortcuts import render, redirect  
 from .forms import AddForm
-from .models import User
+from .models import User, Worker
 from django.contrib import messages  # ✅ Import messages for flash messages
 from django.contrib.auth import authenticate   # ✅ Import authenticate and login
+
 
 
 # Create your views here.
@@ -14,6 +15,16 @@ def home(request):
 
 def workerreg(request):
     return render(request, 'worker_reg.html')
+
+def services(request):
+    return render(request, 'services.html')
+
+def about(request):
+    return render(request, 'about.html')
+
+
+def plumbing(request):
+    return render(request, 'plumbing.html')  # Render plumbing.html
 
 
 def worker_register(request):
@@ -26,7 +37,7 @@ def worker_register(request):
         gender = request.POST.get('gender')
         phone = request.POST.get('phone')
         profession = request.POST.get('profession')
-        Reg(title=tilte,first_name=first_name,last_name=last_name,email=email,password=password,gender=gender,phone=phone,profession=profession).save()
+        Worker(title=title,first_name=first_name,last_name=last_name,email=email,password=password,gender=gender,phone=phone,profession=profession).save()
     return redirect('home')  
     return render(request, 'worker_reg.html')
 
@@ -58,10 +69,10 @@ def user_register(request):
 
 def user_login(request):
     if request.method == "POST":
-        username = request.POST["username"]
+        name = request.POST["name"]
         password = request.POST["password"]
         
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, name=name, password=password)
 
         if user is not None:
             login(request, user)
