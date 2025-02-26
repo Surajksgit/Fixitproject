@@ -40,6 +40,9 @@ def cleaning(request):
 def painting(request):
     return render(request, 'painting.html')  # Render plumbing.html
 
+def contactus(request):
+    return render(request, 'contactus.html')  # Render plumbing.html
+
 
 
 def worker_register(request):

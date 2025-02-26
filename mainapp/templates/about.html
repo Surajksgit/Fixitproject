@@ -80,7 +80,7 @@
                     </div>
                       </li>
                       <li class="nav-item"style="padding-left: 30px;">
-                        <a class="nav-link" href="#contact">ContactUs</a>
+                        <a class="nav-link" href="{% url 'contactus' %}">ContactUs</a>
                       </li>
                       
                     </ul>
@@ -96,9 +96,10 @@
     <h1 class="text-center">About Us</h1>
     
     <div class="text-center mt-4">
-        <img src="{% static 'images/about-img.jpg' %}" alt="About FIXIT" class="img-fluid rounded" >
+        <img src="{% static 'images/7426289.jpg' %}" style="height: 500px; width: 600px; " alt="About FIXIT"  >
+        <!-- <img src="{% static 'images/7429.jpg' %}" style="height: 500px; width: 600px; position: relative; bottom: 500px;right: 300px;" alt="About FIXIT"  > -->
     </div>
-    <p class="text-center mt-5" style="font-size: larger; font-weight: bolder; " >
+    <p class="text-center mt-5" style="font-size: larger;" >
       Welcome to FIXIT! We provide top-quality home services, including plumbing, <br>electrical repairs, gardening, cleaning, painting, and more. <br> 
       Our skilled professionals ensure the best service at your convenience.<br> Available 24/7, we guarantee satisfaction for all your home maintenance needs.
   </p>

@@ -18,6 +18,7 @@ urlpatterns = [
     path('gardening/', views.gardening, name='gardening'),  # New gardening route
     path('cleaning/', views.cleaning, name='cleaning'),  # New gardening route
     path('painting/', views.painting, name='painting'),  # New gardening route
+    path('contactus/', views.contactus, name='contactus'),  # New gardening route
     
 
     
