@@ -55,9 +55,17 @@ def worker_register(request):
         gender = request.POST.get('gender')
         phone = request.POST.get('phone')
         profession = request.POST.get('profession')
-        Worker(title=title,first_name=first_name,last_name=last_name,email=email,password=password,gender=gender,phone=phone,profession=profession).save()
-    return redirect('home')  
+        experience = request.POST.get('experience')
+        worker = Worker.objects.create(title=title,first_name=first_name,last_name=last_name,email=email,password=password,gender=gender,phone=phone,profession=profession,experience=experience)
+        return redirect('worker_dashboard', worker_id=worker.id)
     return render(request, 'worker_reg.html')
+
+
+def worker_dashboard(request, worker_id):
+    worker = Worker.objects.get(id=worker_id)
+    jobs = worker.jobs.all()  # Assuming Worker has a relation with Job model
+    return render(request, 'worker_dashboard.html', {'worker': worker, 'jobs': jobs})
+
 
 
 def user_register(request):
@@ -87,7 +95,7 @@ def user_register(request):
 
 def user_login(request):
     if request.method == "POST":
-        name = request.POST["name"]
+        name = request.POST["username"]
         password = request.POST["password"]
         
         user = authenticate(request, name=name, password=password)

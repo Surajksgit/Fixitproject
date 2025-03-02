@@ -38,7 +38,17 @@ class Worker(models.Model):
     gender = models.CharField(max_length=10, choices=[('Male', 'Male'), ('Female', 'Female')] )
     phone = models.IntegerField()
     profession = models.TextField()
+    experience = models.TextField()
     
 
     def __str__(self):
         return f"{self.title} {self.first_name} {self.last_name}"
+
+
+class Job(models.Model):
+    description = models.TextField()
+    status = models.CharField(max_length=20, choices=[("Pending", "Pending"), ("Completed", "Completed")])
+    worker = models.ForeignKey(Worker, on_delete=models.CASCADE, related_name="jobs")  # ✅ FIX: Establishing relation
+
+    def __str__(self):
+        return self.description
