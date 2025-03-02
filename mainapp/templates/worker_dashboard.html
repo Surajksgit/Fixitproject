@@ -9,27 +9,97 @@
     <title>Worker Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .profile-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .job-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .badge {
+            font-size: 0.9rem;
+            padding: 5px 10px;
+        }
+    </style>
+
 </head>
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+    
+<!-- navebar ---------------------->
+    
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary" style=" width: 100%;">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">FIXIT</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Logout</a></li>
+          <a class="navbar-brand" href="#" style="font-size:40px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-left: 50px;" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">FIXIT</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+         
+            <div class="container" style="margin-left: 850px; font-size: 20px;">
+                <ul class="navbar-nav" >
+                      <li class="nav-item">
+                        <a class="nav-link active" style="margin-left: 200px;" aria-current="page" href="{% url 'home' %}">Home</a>
+                      </li>
+                      <li class="nav-item"><a style="margin-left: 50px;" class="nav-link" href="{% url 'worker_logout' %}">Logout</a></li>
+            
+                    </ul>
+            </div>    
+        </div>    
+    </div>    
+    
+  </nav>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="profile-card text-center">
+                <img style="height: 300px; width: 300px;" src="{% static 'images/worker.jpg' %}" alt="Profile Image" class="rounded-circle mb-3">
+                <h2>{{ worker.title }} {{ worker.first_name }} {{ worker.last_name }}</h2>
+                <p class="text-muted">{{ worker.profession }}</p>
+
+                <div class="d-flex justify-content-center gap-4">
+                    <p><strong>Email:</strong><i class="fas fa-envelope"></i> {{ worker.email }}</p>
+                    
+                </div>
+                <p><strong>Phone:</strong><i class="fas fa-phone"></i> {{ worker.phone }}</p>
+                <p><strong>Experience:</strong> {{ worker.experience }} years</p>
+
+                <h3 class="mt-4">Assigned Jobs</h3>
+                <ul class="list-group job-list">
+                    {% for job in jobs %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ job.description }}
+                            <span class="badge bg-{% if job.status == 'Pending' %}warning{% elif job.status == 'Completed' %}success{% else %}primary{% endif %}">
+                                {{ job.status }}
+                            </span>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item text-muted text-center">No jobs assigned yet.</li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
-    </nav>
+    </div>
+</div>
+
+
+
+
+
+
    
-    <div class="container mt-5">
+    <!-- <div class="container mt-5">
         <h2>Welcome, {{ worker.first_name }} {{ worker.last_name }}</h2>
         <p>Email: {{ worker.email }}</p>
         <p>Phone: {{ worker.phone }}</p>
@@ -44,7 +114,7 @@
                 <li class="list-group-item">No jobs assigned yet.</li>
             {% endfor %}
         </ul>
-    </div>
+    </div> -->
 
 
 

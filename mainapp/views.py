@@ -6,6 +6,12 @@ from .forms import AddForm
 from .models import User, Worker
 from django.contrib import messages  # ✅ Import messages for flash messages
 from django.contrib.auth import authenticate   # ✅ Import authenticate and login
+from django.contrib.auth import logout
+from django.contrib.sessions.models import Session
+from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+
 
 
 
@@ -51,20 +57,60 @@ def worker_register(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
-        password = request.POST.get('password')
+        password = make_password(request.POST.get('password'))
         gender = request.POST.get('gender')
         phone = request.POST.get('phone')
         profession = request.POST.get('profession')
         experience = request.POST.get('experience')
         worker = Worker.objects.create(title=title,first_name=first_name,last_name=last_name,email=email,password=password,gender=gender,phone=phone,profession=profession,experience=experience)
-        return redirect('worker_dashboard', worker_id=worker.id)
+        messages.success(request, "Registration successful! Please login.")
+        return redirect('worker_login')
     return render(request, 'worker_reg.html')
 
 
-def worker_dashboard(request, worker_id):
+
+def worker_login(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        try:
+            worker = Worker.objects.get(email=email)
+            if check_password(password, worker.password):  # Verify hashed password
+                request.session["worker_id"] = worker.id  # Store worker ID in session
+                return redirect("worker_dashboard")
+            else:
+                return render(request, "worker_login.html", {"error": "Invalid password!"})
+        except Worker.DoesNotExist:
+            return render(request, "worker_login.html", {"error": "Worker not found!"})
+
+    return render(request, "worker_login.html")
+
+
+
+@login_required
+def worker_dashboard(request):
+    worker_id = request.session.get("worker_id")
+    if not worker_id:
+        return redirect("worker_login")
+
     worker = Worker.objects.get(id=worker_id)
-    jobs = worker.jobs.all()  # Assuming Worker has a relation with Job model
+    jobs = worker.jobs.all()
+    
     return render(request, 'worker_dashboard.html', {'worker': worker, 'jobs': jobs})
+
+
+
+
+
+
+
+def worker_logout(request):
+    request.session.flush()  # Clear worker session
+    return redirect('worker_login')  # Redirect to worker login page
+
+
+
 
 
 
@@ -95,7 +141,7 @@ def user_register(request):
 
 def user_login(request):
     if request.method == "POST":
-        name = request.POST["username"]
+        name = request.POST["name"]
         password = request.POST["password"]
         
         user = authenticate(request, name=name, password=password)
@@ -107,3 +153,5 @@ def user_login(request):
             return render(request, "user_login.html", {"error": "Invalid username or password"})
 
     return render(request, "user_login.html")
+
+
