@@ -49,9 +49,13 @@
             <div class="container" style="margin-left: 850px; font-size: 20px;">
                 <ul class="navbar-nav" >
                       <li class="nav-item">
-                        <a class="nav-link active" style="margin-left: 200px;" aria-current="page" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link active" style="margin-left: 150px;" aria-current="page" href="{% url 'home' %}">Home</a>
                       </li>
+                      
+                      <li class="nav-item"><a style="margin-left: 50px;" class="nav-link" href="{% url 'worker_requests' %}">Requests</a></li>
+
                       <li class="nav-item"><a style="margin-left: 50px;" class="nav-link" href="{% url 'worker_logout' %}">Logout</a></li>
+                      
             
                     </ul>
             </div>    
@@ -75,7 +79,7 @@
                 <p><strong>Phone:</strong><i class="fas fa-phone"></i> {{ worker.phone }}</p>
                 <p><strong>Experience:</strong> {{ worker.experience }} years</p>
 
-                <h3 class="mt-4">Assigned Jobs</h3>
+                <!-- <h3 class="mt-4">Assigned Jobs</h3>
                 <ul class="list-group job-list">
                     {% for job in jobs %}
                         <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -87,7 +91,7 @@
                     {% empty %}
                         <li class="list-group-item text-muted text-center">No jobs assigned yet.</li>
                     {% endfor %}
-                </ul>
+                </ul> -->
             </div>
         </div>
     </div>
@@ -99,23 +103,7 @@
 
 
    
-    <!-- <div class="container mt-5">
-        <h2>Welcome, {{ worker.first_name }} {{ worker.last_name }}</h2>
-        <p>Email: {{ worker.email }}</p>
-        <p>Phone: {{ worker.phone }}</p>
-        <p>Profession: {{ worker.profession }}</p>
-        <p>Experience: {{ worker.experience }}</p>
-
-        <h3 class="mt-4">Assigned Jobs</h3>
-        <ul class="list-group">
-            {% for job in jobs %}
-                <li class="list-group-item">{{ job.description }} - Status: {{ job.status }}</li>
-            {% empty %}
-                <li class="list-group-item">No jobs assigned yet.</li>
-            {% endfor %}
-        </ul>
-    </div> -->
-
+    
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

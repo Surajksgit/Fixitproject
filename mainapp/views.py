@@ -3,7 +3,7 @@
 
 from django.shortcuts import render, redirect  
 from .forms import AddForm
-from .models import User, Worker
+from .models import User, Worker,Request, User
 from django.contrib import messages  # ✅ Import messages for flash messages
 from django.contrib.auth import authenticate   # ✅ Import authenticate and login
 from django.contrib.auth import logout
@@ -102,12 +102,31 @@ def worker_dashboard(request):
 
 
 
-
-
-
 def worker_logout(request):
     request.session.flush()  # Clear worker session
     return redirect('worker_login')  # Redirect to worker login page
+
+
+
+
+def worker_requests(request):
+    if "worker_id" not in request.session:
+        return redirect("worker_login")
+
+    worker = Worker.objects.get(id=request.session["worker_id"])
+    requests = Request.objects.filter(worker=worker, status="Pending")
+
+    return render(request, "worker_requests.html", {"worker": worker, "requests": requests})
+
+def update_request(request, request_id, action):
+    request_obj = Request.objects.get(id=request_id)
+    if action == "accept":
+        request_obj.status = "Accepted"
+    elif action == "reject":
+        request_obj.status = "Rejected"
+    request_obj.save()
+    
+    return redirect("worker_requests")
 
 
 
@@ -141,17 +160,55 @@ def user_register(request):
 
 def user_login(request):
     if request.method == "POST":
-        name = request.POST["name"]
+        email = request.POST["email"]
         password = request.POST["password"]
         
-        user = authenticate(request, name=name, password=password)
-
-        if user is not None:
-            login(request, user)
-            return redirect("home")  # Redirect to home page after login
-        else:
-            return render(request, "user_login.html", {"error": "Invalid username or password"})
+        try:
+            user = User.objects.get(email=email)
+            if user.password == password:  # Implement proper password hashing
+                request.session["user_id"] = user.id
+                return redirect("user_dashboard")
+            else:
+                return render(request, "user_login.html", {"error": "Invalid credentials"})
+        except User.DoesNotExist:
+            return render(request, "user_login.html", {"error": "User not found"})
 
     return render(request, "user_login.html")
 
 
+
+def user_dashboard(request):
+    if "user_id" not in request.session:
+        return redirect("user_login")
+
+    user = User.objects.get(id=request.session["user_id"])
+    workers = Worker.objects.all()
+    requests = Request.objects.filter(user=user)
+
+    return render(request, "user_dashboard.html", {"user": user, "workers": workers, "requests": requests})
+
+
+
+def user_logout(request):
+    request.session.flush()  # Clear user session
+    return redirect('user_login')  # Redirect to user login page
+
+
+
+
+
+def send_request(request, worker_id):
+    if "user_id" not in request.session:
+        return redirect("user_login")
+
+    user = User.objects.get(id=request.session["user_id"])
+    worker = Worker.objects.get(id=worker_id)
+
+    existing_request = Request.objects.filter(user=user, worker=worker, status="Pending").first()
+    if existing_request:
+        messages.warning(request, "You already have a pending request for this worker.")
+        return redirect("user_dashboard")
+
+    Request.objects.create(user=user, worker=worker)
+    messages.success(request, "Request sent successfully!")
+    return redirect("user_dashboard")

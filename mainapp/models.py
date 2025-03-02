@@ -39,10 +39,28 @@ class Worker(models.Model):
     phone = models.IntegerField()
     profession = models.TextField()
     experience = models.TextField()
+    status = models.BooleanField(default=True)  # Worker availability
     
 
     def __str__(self):
         return f"{self.title} {self.first_name} {self.last_name}"
+
+
+
+class Request(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    worker = models.ForeignKey(Worker, on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, choices=[('Pending', 'Pending'), ('Accepted', 'Accepted'), ('Rejected', 'Rejected')], default='Pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+
+
+
+
+
+
+
 
 
 class Job(models.Model):
