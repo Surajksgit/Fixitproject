@@ -12,6 +12,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 import re
+from django.shortcuts import get_object_or_404
 
 
 
@@ -188,15 +189,53 @@ def user_login(request):
 
 # user dashboard------------------------------------------------>
 
+# def user_dashboard(request):
+#     if "user_id" not in request.session:
+#         return redirect("user_login")
+
+#     user = User.objects.get(id=request.session["user_id"])
+#     workers = Worker.objects.all()
+#     requests = Request.objects.filter(user=user)
+
+#     return render(request, "user_dashboard.html", {"user": user, "workers": workers, "requests": requests})
+
+
 def user_dashboard(request):
     if "user_id" not in request.session:
         return redirect("user_login")
 
     user = User.objects.get(id=request.session["user_id"])
-    workers = Worker.objects.all()
+    
+    # Get all unique professions from the Worker model
+    professions = Worker.objects.values_list('profession', flat=True).distinct()
+    
+    # Get the selected profession from the request
+    selected_profession = request.GET.get("profession", "")
+
+    # Filter workers based on the selected profession
+    if selected_profession:
+        workers = Worker.objects.filter(profession=selected_profession)
+    else:
+        workers = Worker.objects.all()
+
     requests = Request.objects.filter(user=user)
 
-    return render(request, "user_dashboard.html", {"user": user, "workers": workers, "requests": requests})
+    return render(request, "user_dashboard.html", {
+        "user": user,
+        "workers": workers,
+        "requests": requests,
+        "professions": professions,
+        "selected_profession": selected_profession
+    })
+
+
+
+
+
+
+
+
+
 
 # user logout------------------------------------------------>
 
@@ -223,3 +262,10 @@ def send_request(request, worker_id):
     Request.objects.create(user=user, worker=worker)
     messages.success(request, "Request sent successfully!")
     return redirect("user_dashboard")
+
+
+
+
+def view_worker(request, worker_id):
+    worker = get_object_or_404(Worker, id=worker_id)
+    return render(request, 'view_worker.html', {'worker': worker})
