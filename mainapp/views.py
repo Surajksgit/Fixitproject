@@ -11,6 +11,8 @@ from django.contrib.sessions.models import Session
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+import re
+
 
 
 
@@ -49,7 +51,7 @@ def painting(request):
 def contactus(request):
     return render(request, 'contactus.html')  # Render plumbing.html
 
-
+# worker registration------------------------------------------------>
 
 def worker_register(request):
     if request.method == 'POST':
@@ -64,9 +66,14 @@ def worker_register(request):
         experience = request.POST.get('experience')
         worker = Worker.objects.create(title=title,first_name=first_name,last_name=last_name,email=email,password=password,gender=gender,phone=phone,profession=profession,experience=experience)
         messages.success(request, "Registration successful! Please login.")
-        return redirect('worker_login')
+        password_pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
+        if not re.match(password_pattern, password):
+            return redirect('worker_login')
     return render(request, 'worker_reg.html')
+    return render(request, "worker_reg.html", {"error": "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, and one number. No spaces or underscores allowed."})
 
+        
+# worker login------------------------------------------------>
 
 
 def worker_login(request):
@@ -86,7 +93,7 @@ def worker_login(request):
 
     return render(request, "worker_login.html")
 
-
+# worker dashboard------------------------------------------------>
 
 @login_required
 def worker_dashboard(request):
@@ -100,13 +107,13 @@ def worker_dashboard(request):
     return render(request, 'worker_dashboard.html', {'worker': worker, 'jobs': jobs})
 
 
-
+# worker logout------------------------------------------------>
 
 def worker_logout(request):
     request.session.flush()  # Clear worker session
     return redirect('worker_login')  # Redirect to worker login page
 
-
+# worker request------------------------------------------------>
 
 
 def worker_requests(request):
@@ -130,7 +137,7 @@ def update_request(request, request_id, action):
 
 
 
-
+# user registration------------------------------------------------>
 
 
 def user_register(request):
@@ -141,6 +148,10 @@ def user_register(request):
         address = request.POST["address"]
         city = request.POST["city"]
         password = request.POST["password"]
+        password_pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
+
+        if not re.match(password_pattern, password):
+            return render(request, "user_reg.html", {"error": "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, and one number. No spaces or underscores allowed."})
 
         # Check if the email is already registered
         if User.objects.filter(email=email).exists():
@@ -156,7 +167,7 @@ def user_register(request):
     return render(request, "user_reg.html")
 
 
-
+# user login------------------------------------------------>
 
 def user_login(request):
     if request.method == "POST":
@@ -175,7 +186,7 @@ def user_login(request):
 
     return render(request, "user_login.html")
 
-
+# user dashboard------------------------------------------------>
 
 def user_dashboard(request):
     if "user_id" not in request.session:
@@ -187,14 +198,14 @@ def user_dashboard(request):
 
     return render(request, "user_dashboard.html", {"user": user, "workers": workers, "requests": requests})
 
-
+# user logout------------------------------------------------>
 
 def user_logout(request):
     request.session.flush()  # Clear user session
     return redirect('user_login')  # Redirect to user login page
 
 
-
+# user send request------------------------------------------------>
 
 
 def send_request(request, worker_id):

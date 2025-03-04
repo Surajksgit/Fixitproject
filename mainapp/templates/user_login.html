@@ -83,6 +83,7 @@
                         <input type="password" name="password" class="form-control" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Login</button>
+                    <a href="{% url 'user_reg' %}" style="text-decoration: none;position: relative; left: 140px; top: 10px;">Signup User</a>
                     {% if error %}
                         <div class="alert alert-danger mt-3">{{ error }}</div>
                     {% endif %}
