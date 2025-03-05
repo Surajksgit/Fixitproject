@@ -18,7 +18,7 @@
         }
         .form-label{
             margin-left: 80px;
-            font-weight: bold;
+            
         }
 
     </style>
@@ -79,7 +79,7 @@
 
         <div style="position: relative; left: 300px; width: 700px;" class="card shadow p-4 mt-5 mb-5">
 
-        <h2 class="text-center">Worker Registration</h2>
+        <h2 class="text-center" style="font-weight:bold; color: #2575fc;">Worker Registration</h2>
         <form method="POST" action="{% url 'workerregister' %}">
             {% csrf_token %}
             <div class="mb-3">

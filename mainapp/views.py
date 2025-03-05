@@ -269,3 +269,7 @@ def send_request(request, worker_id):
 def view_worker(request, worker_id):
     worker = get_object_or_404(Worker, id=worker_id)
     return render(request, 'view_worker.html', {'worker': worker})
+
+
+def privacy_policy(request):
+    return render(request, 'privacy_policy.html')

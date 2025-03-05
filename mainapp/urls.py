@@ -27,6 +27,7 @@ urlpatterns = [
     path("worker_requests/", views.worker_requests, name="worker_requests"),
     path("update_request/<int:request_id>/<str:action>/", views.update_request, name="update_request"),
     path('worker/<int:worker_id>/', views.view_worker, name='view_worker'),
+    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
 
 
     
