@@ -70,6 +70,14 @@
   <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-4">
+          {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
             <div class="card shadow p-4">
                 <h2 class="text-center" style="font-weight:bold; color: #2575fc;">User Login</h2>
                 <form method="POST">

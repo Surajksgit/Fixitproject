@@ -103,7 +103,9 @@ def worker_dashboard(request):
         return redirect("worker_login")
 
     worker = Worker.objects.get(id=worker_id)
-    jobs = worker.jobs.all()
+    
+    # Fetch only accepted jobs
+    jobs = Request.objects.filter(worker=worker, status="Accepted")
     
     return render(request, 'worker_dashboard.html', {'worker': worker, 'jobs': jobs})
 
@@ -134,7 +136,7 @@ def update_request(request, request_id, action):
         request_obj.status = "Rejected"
     request_obj.save()
     
-    return redirect("worker_requests")
+    return redirect("worker_dashboard")
 
 
 
@@ -187,17 +189,6 @@ def user_login(request):
 
     return render(request, "user_login.html")
 
-# user dashboard------------------------------------------------>
-
-# def user_dashboard(request):
-#     if "user_id" not in request.session:
-#         return redirect("user_login")
-
-#     user = User.objects.get(id=request.session["user_id"])
-#     workers = Worker.objects.all()
-#     requests = Request.objects.filter(user=user)
-
-#     return render(request, "user_dashboard.html", {"user": user, "workers": workers, "requests": requests})
 
 
 def user_dashboard(request):
@@ -273,3 +264,18 @@ def view_worker(request, worker_id):
 
 def privacy_policy(request):
     return render(request, 'privacy_policy.html')
+
+
+
+def complete_job(request, job_id):
+    if "worker_id" not in request.session:
+        return redirect("worker_login")
+
+    job = get_object_or_404(Request, id=job_id)
+
+    if job.worker.id == request.session["worker_id"]:  # Ensure only the assigned worker can complete the job
+        job.status = "Completed"
+        job.save()
+        messages.success(request, "Job marked as completed successfully!")
+
+    return redirect("worker_dashboard")
