@@ -12,6 +12,46 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
+    <style>
+      .offcanvas {
+          background: linear-gradient(135deg, #6a11cb, #2575fc);
+          color: white;
+      }
+      .offcanvas-title {
+          font-weight: bold;
+          font-size: 1.8rem;
+      }
+      .btn-custom {
+          width: 100%;
+          padding: 10px;
+          font-size: 1.2rem;
+          border-radius: 10px;
+          transition: 0.3s;
+      }
+      .btn-custom:hover {
+          transform: scale(1.05);
+      }
+      .link-custom {
+          display: block;
+          text-align: center;
+          margin-top: 5px;
+          font-weight: bold;
+          color: #fff;
+          text-decoration: none;
+          transition: 0.3s;
+      }
+      .link-custom:hover {
+          color: #ffdf6c;
+          text-decoration: underline;
+      }
+      .alredy-user, .alredy-worker{
+        color: white;
+      }
+      .alredy-user:hover, .alredy-worker:hover{
+        color: rgb(81, 181, 239);
+      }
+  </style>
+
 
 
 </head>
@@ -43,7 +83,7 @@
                       <li class="nav-item" style="padding-left: 30px;">
                         <div>
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"  href="#service">Services</a>
-                        <ul class="dropdown-menu" style="margin-left: 1200px; background-color: #cdc9f8;">
+                        <ul class="dropdown-menu" style="margin-left: 1200px; background-color: #2575fc;">
                             <li><a class="dropdown-item" href="{% url 'plumbing' %}">PLUMBING</a></li>
                             <li><a class="dropdown-item" href="{% url 'electrician' %}">ELECTRICIAN</a></li>
                             <li><a class="dropdown-item" href="{% url 'gardening' %}">GARDENING</a></li>
@@ -74,9 +114,9 @@
     <div class="offcanvas-body">
       <div class="d-flex flex-column gap-3">
         <a href="user_reg/" class="btn btn-primary">User Registration</a>
-        <a style="text-decoration: none;position: relative; left: 130px; top: 5px;" href="user_login/">Already a User?</a>
+        <a class="alredy-user" style="text-decoration: none;position: relative; left: 130px; top: 5px;" href="user_login/">Already a User?</a>
         <a href="workerregister/" class="btn btn-success">Worker Registration</a>
-        <a style="text-decoration: none;position: relative; left: 120px; top: 5px;" href="worker/login/">Already a Worker?</a>
+        <a class="alredy-worker" style="text-decoration: none;position: relative; left: 120px; top: 5px;" href="worker/login/">Already a Worker?</a>
         
       </div>
     </div>

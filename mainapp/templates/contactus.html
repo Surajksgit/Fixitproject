@@ -11,8 +11,185 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 
+    <style>
+      body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1rem;
+    color: #555;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.col-md-6 {
+    width: 48%;
+}
+
+form {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+}
+
+form input, form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+button {
+    background: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+@media screen and (max-width: 768px) {
+    .row {
+        flex-direction: column;
+    }
+    .col-md-6 {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+
+.footer {
+    background-color: #111;
+    color: white;
+    padding: 50px 0;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.footer .containerf {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.footer .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.footer-col {
+    width: 23%;
+    padding: 10px;
+}
+
+.footer-col h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #f8f9fa;
+    position: relative;
+}
+
+.footer-col p, .footer-col ul li a {
+    font-size: 14px;
+    color: #ddd;
+    text-decoration: none;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 10px;
+}
+
+.footer-col ul li a:hover {
+    color: #007bff;
+}
+
+.social-links {
+    margin-top: 20px;
+}
+
+.social-links a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-color: #333; /* Change background color */
+    color: white;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 50%;
+    margin: 5px;
+    transition: 0.3s;
+}
+
+.social-links a:hover {
+    background-color: #007bff; /* Change color on hover */
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .footer .row {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-col {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+
+
+    </style>
 
 </head>
 <body>
@@ -32,7 +209,7 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
          
-            <div class="container" style="margin-left: 850px; font-size: 20px;">
+            <div class="container1" style="margin-left: 850px; font-size: 20px;">
                 <ul class="navbar-nav" >
                       <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
@@ -72,7 +249,7 @@
     <div class="row">
         <div class="col-md-6">
             <h4>Our Office</h4>
-            <p><strong>Address:</strong> Vyitila-Kochi, Behpoor Kozhikode, Kerala</p>
+            <p><strong>Address:</strong> Kochi,  Kozhikode, Kerala</p>
             <p><strong>Phone:</strong> +1 234 567 890</p>
             <p><strong>Email:</strong> support@fixit.com</p>
             <p><strong>Working Hours:</strong> 9:00 AM - 8:00 PM (Mon-Sat)</p>
@@ -99,6 +276,52 @@
     </div>
 </div>
 
+
+
+
+
+
+<!-- Footer Section -->
+<footer class="footer">
+    <div class="containerf">
+        <div class="row">
+            <div class="footer-col">
+                <h4>FIXIT</h4>
+                <p>Your one-stop solution for all home services.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'contactus' %}">Contact</a></li>
+                    <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <p>Kochi, Kozhikode, Kerala</p>
+                <p>+1 234 567 890</p>
+                <p>support@fixit.com</p>
+            </div>
+            <div class="footer-col">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://twitter.com/"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<!-- FontAwesome for Icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
