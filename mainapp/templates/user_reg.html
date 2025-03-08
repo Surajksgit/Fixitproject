@@ -13,7 +13,51 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-
+    <style>
+      body {
+            background: linear-gradient(to right, #cdc9f8, #cdc9f8);
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .register-container {
+            background-color: #2c2c2c;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+            color: #fff;
+            width: 100%;
+            max-width: 500px;
+            margin-left: 500px;
+            margin-top: 50px;
+        }
+        .register-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .form-control {
+            
+           border-radius: 3px;
+            
+        }
+        
+        .btn-register {
+            background-color: #2575fc;
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            padding: 10px;
+            margin-top: 10px;
+            width: 100%;
+            
+          }
+        
+          .btn-register:hover{
+            background-color: #1c5dca;
+          }
+          
+          
+    </style>
 
 </head>
 <body >
@@ -67,51 +111,66 @@
 
 
   <!-- Registration Form -->
-  <div style="background-color: #cdc9f8;">
-  <div class="container " >
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <div class="card shadow p-4 mt-5 mb-5">
-                <h2 class="text-center" style="font-weight:bold; color: #2575fc;">User Register</h2>
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label class="form-label">Name</label>
-                        <input type="text" name="name" class="form-control" required pattern="[A-Z a-z]+">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" name="email" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Phone</label>
-                        <input type="text" name="phone" class="form-control" required pattern="[6789][0-9]{9}" max="9">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Address</label>
-                        <textarea name="address" class="form-control" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">City</label>
-                        <input type="text" name="city" class="form-control" required>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control" required
-                        password_pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
-
-                        title="Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, and one number. No spaces or underscores allowed.">
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Register</button>
-                    {% if error %}
-                        <div class="alert alert-danger mt-3">{{ error }}</div>
-                    {% endif %}
-                </form>
-            </div>
+  
+  <div class="register-container">
+    <h2>User Register</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <!-- Name -->
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" name="name" class="form-control"  required pattern="[A-Z a-z]+" />
         </div>
-    </div>
-</div>
+        <!-- Email -->
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" name="email" class="form-control"  required />
+        </div>
+        <!-- Phone -->
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <input type="text" name="phone" class="form-control"  required pattern="[6789][0-9]{9}" />
+        </div>
+        <!-- Address -->
+        <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <textarea name="address" class="form-control"  required></textarea>
+        </div>
+        <!-- City -->
+        <div class="mb-3">
+            <label for="city" class="form-label">City</label>
+            <input type="text" name="city" class="form-control"  required />
+        </div>
+        <!-- Password -->
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password" class="form-control"  required
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
+            title="Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, and one number." />
+        </div>
+        <!-- Confirm Password -->
+        <div class="mb-3">
+            <label for="confirm_password" class="form-label">Confirm Password</label>
+            <input type="password" name="confirm_password" class="form-control"  required
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
+            title="Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, and one number." />
+        </div>
+
+        <!-- Terms of Service -->
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" id="terms" required>
+          <label class="form-check-label" for="terms">
+              I agree all statements in <a href="#" style="text-decoration: none;">Terms & Conditions</a>
+          </label>
+      </div>
+        
+        <!-- Register Button -->
+        <button type="submit" style="border-radius: 3px;" class="btn-register">Register</button>
+        
+        {% if error %}
+            <div class="alert alert-danger mt-3">{{ error }}</div>
+        {% endif %}
+    </form>
 </div>
 
 

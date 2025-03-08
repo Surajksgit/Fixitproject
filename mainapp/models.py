@@ -15,7 +15,7 @@ class User(models.Model):
     phone = models.IntegerField(max_length=100,default="Not provided")
     address = models.TextField(default="Not provided")
     city = models.CharField(max_length=100 ,default="Unknown")
-    
+    confirm_password = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
@@ -35,6 +35,7 @@ class Worker(models.Model):
     last_name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)
     password = models.CharField(max_length=100)
+    confirm_password = models.CharField(max_length=100)
     gender = models.CharField(max_length=10, choices=[('Male', 'Male'), ('Female', 'Female')] )
     phone = models.IntegerField()
     profession = models.TextField()

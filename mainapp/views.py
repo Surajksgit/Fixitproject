@@ -61,11 +61,12 @@ def worker_register(request):
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
         password = make_password(request.POST.get('password'))
+        confirm_password = make_password(request.POST.get('confirm_password'))
         gender = request.POST.get('gender')
         phone = request.POST.get('phone')
         profession = request.POST.get('profession')
         experience = request.POST.get('experience')
-        worker = Worker.objects.create(title=title,first_name=first_name,last_name=last_name,email=email,password=password,gender=gender,phone=phone,profession=profession,experience=experience)
+        worker = Worker.objects.create(title=title,first_name=first_name,last_name=last_name,email=email,password=password,confirm_password=confirm_password,gender=gender,phone=phone,profession=profession,experience=experience)
         messages.success(request, "Registration successful! Please login.")
         password_pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
         if not re.match(password_pattern, password):
@@ -151,6 +152,7 @@ def user_register(request):
         address = request.POST["address"]
         city = request.POST["city"]
         password = request.POST["password"]
+        confirm_password = request.POST["confirm_password"]
         password_pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
 
         if not re.match(password_pattern, password):
@@ -161,7 +163,7 @@ def user_register(request):
             return render(request, 'user_reg.html', {"error": "Email already registered!"})
 
         # Create a new user
-        user = User(name=name, email=email, phone=phone, address=address, city=city, password=password)
+        user = User(name=name, email=email, phone=phone, address=address, city=city, password=password, confirm_password=confirm_password)
         user.save()
 
         messages.success(request, "Registration successful! Please login.")

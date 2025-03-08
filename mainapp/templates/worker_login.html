@@ -10,8 +10,27 @@
     <title>Worker Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <style>
+      .card{
+        max-width: 700px;
+        position: relative;
+        left: 300px;
+        background-color:#2c2c2c ;
+        
+      }
+      .form-label{
+        color: white;
+      }
+      body{
+        background-color: #cdc9f8;
+      }
+      
+  </style>
+
 </head>
 <body>
+
 
             
 <!-- navebar ---------------------->
@@ -42,23 +61,23 @@
 
 
 
-    <div class="container mt-5">
+    <div style="background-color: #cdc9f8 ;" class="container mt-5">
       <div class="card shadow p-4">
-        <h2 class="text-center" style="font-weight:bold; color: #2575fc;">Worker Login</h2>
+        <h2 class="text-center" style="font-weight:bold; color: white;">Worker Login</h2>
         {% if error %}
             <div class="alert alert-danger">{{ error }}</div>
         {% endif %}
         <form method="POST" action="{% url 'worker_login' %}">
             {% csrf_token %}
             <div class="mb-3">
-                <label class="form-label" style=" margin-left: 400px;" >Username (Email)</label>
-                <input type="email" name="email" class="form-control" style="width: 500px;margin-left: 400px;" required>
+                <label class="form-label" style=" margin-left: 70px;" >Username</label>
+                <input type="email" name="email" class="form-control" style="width: 500px;margin-left: 70px;" required>
             </div>
             <div class="mb-3">
-                <label class="form-label" style="margin-left: 400px;" >Password</label>
-                <input type="password" name="password" class="form-control" style="width: 500px;margin-left: 400px;" required>
+                <label class="form-label" style="margin-left: 70px;" >Password</label>
+                <input type="password" name="password" class="form-control" style="width: 500px;margin-left: 70px;" required>
             </div>
-            <button type="submit" class="btn btn-primary" style="width: 500px;margin-left: 400px;">Login</button>
+            <button type="submit" class="btn btn-primary" style="width: 500px;margin-left: 70px;">Login</button>
         </form>
     </div>
   </div>
