@@ -17,10 +17,13 @@
       .form-label{
         color: white;
       }
+      .form-control{
+          border-color: #432626;
+      }
     </style>
 
 </head>
-<body style="background-color: #cdc9f8;">
+<body style="background-color: gray;">
          
   
   <!-- navebar ---------------------->
@@ -71,7 +74,7 @@
 
 
   <!-- Login Form -->
-  <div style="background-color: #cdc9f8;" class="container mt-5">
+  <div style="background-color: gray;" class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-4">
           {% if messages %}
@@ -82,7 +85,7 @@
     {% endfor %}
 {% endif %}
 
-            <div style="background-color: #2c2c2c;" class="card shadow p-4">
+            <div style="background-color:#432626;" class="card shadow p-4">
                 <h2 class="text-center" style="font-weight:bold; color: white;">User Login</h2>
                 <form method="POST">
                     {% csrf_token %}

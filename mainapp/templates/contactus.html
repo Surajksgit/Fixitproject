@@ -17,7 +17,7 @@
     <style>
       body {
     font-family: 'Poppins', sans-serif;
-    background-color: #f8f9fa;
+    background-color: #432626;
     color: #333;
     margin: 0;
     padding: 0;
@@ -25,7 +25,7 @@
 
 .container {
     max-width: 900px;
-    background: #fff;
+    background: gray;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -40,7 +40,7 @@ h2 {
 
 p {
     font-size: 1rem;
-    color: #555;
+    color: white;
 }
 
 .row {
@@ -51,10 +51,12 @@ p {
 
 .col-md-6 {
     width: 48%;
+    
+    
 }
 
 form {
-    background: #f8f9fa;
+    background: #333;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -64,6 +66,7 @@ form label {
     font-weight: 600;
     margin-bottom: 5px;
     display: block;
+    color: white;
 }
 
 form input, form textarea {
@@ -244,18 +247,18 @@ button:hover {
   <!-- Contact Us Section -->
   <div class="container mt-5" >
     <h2 class="text-center">Contact Us</h2>
-    <p class="text-center">Have questions? Reach out to us and we’ll be happy to help!</p>
+    <p class="text-center" style="color: white;">Have questions? Reach out to us and we’ll be happy to help!</p>
     
     <div class="row">
         <div class="col-md-6">
-            <h4>Our Office</h4>
+            <h4 style="color: white;">Our Office</h4>
             <p><strong>Address:</strong> Kochi,  Kozhikode, Kerala</p>
             <p><strong>Phone:</strong> +1 234 567 890</p>
             <p><strong>Email:</strong> support@fixit.com</p>
             <p><strong>Working Hours:</strong> 9:00 AM - 8:00 PM (Mon-Sat)</p>
         </div>
         <div class="col-md-6">
-            <h4>Send us a Message</h4>
+            <h4 style="color: white;">Send us a Message</h4>
             <form action="{% url 'contactus' %}" method="POST">
                 {% csrf_token %}
                 <div class="mb-3">

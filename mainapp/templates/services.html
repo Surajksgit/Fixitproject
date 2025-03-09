@@ -34,6 +34,7 @@ body {
 }
 
 .card {
+    background-color: gray;
     border: none;
     border-radius: 10px;
     overflow: hidden;
@@ -61,26 +62,27 @@ body {
 .card-title {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #333;
+    color: #fdfbfb;
 }
 
 .card-text {
     font-size: 1rem;
-    color: #555;
+    color: #fdfbfb;
     margin-bottom: 15px;
 }
 
-.btn-primary {
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
+.btn {
+    background-color: #ff8a1d;
+    color: white;
     border: none;
-    padding: 10px 20px;
     font-size: 1rem;
     border-radius: 5px;
     transition: background 0.3s ease-in-out;
 }
 
-.btn-primary:hover {
-    background: linear-gradient(135deg, #2575fc, #6a11cb);
+.btn:hover {
+    background-color: white;
+    color: #ec7a08;
 }
 
 /* Responsive Design */
@@ -154,28 +156,28 @@ body {
 </nav>
 
     <!-- Services Section -->
-    <div style="background-color: #cdc9f8; padding-top: 10px; padding-bottom: 250px;">
+    <div style="background-color: #2c2c2c; padding-top: 10px; padding-bottom: 250px;">
     <div class="container mt-5">
-        <h2 class="text-center">Our Services</h2>
+        <h2 class="text-center" style="font-weight: bold; color: #2575fc;">Our Services</h2>
         <div class="row">
             <div class="col-md-4">
                 <div class="card">
-                    <img src="{% static 'images/plumbing.jpg' %}" class="card-img-top" alt="Plumbing">
+                    <img src="{% static 'images/plumbing1.jpg' %}" class="card-img-top" alt="Plumbing">
                     <div class="card-body">
                         <h5 class="card-title">Plumbing</h5>
                         <p class="card-text">Professional plumbing services available 24/7.</p>
-                        <a href="{% url 'plumbing' %}" class="btn btn-primary">View Details</a>
+                        <a href="{% url 'plumbing' %}" class="btn ">View Details</a>
                     </div>
                 </div>
             </div>
             
             <div class="col-md-4">
                 <div class="card">
-                    <img src="{% static 'images/electrician.jpg' %}" class="card-img-top" alt="Electrician">
+                    <img src="{% static 'images/electrician1.jpg' %}" class="card-img-top" alt="Electrician">
                     <div class="card-body">
                         <h5 class="card-title">Electrician</h5>
                         <p class="card-text">Expert electricians for all electrical works.</p>
-                        <a href="{% url 'electrician' %}" class="btn btn-primary">View Details</a>
+                        <a href="{% url 'electrician' %}" class="btn ">View Details</a>
                     </div>
                 </div>
             </div>
@@ -186,18 +188,18 @@ body {
                     <div class="card-body">
                         <h5 class="card-title">Gardening</h5>
                         <p class="card-text">Beautiful garden maintenance and landscaping.</p>
-                        <a href="{% url 'gardening' %}" class="btn btn-primary">View Details</a>
+                        <a href="{% url 'gardening' %}" class="btn ">View Details</a>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-4 mt-4">
                 <div class="card">
-                    <img src="{% static 'images/cleaning.jpg' %}" class="card-img-top" alt="Cleaning">
+                    <img src="{% static 'images/cleaner2.jpg' %}" class="card-img-top" alt="Cleaning">
                     <div class="card-body">
                         <h5 class="card-title">Cleaning</h5>
                         <p class="card-text">Professional home and office cleaning services.</p>
-                        <a href="{% url 'cleaning' %}" class="btn btn-primary">View Details</a>
+                        <a href="{% url 'cleaning' %}" class="btn ">View Details</a>
                     </div>
                 </div>
             </div>
@@ -208,7 +210,7 @@ body {
                     <div class="card-body">
                         <h5 class="card-title">Painting</h5>
                         <p class="card-text">Quality painting services for your home and office.</p>
-                        <a href="{% url 'painting' %}" class="btn btn-primary">View Details</a>
+                        <a href="{% url 'painting' %}" class="btn ">View Details</a>
                     </div>
                 </div>
             </div>

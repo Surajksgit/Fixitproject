@@ -18,7 +18,7 @@ body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background: #f4f7fc;
+    background: #432626;
     color: #333;
 }
 
@@ -112,7 +112,7 @@ p {
 .services {
     text-align: center;
     padding: 50px 20px;
-    background: white;
+    background: gray;
     margin-top: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -132,6 +132,7 @@ p {
     font-size: 1.2rem;
     padding: 10px;
     border-bottom: 1px solid #ddd;
+    color: white;
 }
 
 .services li:last-child {
@@ -144,7 +145,14 @@ p {
     text-shadow:0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-
+.btn {
+    background-color: #ff8a1d;
+    color: white;
+}
+.btn:hover {
+    background-color: white;
+    color: #ec7a08;
+}
 
 
     </style>
@@ -178,7 +186,7 @@ p {
                       <li class="nav-item" style="padding-left: 30px;">
                         <div>
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"  href="#service">Services</a>
-                        <ul class="dropdown-menu" style="margin-left: 1200px; background-color: #cdc9f8;">
+                        <ul class="dropdown-menu" style="margin-left: 1200px; background-color: #2575fc;">
                             <li><a class="dropdown-item" href="{% url 'plumbing' %}">PLUMBING</a></li>
                             <li><a class="dropdown-item" href="{% url 'gardening' %}">GARDENING</a></li>
                             <li><a class="dropdown-item" href="{% url 'electrician' %}">ELECTRICIAN</a></li>
@@ -203,7 +211,7 @@ p {
    
   <section class="container  ">
     <div class="plumber-cover">
-        <img style="height: 700px; width: 1155px; position: relative; bottom: 20px;" src="{% static 'images/cleaning.jpg' %}" alt="cover">
+        <img style="height: 700px; width: 1155px; position: relative; bottom: 20px;box-shadow:0 10px 20px rgba(0, 0, 0, 0.15) ;" src="{% static 'images/cleaner2.jpg' %}" alt="cover">
         <h1 class="text-center ">Cleaning Services At Kochi</h1>
         <p class="text-center">We provide expert cleaning services for all types of home and commercial needs.</p>
     
@@ -226,7 +234,7 @@ p {
     </section>
 
 <div class="text-center mt-4">
-        <a href="{% url 'user_login' %}" style="position: relative; top: 350px;" class="btn btn-primary">Book Now</a>
+        <a href="{% url 'user_login' %}" style="position: relative; top: 350px;" class="btn ">Book Now</a>
     </div>
 </section>
 
