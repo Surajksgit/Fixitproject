@@ -47,13 +47,35 @@ body {
         .navbar-nav .nav-link:hover {
             color: #ffdf6c;
         }
+        .dropdown-menu {
+            background-color: #007bff;
+        }
+
+        .dropdown-item {
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-item:hover {
+            background-color: #0056b3;
+        }
 
         /* Offcanvas Styling */
         .offcanvas {
             background: linear-gradient(135deg, #6a11cb, #2575fc);
             color: white;
         }
+        .alredy-user:hover{
+            color: white;
 
+        }
+        .alredy-worker:hover{
+            color: white;
+
+        }
+        .alredy-user, .alredy-worker{
+            color: #16b5ef;
+        }
         .btn-custom {
             width: 100%;
             padding: 12px;
@@ -132,6 +154,7 @@ body {
             line-height: 40px;
             border-radius: 50%;
             margin: 5px;
+            margin-top: 400px;
             transition: 0.3s ease;
         }
 
@@ -146,6 +169,8 @@ body {
             font-weight: 600;
             margin-bottom: 20px;
             color: #f8f9fa;
+            position: relative;
+            top: 400px;
         }
 
         @media (max-width: 768px) {

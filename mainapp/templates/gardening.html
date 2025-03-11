@@ -16,146 +16,164 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
     <style>
-        /* General Styles */
+
+    /* General Styles */
 body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #432626;
-    color: #333;
-}
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #432626, #6a11cb);
+            color: #333;
+        }
 
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px;
-}
+        /* Navbar Styling */
+        .navbar {
+            background-color: #007bff !important;
+            padding: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
 
-h1, h2, h3 {
-    text-align: center;
-    font-weight: 600;
-}
-
-h1 span.blue {
-    color: #007bff;
-}
-
-.highlight {
-    text-align: center;
-    color: #ff6600;
+        .navbar-brand {
+    font-size: 2rem;
     font-weight: bold;
-}
-
-p {
-    text-align: center;
-    font-size: 18px;
-}
-
-/* Features Section */
-.why-choose {
-    background: #fff;
-    padding: 40px;
-    margin: 30px 0;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-    text-align: center;
-}
-
-.feature {
-    background: #007bff;
     color: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    font-size: 18px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
 }
 
-/* How It Works */
-.how-it-works {
-    background: #e3f2fd;
-    padding: 40px;
-    border-radius: 10px;
-}
-
-.steps {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.step {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    max-width: 280px;
-}
-
-.step span {
-    font-size: 30px;
-    display: block;
-    margin-bottom: 10px;
-}
-
-/* Services Section */
-.services {
-    text-align: center;
-    padding: 50px 20px;
-    background: gray;
-    margin-top: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.services h2 {
-    font-size: 2.5rem;
-    color: #007bff;
-}
-
-.services ul {
-    list-style: none;
-    padding: 0;
-}
-
-.services li {
+.navbar-nav .nav-link {
     font-size: 1.2rem;
-    padding: 10px;
-    color: white;
-    border-bottom: 1px solid #ddd;
+    color: #fff;
+    transition: 0.3s;
 }
 
-.services li:last-child {
-    border-bottom: none;
-}
-.text-center{
-    position: relative;
-    bottom: 350px;
-    color: white;
-    text-shadow:0px 4px 10px rgba(0, 0, 0, 0.1);
+.navbar-nav .nav-link:hover {
+    color: #ffdf6c;
 }
 
-.btn {
-    background-color: #ff8a1d;
-    color: white;
-}
-.btn:hover {
-    background-color: white;
-    color: #ec7a08;
-}
+        .dropdown-menu {
+            background-color: #007bff;
+        }
+
+        .dropdown-item {
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-item:hover {
+            background-color: #0056b3;
+        }
+
+        /* Hero Section */
+        .plumber-cover {
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .plumber-cover img {
+            margin-left: 70px;
+            height: 700px;
+            width: 1155px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            
+        }
+
+        
+
+        .plumber-cover h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffcc00;
+            position: relative;
+            bottom: 200px;
+        }
+
+        .plumber-cover p {
+            font-size: 1.2rem;
+            color: #ffcc00;
+            position: relative;
+            bottom: 200px;
+        }
+
+        /* Services Section */
+        .services {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .services h2 {
+            color: #007bff;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .services ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .services li {
+            font-size: 1.2rem;
+            color: #555;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .services li:hover {
+            background-color: #f8f8f8;
+        }
+
+        .services li:last-child {
+            border-bottom: none;
+        }
+
+        .services li i {
+            color: #007bff;
+        }
+
+        /* Book Now Button */
+        .btn {
+            background-color: #ffcc00;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 102, 0, 0.4);
+            margin-top: 20px;
+            margin-bottom: 20px;
+            
+        }
+
+        .btn:hover {
+            background-color: #fff;
+            color: #ffcc00;
+            box-shadow: 0 6px 16px rgba(255, 69, 0, 0.5);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+
+            .services h2 {
+                font-size: 1.8rem;
+            }
+
+            .services li {
+                font-size: 1rem;
+            }
+
+            .btn {
+                font-size: 16px;
+                padding: 10px 24px;
+            }
+        }
 
 
     </style>
@@ -237,7 +255,7 @@ p {
     </section>
 
 <div class="text-center mt-4">
-        <a href="{% url 'user_login' %}" style="position: relative; top: 350px;" class="btn ">Book Now</a>
+        <a href="{% url 'user_login' %}"  class="btn ">Book Now</a>
     </div>
 </section>
 

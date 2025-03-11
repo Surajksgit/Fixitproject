@@ -17,7 +17,7 @@
       /* General Styles */
       body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #432626, #6a11cb);
             color: #333;
         }
 
@@ -49,31 +49,43 @@
         .navbar-nav .nav-link:hover {
             color: #ffcc00;
         }
+        .dropdown-menu {
+            background-color: #007bff;
+        }
+
+        .dropdown-item {
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-item:hover {
+            background-color: #0056b3;
+        }
 
         /* About Section */
-        .about-section {
+        .image-column {
             padding: 60px 20px;
             text-align: center;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #432626, #6a11cb);
+            
+            
             margin-top: 30px;
             animation: fadeInUp 0.5s ease-in-out;
         }
 
-        .about-section img {
+        .image-column img {
             width: 100%;
             max-width: 500px;
-            border-radius: 12px;
+            /* border-radius: 12px; */
             margin-top: 20px;
             transition: transform 0.3s ease;
         }
 
-        .about-section img:hover {
+        .image-column img:hover {
             transform: scale(1.05);
         }
 
-        .about-section p {
+        .image-column p {
             font-size: 1.1rem;
             color: #555;
             line-height: 1.8;
@@ -87,6 +99,9 @@
             border-radius: 12px;
             margin-top: 40px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .how-it-works h2{
+            margin-left: 650px;
         }
 
         .steps {
@@ -120,21 +135,20 @@
         }
 
         /* Read More Button */
-        .read-more-btn {
+        .btn {
             background-color: #ffcc00;
-            color: #333;
+            color:white;
             padding: 12px 30px;
             border: none;
-            border-radius: 25px;
             font-size: 18px;
             font-weight: 500;
             margin-top: 20px;
             transition: background-color 0.3s ease;
         }
 
-        .read-more-btn:hover {
-            background-color: #ffaa00;
-            color: #fff;
+        .btn:hover {
+            background-color: white;
+            color: #ffcc00;
         }
 
         /* Animations */
@@ -161,7 +175,7 @@
                 font-size: 16px;
             }
         }
-
+        
 
 
 
