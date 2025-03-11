@@ -23,8 +23,18 @@
         color: white;
       }
       body{
-        background-color: gray;
+        background: linear-gradient(135deg, #432626, #6a11cb);
       }
+      .btn{
+        background-color: #ffcc00;
+        color: white;
+        font-weight: bold;
+      }
+      .btn:hover{
+        background-color: white;
+        color: #ffcc00;
+      }
+      
       
   </style>
 
@@ -61,7 +71,7 @@
 
 
 
-    <div style="background-color: gray ;" class="container mt-5">
+    <div style="background: linear-gradient(135deg, #432626, #6a11cb); height: 350px;padding-top: 20px;" class="container mt-5">
       <div class="card shadow p-4">
         <h2 class="text-center" style="font-weight:bold; color: white;">Worker Login</h2>
         {% if error %}
@@ -71,13 +81,13 @@
             {% csrf_token %}
             <div class="mb-3">
                 <label class="form-label" style=" margin-left: 70px;" >Username</label>
-                <input type="email" name="email" class="form-control" style="width: 500px;margin-left: 70px;" required>
+                <input type="email" name="email" class="form-control" placeholder="email" style="width: 500px;margin-left: 70px;" required>
             </div>
             <div class="mb-3">
                 <label class="form-label" style="margin-left: 70px;" >Password</label>
-                <input type="password" name="password" class="form-control" style="width: 500px;margin-left: 70px;" required>
+                <input type="password" name="password" placeholder="password" class="form-control" style="width: 500px;margin-left: 70px;" required>
             </div>
-            <button type="submit" class="btn btn-primary" style="width: 500px;margin-left: 70px;">Login</button>
+            <button type="submit" class="btn " style="width: 500px;margin-left: 70px;">Login</button>
         </form>
     </div>
   </div>

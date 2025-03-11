@@ -15,7 +15,7 @@
 
     <style>
       body {
-            background-color: gray;
+            background: linear-gradient(135deg, #432626, #6a11cb);
             height: 100vh;
             font-family: Arial, sans-serif;
         }
@@ -43,7 +43,7 @@
         }
         
         .btn-register {
-            background-color: #2575fc;
+            background-color: #ffcc00;
             border: none;
             color: #fff;
             font-weight: bold;
@@ -54,7 +54,8 @@
           }
         
           .btn-register:hover{
-            background-color: #1c5dca;
+            background-color: white;
+            color: #ffcc00;
           }
           
           
@@ -120,39 +121,39 @@
         <!-- Name -->
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
-            <input type="text" name="name" class="form-control"  required pattern="[A-Z a-z]+" />
+            <input type="text" name="name" class="form-control" placeholder="name" required pattern="[A-Z a-z]+" />
         </div>
         <!-- Email -->
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" name="email" class="form-control"  required />
+            <input type="email" name="email" class="form-control" placeholder="email"  required />
         </div>
         <!-- Phone -->
         <div class="mb-3">
             <label for="phone" class="form-label">Phone</label>
-            <input type="text" name="phone" class="form-control"  required pattern="[6789][0-9]{9}" />
+            <input type="text" name="phone" class="form-control" placeholder="phone" required pattern="[6789][0-9]{9}" />
         </div>
         <!-- Address -->
         <div class="mb-3">
             <label for="address" class="form-label">Address</label>
-            <textarea name="address" class="form-control"  required></textarea>
+            <textarea name="address" class="form-control" placeholder="address" required></textarea>
         </div>
         <!-- City -->
         <div class="mb-3">
             <label for="city" class="form-label">City</label>
-            <input type="text" name="city" class="form-control"  required />
+            <input type="text" name="city" class="form-control" placeholder="city" required />
         </div>
         <!-- Password -->
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input type="password" name="password" class="form-control"  required
+            <input type="password" name="password" class="form-control" placeholder="password" required
             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
             title="Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, and one number." />
         </div>
         <!-- Confirm Password -->
         <div class="mb-3">
             <label for="confirm_password" class="form-label">Confirm Password</label>
-            <input type="password" name="confirm_password" class="form-control"  required
+            <input type="password" name="confirm_password" class="form-control" placeholder="confirm password"  required
             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
             title="Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, and one number." />
         </div>
