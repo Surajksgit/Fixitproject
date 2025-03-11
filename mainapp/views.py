@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 import re
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 
 
@@ -176,13 +177,18 @@ def user_register(request):
 
 def user_login(request):
     if request.method == "POST":
-        email = request.POST["email"]
+        login_input = request.POST["email"]  # Accept email or phone
         password = request.POST["password"]
         
         try:
-            user = User.objects.get(email=email)
-            if user.password == password:  # Implement proper password hashing
+            if login_input.isdigit():  # If input is numeric, treat it as phone
+                user = User.objects.get(phone=login_input)
+            else:
+                user = User.objects.get(email=login_input)
+            
+            if user.password == password:  # ✅ Add password hashing if needed
                 request.session["user_id"] = user.id
+                messages.success(request, "Login successful!")
                 return redirect("user_dashboard")
             else:
                 return render(request, "user_login.html", {"error": "Invalid credentials"})
@@ -191,7 +197,7 @@ def user_login(request):
 
     return render(request, "user_login.html")
 
-
+# user_dashboard------------------------------------------------>
 
 def user_dashboard(request):
     if "user_id" not in request.session:
@@ -267,7 +273,7 @@ def view_worker(request, worker_id):
 def privacy_policy(request):
     return render(request, 'privacy_policy.html')
 
-
+# worker complete job------------------------------------------------>
 
 def complete_job(request, job_id):
     if "worker_id" not in request.session:

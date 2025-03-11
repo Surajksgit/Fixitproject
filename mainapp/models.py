@@ -10,9 +10,9 @@ from django.db import models
 class User(models.Model):
     
     name = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
+    email = models.EmailField(max_length=100,  unique=True)
     password = models.CharField(max_length=100)
-    phone = models.IntegerField(max_length=100,default="Not provided")
+    phone = models.BigIntegerField(unique=True)  # ✅ Change to BigIntegerField
     address = models.TextField(default="Not provided")
     city = models.CharField(max_length=100 ,default="Unknown")
     confirm_password = models.CharField(max_length=100)
