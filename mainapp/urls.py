@@ -3,7 +3,7 @@
 
 from django.urls import path
 from . import views
-from .views import home, worker_logout , user_dashboard, send_request
+from .views import home, worker_logout , user_dashboard, send_request,edit_worker_profile
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -29,7 +29,5 @@ urlpatterns = [
     path('worker/<int:worker_id>/', views.view_worker, name='view_worker'),
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('complete-job/<int:job_id>/', views.complete_job, name='complete_job'),
-
-
-    
+    path('worker/edit/<int:worker_id>/', edit_worker_profile, name='edit_worker_profile'),
 ]
