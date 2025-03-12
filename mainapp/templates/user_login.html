@@ -33,6 +33,21 @@
           background-color: white;
           color: #ffcc00;
       }
+      .navbar-brand {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .navbar-nav .nav-link {
+            font-size: 1.2rem;
+            color: #fff;
+            transition: 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ffdf6c;
+        }
     </style>
 
 </head>
@@ -61,18 +76,7 @@
                       <li class="nav-item" style="padding-left: 30px;">
                         <a class="nav-link" href="{% url 'about' %}">About</a>
                       </li>
-                      <li class="nav-item" style="padding-left: 30px;">
-                        <div>
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"  href="#service">Services</a>
-                        <ul class="dropdown-menu" style="margin-left: 1200px; background-color: #cdc9f8;">
-                            <li><a class="dropdown-item" href="#">PLUMPING</a></li>
-                            <li><a class="dropdown-item" href="#">ELECTRICIAN</a></li>
-                            <li><a class="dropdown-item" href="#">GARDENING</a></li>
-                            <li><a class="dropdown-item" href="#">CLEANING</a></li>
-                            <li><a class="dropdown-item" href="#">PAINTING</a></li>
-                          </ul>
-                    </div>
-                      </li>
+                      
                       <li class="nav-item"style="padding-left: 30px;">
                         <a class="nav-link" href="#contact">ContactUs</a>
                       </li>
