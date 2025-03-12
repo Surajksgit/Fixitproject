@@ -287,3 +287,19 @@ def complete_job(request, job_id):
         messages.success(request, "Job marked as completed successfully!")
 
     return redirect("worker_dashboard")
+
+
+def edit_worker_profile(request, worker_id):
+    worker = get_object_or_404(Worker, id=worker_id)
+
+    if request.method == 'POST':
+        worker.first_name = request.POST['first_name']
+        worker.last_name = request.POST['last_name']
+        worker.email = request.POST['email']
+        worker.phone = request.POST['phone']
+        worker.profession = request.POST['profession']
+        worker.experience = request.POST['experience']
+        worker.save()
+        return redirect('worker_dashboard')
+
+    return render(request, 'edit_worker_profile.html', {'worker': worker})

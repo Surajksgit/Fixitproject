@@ -79,6 +79,8 @@
                 </div>
                 <p><strong>Phone:</strong><i class="fas fa-phone"></i> {{ worker.phone }}</p>
                 <p><strong>Experience:</strong> {{ worker.experience }} years</p>
+                <a href="{% url 'edit_worker_profile' worker.id %}" class="btn btn-primary btn-sm">Edit Profile</a>
+
 
                 <h3 class="mt-4">Assigned Jobs</h3>
 <ul class="list-group job-list">
