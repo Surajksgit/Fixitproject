@@ -17,16 +17,45 @@
     <style>
       body {
     font-family: 'Poppins', sans-serif;
-    background-color: #f8f9fa;
+    background: linear-gradient(135deg, #432626, #6a11cb);
     color: #333;
     margin: 0;
     padding: 0;
 }
 
+.navbar-brand {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.navbar-nav .nav-link {
+    font-size: 1.2rem;
+    color: #fff;
+    transition: 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffdf6c;
+}
+.dropdown-menu {
+            background-color: #007bff;
+        }
+
+        .dropdown-item {
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-item:hover {
+            background-color: #0056b3;
+        }
+
 .container {
     max-width: 900px;
-    background: #fff;
+    background: rgb(255, 255, 255);
     padding: 30px;
+    color: #555;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -51,10 +80,12 @@ p {
 
 .col-md-6 {
     width: 48%;
+    
+    
 }
 
 form {
-    background: #f8f9fa;
+    background: #333;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -64,6 +95,7 @@ form label {
     font-weight: 600;
     margin-bottom: 5px;
     display: block;
+    color: white;
 }
 
 form input, form textarea {
@@ -102,7 +134,7 @@ button:hover {
 
 
 .footer {
-    background-color: #111;
+    background-color: #030000;
     color: white;
     padding: 50px 0;
     text-align: center;
@@ -220,7 +252,7 @@ button:hover {
                       <li class="nav-item" style="padding-left: 30px;">
                         <div>
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"  href="#service">Services</a>
-                        <ul class="dropdown-menu" style="margin-left: 1200px; background-color: #cdc9f8;">
+                        <ul class="dropdown-menu" style="margin-left: 1200px; background-color: #2575fc;">
                             <li><a class="dropdown-item" href="{% url 'plumbing' %}">PLUMBING</a></li>
                             <li><a class="dropdown-item" href="{% url 'electrician' %}">ELECTRICIAN</a></li>
                             <li><a class="dropdown-item" href="{% url 'gardening' %}">GARDENING</a></li>
@@ -244,18 +276,18 @@ button:hover {
   <!-- Contact Us Section -->
   <div class="container mt-5" >
     <h2 class="text-center">Contact Us</h2>
-    <p class="text-center">Have questions? Reach out to us and we’ll be happy to help!</p>
+    <p class="text-center" style="color: #555">Have questions? Reach out to us and we’ll be happy to help!</p>
     
     <div class="row">
         <div class="col-md-6">
-            <h4>Our Office</h4>
+            <h4 style="color:#555">Our Office</h4>
             <p><strong>Address:</strong> Kochi,  Kozhikode, Kerala</p>
             <p><strong>Phone:</strong> +1 234 567 890</p>
             <p><strong>Email:</strong> support@fixit.com</p>
             <p><strong>Working Hours:</strong> 9:00 AM - 8:00 PM (Mon-Sat)</p>
         </div>
         <div class="col-md-6">
-            <h4>Send us a Message</h4>
+            <h4 style="color:#555">Send us a Message</h4>
             <form action="{% url 'contactus' %}" method="POST">
                 {% csrf_token %}
                 <div class="mb-3">

@@ -13,10 +13,30 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-
+    <style>
+      body{
+        background: linear-gradient(135deg, #432626, #6a11cb);
+      }
+      .form-label{
+        color: white;
+      }
+      .form-control{
+          border-color: #432626;
+          
+      }
+      .btn{
+          background-color: #ffcc00;
+          color: white;
+          font-weight: bold;
+      }
+      .btn:hover{
+          background-color: white;
+          color: #ffcc00;
+      }
+    </style>
 
 </head>
-<body>
+<body >
          
   
   <!-- navebar ---------------------->
@@ -67,22 +87,30 @@
 
 
   <!-- Login Form -->
-  <div class="container mt-5">
+  <div style="background: linear-gradient(135deg, #432626, #6a11cb); height:370px;padding-top: 20px;" class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-4">
-            <div class="card shadow p-4">
-                <h2 class="text-center" style="font-weight:bold; color: #2575fc;">User Login</h2>
+          {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+            <div style="background-color:#432626;" class="card shadow p-4">
+                <h2 class="text-center" style="font-weight:bold; color: white;">User Login</h2>
                 <form method="POST">
                     {% csrf_token %}
                     <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" name="email" class="form-control" required>
+                      <label for="login_input" class="form-label">Username</label>
+                      <input type="text" name="email" placeholder="email phone" class="form-control" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control" required>
+                        <input type="password" placeholder="password" name="password" class="form-control" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                    <button type="submit" class="btn  w-100">Login</button>
                     <a href="{% url 'user_reg' %}" style="text-decoration: none;position: relative; left: 140px; top: 10px;">Signup User</a>
                     {% if error %}
                         <div class="alert alert-danger mt-3">{{ error }}</div>

@@ -140,6 +140,15 @@ td {
 <div class="container mt-4">
         <h2>Welcome, {{ user.name }}</h2>
 
+        {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+
         <form method="GET" action="{% url 'user_dashboard' %}" class="mb-3">
             <label for="profession" class="form-label"></label>
             <select name="profession" id="profession" class="form-select" onchange="this.form.submit()">
