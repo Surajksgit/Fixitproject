@@ -79,15 +79,15 @@
 
 
 
-  {% if messages %}
-  {% for message in messages %}
-      <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}">
-          {{ message }}
-      </div>
-  {% endfor %}
-{% endif %}
+  
     <div style="background: linear-gradient(135deg, #432626, #6a11cb); height: 350px;padding-top: 20px;" class="container mt-5">
-
+      {% if messages %}
+      {% for message in messages %}
+          <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}">
+              {{ message }}
+          </div>
+      {% endfor %}
+    {% endif %}
       <div class="card shadow p-4">
         <h2 class="text-center" style="font-weight:bold; color: white;">Worker Login</h2>
         {% if error %}

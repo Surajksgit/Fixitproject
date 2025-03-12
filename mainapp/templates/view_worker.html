@@ -175,9 +175,21 @@ body {
     <p class="worker-info"><strong>Profession:</strong> {{ worker.profession }}</p>
     <p class="worker-info"><strong>Experience:</strong> {{ worker.experience }} </p>
     <p class="worker-info"><strong>Phone:</strong> {{ worker.phone }}</p>
-    <p class="worker-info"><strong>Status:</strong> {{ worker.status }}</p>
-
+    <p class="worker-info"><strong>Status:</strong> 
+        {% if worker.status %}
+            <span class="badge bg-success">Available</span>
+        {% else %}
+            <span class="badge bg-danger">Not Available</span>
+        {% endif %}
+    </p>
+    
+        
+    
+{% if worker.status %}
     <a href="{% url 'send_request' worker.id %}" class="btn btn-primary mt-3">Send Request</a>
+{% else %}
+    <button class="btn btn-primary mt-3" disabled>Not Available</button>
+{% endif %}
     <a href="{% url 'user_dashboard' %}" class="btn btn-secondary mt-3">Back</a>
 </div>
 
