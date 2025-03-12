@@ -2,7 +2,7 @@
 
 
 from django.shortcuts import render, redirect  
-from .forms import AddForm
+from .forms import AddForm,UserEditForm
 from .models import User, Worker,Request, User
 from django.contrib import messages  # ✅ Import messages for flash messages
 from django.contrib.auth import authenticate   # ✅ Import authenticate and login
@@ -175,27 +175,27 @@ def user_register(request):
 
 # user login------------------------------------------------>
 
-def user_login(request):
-    if request.method == "POST":
-        login_input = request.POST["email"]  # Accept email or phone
-        password = request.POST["password"]
-        
-        try:
-            if login_input.isdigit():  # If input is numeric, treat it as phone
-                user = User.objects.get(phone=login_input)
-            else:
-                user = User.objects.get(email=login_input)
+    def user_login(request):
+        if request.method == "POST":
+            login_input = request.POST["email"]  # Accept email or phone
+            password = request.POST["password"]
             
-            if user.password == password:  # ✅ Add password hashing if needed
-                request.session["user_id"] = user.id
-                messages.success(request, "Login successful!")
-                return redirect("user_dashboard")
-            else:
-                return render(request, "user_login.html", {"error": "Invalid credentials"})
-        except User.DoesNotExist:
-            return render(request, "user_login.html", {"error": "User not found"})
+            try:
+                if login_input.isdigit():  # If input is numeric, treat it as phone
+                    user = User.objects.get(phone=login_input)
+                else:
+                    user = User.objects.get(email=login_input)
+                
+                if user.password == password:  # ✅ Add password hashing if needed
+                    request.session["user_id"] = user.id
+                    messages.success(request, "Login successful!")
+                    return redirect("user_dashboard")
+                else:
+                    return render(request, "user_login.html", {"error": "Invalid credentials"})
+            except User.DoesNotExist:
+                return render(request, "user_login.html", {"error": "User not found"})
 
-    return render(request, "user_login.html")
+        return render(request, "user_login.html")
 
 # user_dashboard------------------------------------------------>
 
@@ -303,3 +303,23 @@ def edit_worker_profile(request, worker_id):
         return redirect('worker_dashboard')
 
     return render(request, 'edit_worker_profile.html', {'worker': worker})
+
+
+@login_required
+def profile_view(request):
+    return render(request, 'profile.html', {'user': request.user})
+
+@login_required
+def edit_profile(request):
+    if request.method == "POST":
+        form = UserEditForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully!")
+            return redirect('profile')  # Redirect back to profile after saving
+    else:
+        form = UserEditForm(instance=request.user)
+
+    return render(request, 'edit_profile.html', {'form': form})
+
+
