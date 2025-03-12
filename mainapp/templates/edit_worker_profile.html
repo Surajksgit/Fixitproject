@@ -33,15 +33,6 @@
             <input type="text" class="form-control" id="phone" name="phone" value="{{ worker.phone }}" required>
         </div>
 
-        <div class="mb-3">
-            <label for="profession" class="form-label">Profession</label>
-            <input type="text" class="form-control" id="profession" name="profession" value="{{ worker.profession }}" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="experience" class="form-label">Experience (years)</label>
-            <input type="text" class="form-control" id="experience" name="experience" value="{{ worker.experience }}" required>
-        </div>
 
         <button type="submit" class="btn btn-success">Save Changes</button>
         <a href="{% url 'worker_dashboard' %}" class="btn btn-secondary">Cancel</a>

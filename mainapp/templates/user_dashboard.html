@@ -103,6 +103,15 @@ td {
     }
 }
 
+.alert {
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .alert.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
 
     </style>
@@ -201,6 +210,35 @@ td {
         </table>
     </div>
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        // Fade in effect on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll('.alert').forEach((alert) => {
+                setTimeout(() => {
+                    alert.classList.add('show'); // Add fade-in transition
+                }, 100); // Small delay for smoother appearance
+    
+                // Auto fade out after 3 seconds
+                setTimeout(() => {
+                    alert.classList.remove('show');
+                    setTimeout(() => alert.remove(), 500); // Remove from DOM after fading out
+                }, 3000);
+            });
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

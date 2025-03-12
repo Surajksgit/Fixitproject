@@ -88,6 +88,7 @@ def worker_login(request):
             worker = Worker.objects.get(email=email)
             if check_password(password, worker.password):  # Verify hashed password
                 request.session["worker_id"] = worker.id  # Store worker ID in session
+                messages.success(request, "Login successful!")
                 return redirect("worker_dashboard")
             else:
                 return render(request, "worker_login.html", {"error": "Invalid password!"})
@@ -289,6 +290,9 @@ def complete_job(request, job_id):
     return redirect("worker_dashboard")
 
 
+
+# workeredit profile------------------------------------------------>
+
 def edit_worker_profile(request, worker_id):
     worker = get_object_or_404(Worker, id=worker_id)
 
@@ -297,8 +301,6 @@ def edit_worker_profile(request, worker_id):
         worker.last_name = request.POST['last_name']
         worker.email = request.POST['email']
         worker.phone = request.POST['phone']
-        worker.profession = request.POST['profession']
-        worker.experience = request.POST['experience']
         worker.save()
         return redirect('worker_dashboard')
 
