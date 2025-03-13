@@ -169,7 +169,16 @@ body {
 
 
   <div class="worker-container">
-    <img src="{% static 'images/190691.png' %}" alt="Worker Image" class="worker-img">
+    <!-- <img src="{% static 'images/190691.png' %}" alt="Worker Image" class="worker-img"> -->
+    <img src="{% if worker.gender == 'Male' %}
+    {% static 'images/190691.png' %}
+{% elif worker.gender == 'Female' %}
+    {% static 'images/female_avatarjpg.jpg' %}
+{% else %}
+    {% static 'images/190691.png' %}
+{% endif %}" 
+alt="Worker Image" class="worker-img">
+
     <h2 class="worker-name">{{ worker.first_name }} {{ worker.last_name }}</h2>
     
     <p class="worker-info"><strong>Profession:</strong> {{ worker.profession }}</p>
