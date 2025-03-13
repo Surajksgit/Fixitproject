@@ -131,10 +131,26 @@ def worker_requests(request):
 
     return render(request, "worker_requests.html", {"worker": worker, "requests": requests})
 
+
+
+# update request------------------------------------------------>
+
+# def update_request(request, request_id, action):
+#     request_obj = Request.objects.get(id=request_id)
+#     if action == "accept":
+#         request_obj.status = "Accepted"
+#     elif action == "reject":
+#         request_obj.status = "Rejected"
+#     request_obj.save()
+    
+#     return redirect("worker_dashboard")
 def update_request(request, request_id, action):
     request_obj = Request.objects.get(id=request_id)
     if action == "accept":
         request_obj.status = "Accepted"
+        # Mark worker as not available when the job is accepted
+        request_obj.worker.status = False
+        request_obj.worker.save()
     elif action == "reject":
         request_obj.status = "Rejected"
     request_obj.save()
@@ -254,6 +270,13 @@ def send_request(request, worker_id):
     user = User.objects.get(id=request.session["user_id"])
     worker = Worker.objects.get(id=worker_id)
 
+
+    # ✅ Check if the worker is available before sending request
+    if not worker.status:
+        messages.warning(request, "This worker is not available right now.")
+        return redirect("user_dashboard")
+
+
     existing_request = Request.objects.filter(user=user, worker=worker, status="Pending").first()
     if existing_request:
         messages.warning(request, "You already have a pending request for this worker.")
@@ -286,6 +309,10 @@ def complete_job(request, job_id):
         job.status = "Completed"
         job.save()
         messages.success(request, "Job marked as completed successfully!")
+
+        # ✅ Set worker status back to available after job completion
+        job.worker.status = True
+        job.worker.save()
 
     return redirect("worker_dashboard")
 

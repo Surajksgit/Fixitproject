@@ -40,7 +40,7 @@ class Worker(models.Model):
     phone = models.IntegerField()
     profession = models.TextField()
     experience = models.TextField()
-    status = models.BooleanField(default=True)  # Worker availability
+    status = models.BooleanField(default=True, )  # Worker availability
     
 
     def __str__(self):
