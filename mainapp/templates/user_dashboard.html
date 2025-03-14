@@ -279,6 +279,25 @@ body {
         </table>
     </div>
     
+    <!-- Bootstrap Logout Confirmation Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 12px;">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="logoutModalLabel">Logout Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Make sure you've logout?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 8px;">Cancel</button>
+                <a href="{% url 'user_logout' %}" class="btn btn-dark" style="border-radius: 8px;">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 
@@ -293,20 +312,100 @@ body {
 
 
     <script>
-        // Fade in effect on page load
-        document.addEventListener("DOMContentLoaded", () => {
-            document.querySelectorAll('.alert').forEach((alert) => {
-                setTimeout(() => {
-                    alert.classList.add('show'); // Add fade-in transition
-                }, 100); // Small delay for smoother appearance
+        // // Fade in effect on page load
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     document.querySelectorAll('.alert').forEach((alert) => {
+        //         setTimeout(() => {
+        //             alert.classList.add('show'); // Add fade-in transition
+        //         }, 100); // Small delay for smoother appearance
     
-                // Auto fade out after 3 seconds
-                setTimeout(() => {
-                    alert.classList.remove('show');
-                    setTimeout(() => alert.remove(), 500); // Remove from DOM after fading out
-                }, 3000);
-            });
+        //         // Auto fade out after 3 seconds
+        //         setTimeout(() => {
+        //             alert.classList.remove('show');
+        //             setTimeout(() => alert.remove(), 500); // Remove from DOM after fading out
+        //         }, 3000);
+        //     });
+        // });
+
+
+
+        //back button ----------------------------------------->
+        
+    // Prevent going back to the login page after logging in
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+    };
+
+
+
+
+   
+    // // Fade in effect on page load
+    // document.addEventListener("DOMContentLoaded", () => {
+    //     document.querySelectorAll('.alert').forEach((alert) => {
+    //         setTimeout(() => {
+    //             alert.classList.add('show'); // Add fade-in transition
+    //         }, 100); // Small delay for smoother appearance
+
+    //         // Auto fade out after 3 seconds
+    //         setTimeout(() => {
+    //             alert.classList.remove('show');
+    //             setTimeout(() => alert.remove(), 500); // Remove from DOM after fading out
+    //         }, 3000);
+    //     });
+    // });
+
+    // // Show logout confirmation on back button press
+    // window.onpopstate = function () {
+    //     const confirmLogout = confirm("Do you want to logout?");
+    //     if (confirmLogout) {
+    //         window.location.href = "{% url 'user_logout' %}"; // Redirect to logout URL
+    //     } else {
+    //         history.pushState(null, null, location.href); // Stay on the current page
+    //     }
+    // };
+
+    // // Push initial state to prevent back navigation issue
+    // history.pushState(null, null, location.href);
+
+
+
+
+
+
+
+// logut confomation script---------------------------------------------------------------->
+
+    // Fade in effect on page load
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll('.alert').forEach((alert) => {
+            setTimeout(() => {
+                alert.classList.add('show'); // Add fade-in transition
+            }, 100); // Small delay for smoother appearance
+
+            // Auto fade out after 3 seconds
+            setTimeout(() => {
+                alert.classList.remove('show');
+                setTimeout(() => alert.remove(), 500); // Remove from DOM after fading out
+            }, 3000);
         });
+    });
+
+    // Show custom Bootstrap modal on back button press
+    window.onpopstate = function () {
+        var logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+        logoutModal.show();
+
+        // Prevent going back after canceling
+        history.pushState(null, null, location.href);
+    };
+
+    // Push initial state to prevent back navigation issue
+    history.pushState(null, null, location.href);
+
+
+
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
