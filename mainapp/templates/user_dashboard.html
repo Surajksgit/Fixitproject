@@ -252,6 +252,13 @@ body {
                     <p>Profession: {{ worker.profession }}</p>
                     <p>Experience: {{ worker.experience }} </p>
                     <p>Phone: {{ worker.phone }}</p>
+                    <p class="worker-info"><strong></strong> 
+                        {% if worker.status %}
+                            <span class="badge bg-success">Available</span>
+                        {% else %}
+                            <span class="badge bg-danger">Not Available</span>
+                        {% endif %}
+                    </p>
                     <a href="{% url 'view_worker' worker.id %}" style="width: 130px;position: relative; left: 120px; " class="btn btn-primary">View Worker</a>
                 </div>
             </div>
@@ -292,7 +299,7 @@ body {
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 8px;">Cancel</button>
-                <a href="{% url 'user_logout' %}" class="btn btn-dark" style="border-radius: 8px;">Logout</a>
+                <a href="{% url 'user_logout' %}" class="btn btn-danger" style="border-radius: 8px;">Logout</a>
             </div>
         </div>
     </div>
@@ -329,7 +336,7 @@ body {
 
 
 
-        //back button ----------------------------------------->
+    //back button ----------------------------------------->
         
     // Prevent going back to the login page after logging in
     history.pushState(null, null, location.href);

@@ -100,6 +100,26 @@ def process_payment(request):
         if not worker_id:
             messages.error(request, "Session expired! Please register again.")
             return redirect('workerregister')
+        
+        # ✅ Add validation for card/UPI details (example)
+        if payment_method == "Card":
+            card_number = request.POST.get('card_number')
+            expiry_date = request.POST.get('expiry_date')
+            cvv = request.POST.get('cvv')
+
+            if not (card_number and expiry_date and cvv):
+                messages.error(request, "Invalid card details!")
+                return redirect('payment')
+
+        # ✅ UPI payment validation
+        if payment_method == "UPI":
+            upi_id = request.POST.get('upi_id')
+            # Regex pattern for UPI ID validation
+            upi_pattern = r'^[\w.-]+@[\w.-]+$'
+            if not upi_id or not re.match(upi_pattern, upi_id):
+                messages.error(request, "Invalid UPI ID format! Example: example@upi")
+                return redirect('payment')
+
 
         # If payment is successful
         worker = Worker.objects.get(id=worker_id)

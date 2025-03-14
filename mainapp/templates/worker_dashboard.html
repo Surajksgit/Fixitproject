@@ -136,8 +136,14 @@ body {
                 padding: 12px;
             }
         }
-
-
+        .modal-body
+        {
+            color: black;
+        }
+        .modal-title
+        {
+            color: white;
+        }
 
 
 
@@ -250,6 +256,27 @@ body {
 
 
 
+<!-- Bootstrap Logout Confirmation Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 12px;">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="logoutModalLabel">Logout Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to leave the dashboard?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 8px;">Cancel</button>
+                <a href="{% url 'worker_logout' %}" class="btn btn-danger" style="border-radius: 8px;">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 
    
@@ -268,6 +295,27 @@ body {
             }, 3000);
         });
     });
+
+
+    window.onpopstate = function () {
+        // Show the modal when the back button is pressed
+        var logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+        logoutModal.show();
+
+        // Prevent going back after canceling
+        history.pushState(null, null, location.href);
+    };
+
+    // Push initial state to prevent back navigation issue
+    history.pushState(null, null, location.href);
+    
+    
+
+    
+
+    
+
+
 </script>
 
 
