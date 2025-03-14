@@ -14,6 +14,7 @@ from django.http import HttpResponseRedirect
 import re
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
+from django.urls import reverse
 
 
 
@@ -68,14 +69,59 @@ def worker_register(request):
         profession = request.POST.get('profession')
         experience = request.POST.get('experience')
         worker = Worker.objects.create(title=title,first_name=first_name,last_name=last_name,email=email,password=password,confirm_password=confirm_password,gender=gender,phone=phone,profession=profession,experience=experience)
-        messages.success(request, "Registration successful! Please login.")
+        
+        # Save worker ID in session for payment reference
+        request.session['worker_id'] = worker.id
+
+        messages.success(request, "Registration successful! Please complete the payment.")
         password_pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
         if not re.match(password_pattern, password):
-            return redirect('worker_login')
+            return redirect('payment')
     return render(request, 'worker_reg.html')
     return render(request, "worker_reg.html", {"error": "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, and one number. No spaces or underscores allowed."})
 
         
+
+
+# Payment Page View
+def payment(request):
+    if 'worker_id' not in request.session:
+        return redirect('worker_login')
+
+    return render(request, 'payment.html')
+
+
+# Process Payment
+def process_payment(request):
+    if request.method == 'POST':
+        payment_method = request.POST.get('payment_method')
+        worker_id = request.session.get('worker_id')
+
+        if not worker_id:
+            messages.error(request, "Session expired! Please register again.")
+            return redirect('workerregister')
+
+        # If payment is successful
+        worker = Worker.objects.get(id=worker_id)
+        worker.status = True  # Mark as available after payment
+        worker.save()
+
+        # Clear session after payment
+        del request.session['worker_id']
+
+        messages.success(request, "Payment successful! You can now log in.")
+        return redirect('worker_login')
+
+    return redirect('payment')
+
+
+
+
+
+
+
+
+
 # worker login------------------------------------------------>
 
 
@@ -133,17 +179,7 @@ def worker_requests(request):
 
 
 
-# update request------------------------------------------------>
-
-# def update_request(request, request_id, action):
-#     request_obj = Request.objects.get(id=request_id)
-#     if action == "accept":
-#         request_obj.status = "Accepted"
-#     elif action == "reject":
-#         request_obj.status = "Rejected"
-#     request_obj.save()
-    
-#     return redirect("worker_dashboard")
+# worker request update------------------------------------------------>
 def update_request(request, request_id, action):
     request_obj = Request.objects.get(id=request_id)
     if action == "accept":
