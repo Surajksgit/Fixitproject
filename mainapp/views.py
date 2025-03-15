@@ -154,6 +154,7 @@ def worker_login(request):
             worker = Worker.objects.get(email=email)
             if check_password(password, worker.password):  # Verify hashed password
                 request.session["worker_id"] = worker.id  # Store worker ID in session
+                request.session["is_worker"] = True  # Add a flag to differentiate session
                 messages.success(request, "Login successful!")
                 return redirect("worker_dashboard")
             else:
@@ -167,11 +168,10 @@ def worker_login(request):
 
 @login_required
 def worker_dashboard(request):
-    worker_id = request.session.get("worker_id")
-    if not worker_id:
+    if "worker_id" not in request.session:
         return redirect("worker_login")
 
-    worker = Worker.objects.get(id=worker_id)
+    worker = Worker.objects.get(id=request.session["worker_id"])
     
     # Fetch only accepted jobs
     jobs = Request.objects.filter(worker=worker, status="Accepted")
@@ -181,9 +181,16 @@ def worker_dashboard(request):
 
 # worker logout------------------------------------------------>
 
+# def worker_logout(request):
+#     request.session.flush()  # Clear worker session
+#     return redirect('worker_login')  # Redirect to worker login page
+
 def worker_logout(request):
-    request.session.flush()  # Clear worker session
-    return redirect('worker_login')  # Redirect to worker login page
+    if "worker_id" in request.session:
+        del request.session["worker_id"]  # Clear only worker session
+    if "is_worker" in request.session:
+        del request.session["is_worker"]  # Remove worker flag
+    return redirect('worker_login')  # Redirect to worker login
 
 # worker request------------------------------------------------>
 

@@ -12,6 +12,9 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+
 
 
     <style>
@@ -196,6 +199,56 @@ body {
             }
         }
 
+        /* Typing Effect */
+        .typing-text {
+    font-size: 2.5rem;
+    font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 0;
+    border-right: 3px solid transparent; /* Simulates cursor */
+    animation: typing 3s steps(40, end) forwards, blink 0.8s infinite;
+    opacity: 0;
+    animation-delay: 0.3s; /* Starts after half a second */
+}
+
+
+/* Paragraph Text */
+/* .p-text {
+    font-size: 1.2rem;
+    color: #ccc;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 0;
+    border-right: 3px solid transparent;
+    animation: typing 2s steps(40, end) forwards, blink 0.8s infinite;
+    opacity: 0;
+    animation-delay: 0.3s; 
+} */
+/* Typing Animation */
+@keyframes typing {
+    from {
+        width: 0;
+        opacity: 1;
+    }
+    to {
+        width: 100%;
+        opacity: 1;
+    }
+}
+
+/* Cursor Blinking Effect */
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
+
+
+
+
+
+
   </style>
 
 
@@ -289,13 +342,15 @@ body {
           <div class="row">
             <div class="col-md-6 ">
               <div class="detail-box">
-                <h1>
+                <h1 id="typing-effect" class="typing-text">
                   Renovation and <br>
                   Maintenance <br>
                   Services
                 </h1>
-                <p style="font-size: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color: gray; ">
-                    We provide the best renovation and maintenance services in the city. Our services are available 24/7. We provide services like plumbing, electrician, gardening, cleaning, painting, etc.
+                <p class="p-text" style="font-size: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color: gray; ">
+                  <span>We provide the best renovation and maintenance services in the city.</span><br>
+                  <span>Our services are available 24/7.</span><br>
+                  <span>We provide services like plumbing, electrician, gardening, cleaning, painting, etc.</span>
                 </p>
                 <a href="{% url 'services' %}" style="text-decoration: none; ">
                   Book Our Service
@@ -323,7 +378,34 @@ body {
 
 
 
+      
+      <script>
+        // h1 typing effect
+        document.addEventListener("DOMContentLoaded", function () {
+    gsap.from(".typing-text",".p-text", {
+        duration: 2,
+        opacity: 0,
+        x: -50,
+        ease: "power3.out",
+        delay: 0.5
+    });
+});     
 
+
+// p typing effect  
+document.addEventListener("DOMContentLoaded", function () {
+    gsap.from(".p-text span", {
+        opacity: 0,
+        y: 20, // Moves text up smoothly
+        duration: 1,
+        stagger: 0.5, // Delay between each line
+        ease: "power3.out"
+    });
+});
+
+
+
+      </script>
 
 
       <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
