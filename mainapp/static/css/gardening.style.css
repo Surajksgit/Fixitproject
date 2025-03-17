@@ -1,0 +1,157 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #432626, #6a11cb);
+    color: #333;
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: #007bff !important;
+    padding: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+font-size: 2rem;
+font-weight: bold;
+color: #fff;
+}
+
+.navbar-nav .nav-link {
+font-size: 1.2rem;
+color: #fff;
+transition: 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+color: #ffdf6c;
+}
+
+.dropdown-menu {
+    background-color: #007bff;
+}
+
+.dropdown-item {
+    color: #fff;
+    transition: background-color 0.3s;
+}
+
+.dropdown-item:hover {
+    background-color: #0056b3;
+}
+
+/* Hero Section */
+.plumber-cover {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.plumber-cover img {
+    margin-left: 70px;
+    height: 700px;
+    width: 1155px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    
+}
+
+
+
+.plumber-cover h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffcc00;
+    position: relative;
+    bottom: 200px;
+}
+
+.plumber-cover p {
+    font-size: 1.2rem;
+    color: #ffcc00;
+    position: relative;
+    bottom: 200px;
+}
+
+/* Services Section */
+.services {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.services h2 {
+    color: #007bff;
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.services ul {
+    list-style: none;
+    padding: 0;
+}
+
+.services li {
+    font-size: 1.2rem;
+    color: #555;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.services li:hover {
+    background-color: #f8f8f8;
+}
+
+.services li:last-child {
+    border-bottom: none;
+}
+
+.services li i {
+    color: #007bff;
+}
+
+/* Book Now Button */
+.btn {
+    background-color: #ffcc00;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(255, 102, 0, 0.4);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    
+}
+
+.btn:hover {
+    background-color: #fff;
+    color: #ffcc00;
+    box-shadow: 0 6px 16px rgba(255, 69, 0, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+    .services h2 {
+        font-size: 1.8rem;
+    }
+
+    .services li {
+        font-size: 1rem;
+    }
+
+    .btn {
+        font-size: 16px;
+        padding: 10px 24px;
+    }
+}

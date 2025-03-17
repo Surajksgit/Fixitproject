@@ -1,0 +1,163 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #432626, #6a11cb);
+    color: #333;
+}
+
+h1, h2, h3 {
+    font-weight: 700;
+    color: #2575fc;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #2575fc;
+    padding: 15px;
+}
+
+.navbar-brand {
+    font-size: 32px;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.navbar-nav .nav-link {
+    color: #fff;
+    font-size: 18px;
+    margin-left: 15px;
+    transition: color 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffcc00;
+}
+.dropdown-menu {
+    background-color: #007bff;
+}
+
+.dropdown-item {
+    color: #fff;
+    transition: background-color 0.3s;
+}
+
+.dropdown-item:hover {
+    background-color: #0056b3;
+}
+
+/* About Section */
+.image-column {
+    padding: 60px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #432626, #6a11cb);
+    
+    
+    margin-top: 30px;
+    animation: fadeInUp 0.5s ease-in-out;
+}
+
+.image-column img {
+    width: 100%;
+    max-width: 500px;
+    /* border-radius: 12px; */
+    margin-top: 20px;
+    transition: transform 0.3s ease;
+}
+
+.image-column img:hover {
+    transform: scale(1.05);
+}
+
+.image-column p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.8;
+    margin-top: 20px;
+}
+
+/* How It Works Section */
+.how-it-works {
+    background-color: #f1f1f1;
+    padding: 60px 20px;
+    border-radius: 12px;
+    margin-top: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.how-it-works h2{
+    margin-left: 650px;
+}
+
+.steps {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.step {
+    background-color: #2575fc;
+    color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    width: 220px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 0.5s ease;
+}
+
+.step:hover {
+    transform: translateY(-5px);
+    background-color: #1d5bbf;
+}
+
+.step span {
+    font-size: 40px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Read More Button */
+.btn {
+    background-color: #ffcc00;
+    color:white;
+    padding: 12px 30px;
+    border: none;
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: white;
+    color: #ffcc00;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .step {
+        width: 100%;
+    }
+    .navbar-brand {
+        font-size: 28px;
+    }
+    .navbar-nav .nav-link {
+        font-size: 16px;
+    }
+}
+
+

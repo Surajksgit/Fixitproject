@@ -1,0 +1,134 @@
+       /* General Styles */
+       body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #432626, #6a11cb);
+        margin: 0;
+        padding: 0;
+    }
+    
+    /* Container Styling */
+    .container {
+        max-width: 900px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+    }
+    
+    /* Heading */
+    h2 {
+        text-align: center;
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+    
+    /* Table Styling */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    /* Table Header */
+    .table thead {
+        background: #007bff;
+        color: white;
+    }
+    
+    .table thead th {
+        padding: 15px;
+        text-align: left;
+        font-size: 16px;
+    }
+    
+    /* Table Rows */
+    .table tbody tr {
+        border-bottom: 1px solid #ddd;
+        transition: background 0.3s ease-in-out;
+    }
+    
+    .table tbody tr:hover {
+        background: #f1f1f1;
+    }
+    
+    /* Table Cells */
+    .table td {
+        padding: 12px;
+        color: #333;
+    }
+    
+    /* Buttons */
+    .btn {
+        padding: 8px 15px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: 0.3s;
+    }
+    
+    .btn-success {
+        background: #28a745;
+        color: white;
+        border: none;
+    }
+    
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+        border: none;
+    }
+    
+    .btn:hover {
+        opacity: 0.8;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container {
+            padding: 15px;
+        }
+    
+        .table thead {
+            display: none;
+        }
+    
+        .table, .table tbody, .table tr, .table td {
+            display: block;
+            width: 100%;
+        }
+    
+        .table tr {
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            background: white;
+        }
+    
+        .table td {
+            text-align: right;
+            padding-left: 50%;
+            position: relative;
+        }
+    
+        .table td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 10px;
+            font-weight: bold;
+            color: #007bff;
+        }
+    
+        .btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+    }
+    

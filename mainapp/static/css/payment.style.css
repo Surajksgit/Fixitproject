@@ -1,0 +1,29 @@
+body {
+    background: linear-gradient(135deg, #432626, #6a11cb);
+    font-family: Arial, sans-serif;
+    color: #fff;
+    padding-top: 20px;
+}
+.card {
+    background-color: #432626;
+    color: #fff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+.btn-primary {
+    background-color: #ffcc00;
+    border-color: #ffcc00;
+    color: #432626;
+    transition: 0.3s ease;
+}
+.btn-primary:hover {
+    background-color: #fff;
+    color: #ffcc00;
+    border-color: #ffcc00;
+}
+select, input {
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 16px;
+}

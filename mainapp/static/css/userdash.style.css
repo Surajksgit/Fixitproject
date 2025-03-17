@@ -1,0 +1,155 @@
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #432626, #6a11cb);
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: #007bff;
+    padding: 15px;
+}
+
+.navbar-brand {
+    font-size: 32px;
+    font-weight: bold;
+    /* color: #fff; */
+}
+
+.navbar-nav .nav-link {
+    color: #fff !important;
+    font-size: 18px;
+    margin-right: 20px;
+    transition: color 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ddd !important;
+}
+
+/* Container Styling */
+.container {
+    margin-top: 30px;
+    background: linear-gradient(135deg, #432626, #6a11cb);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h2, h3 {
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Card Styling */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    background: rgba(217, 207, 231, 0.1);
+    color: #fff;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h5 {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background:#ffcc00;
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    border-radius: 30px;
+    transition: background 0.3s ease;
+    text-align: center;
+    display: inline-block;
+}
+
+.btn-primary:hover {
+    background: #fff;
+    color: #ffcc00;
+}
+
+/* Table Styling */
+.table {
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+th {
+    background: #007bff;
+    color: white;
+    padding: 12px;
+    text-align: center;
+}
+
+td {
+    background: #f9f9f9;
+    padding: 12px;
+    color: #333;
+    text-align: center;
+}
+
+/* Dropdown Styling */
+select {
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.3s;
+}
+
+select:focus {
+    border-color: #007bff;
+}
+
+/* Alert Styling */
+.alert {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.alert.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 28px;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+
+    h2, h3 {
+        font-size: 20px;
+    }
+
+    .card h5 {
+        font-size: 18px;
+    }
+
+    td, th {
+        font-size: 14px;
+    }
+}
