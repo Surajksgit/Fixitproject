@@ -36,6 +36,7 @@ class Worker(models.Model):
         ('rejected', 'Rejected'),
     ]
 
+
     title = models.CharField(max_length=10, choices=TITLE_CHOICES, default='Mr')
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -45,15 +46,12 @@ class Worker(models.Model):
     phone = models.CharField(max_length=15)
     profession = models.TextField()
     experience = models.TextField()
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')  # Admin approval required
-    created_at = models.DateTimeField(default=now)
-    updated_at = models.DateTimeField(auto_now=True)  # Auto-update on changes
+    status = models.BooleanField(default=True, )  # Worker availability
+    is_approved = models.BooleanField(default=False)  # New field
 
-def save(self, *args, **kwargs):
-    """ Hash password before saving the worker """
-    if self.pk is None or not self.password.startswith('pbkdf2_sha256$'):  # Avoid rehashing if already hashed
-        self.password = make_password(self.password)
-    super().save(*args, **kwargs)
+    
+    
+
     def __str__(self):
         return f"{self.title} {self.first_name} {self.last_name} - {self.status}"
 
@@ -68,4 +66,3 @@ class Request(models.Model):
 
     def __str__(self):
         return f"Request by {self.user.name} - {self.status}"
-

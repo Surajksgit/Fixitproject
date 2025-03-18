@@ -16,9 +16,14 @@ import re
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.urls import reverse
-from django.contrib.admin.views.decorators import staff_member_required
 from django.core.mail import send_mail
-from django.contrib.auth.hashers import make_password
+from django.conf import settings
+from django.contrib.admin.views.decorators import staff_member_required
+from django.core.mail import EmailMessage
+from django.utils.html import strip_tags
+from email.mime.image import MIMEImage
+import os
+
 
 
 
@@ -72,43 +77,87 @@ def worker_register(request):
         phone = request.POST.get('phone')
         profession = request.POST.get('profession')
         experience = request.POST.get('experience')
+        worker = Worker.objects.create(title=title,first_name=first_name,last_name=last_name,email=email,password=password,confirm_password=confirm_password,gender=gender,phone=phone,profession=profession,experience=experience,is_approved=False)
+        
+        # Save worker ID in session for payment reference
+        request.session['worker_id'] = worker.id
 
-        # Password validation
-        if raw_password != confirm_password:
-            messages.error(request, "Passwords do not match.")
-            return redirect('workerregister')
+        # Stylish HTML email content with inline image
+        subject = "🎉 Registration Successful - Pending Approval 🎉"
+        html_content = f"""
+        <html>
+            <head>
+                <style>
+                    body {{
+                        font-family: Arial, sans-serif;
+                        background-color: #f9f9f9;
+                        margin: 0;
+                        padding: 0;
+                        color: #333;
+                    }}
+                    .container {{
+                        width: 100%;
+                        max-width: 600px;
+                        margin: 20px auto;
+                        background-color: #ffffff;
+                        padding: 20px;
+                        border-radius: 10px;
+                        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                    }}
+                    h2 {{
+                        color: #4CAF50;
+                    }}
+                    p {{
+                        font-size: 16px;
+                        line-height: 1.6;
+                    }}
+                    .footer {{
+                        margin-top: 20px;
+                        text-align: center;
+                        font-size: 14px;
+                        color: #888;
+                    }}
+                    img {{
+                        display: block;
+                        margin: 20px auto;
+                        width: 100px;
+                        height: auto;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h2>Welcome to <strong>FIXIT</strong>, {first_name}!</h2>
+                    <p>Thank you for registering with <strong>FIXIT</strong>. Your account is currently pending approval by the admin.</p>
+                    <p>You will receive another email once your account has been approved.</p>
+                    <img src="cid:fixit_logo" alt="FIXIT Logo"/>
+                    <p class="footer">Best regards,<br>
+                    <strong>The FIXIT Team</strong></p>
+                </div>
+            </body>
+        </html>
+        """
 
-        # ✅ Check if email already exists
-        if Worker.objects.filter(email=email).exists():
-            messages.error(request, "Email already registered. Please use a different email.")
-            return redirect('workerregister')
+        # Create EmailMessage instance
+        email_message = EmailMessage(subject, html_content, settings.DEFAULT_FROM_EMAIL, [email])
+        email_message.content_subtype = 'html'
 
+        # Attach the image inline
+        image_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'fixit_logo.png')
+        if os.path.exists(image_path):
+            with open(image_path, 'rb') as img:
+                mime_image = MIMEImage(img.read(), _subtype="png")
+                mime_image.add_header('Content-ID', '<fixit_logo>')
+                mime_image.add_header('Content-Disposition', 'inline', filename='fixit_logo.png')
+                email_message.attach(mime_image)
 
-        hashed_password = make_password(raw_password)
+        # Send email
+        email_message.send()
 
-        # ✅ Create Worker with status 'pending'
-        worker = Worker.objects.create(
-            title=title,
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            password=make_password(raw_password),  # Password will be hashed automatically in the model
-            gender=gender,
-            phone=phone,
-            profession=profession,
-            experience=experience,
-            status='pending'
-        )
-
-        # ✅ Notify Admin
-        admin_email = "abhirampashok1@gmail.com"  # Replace with your admin email
-        admin_subject = "New Worker Registration Request"
-        admin_message = f"A new worker {first_name} {last_name} has registered and is awaiting approval.\n\nPlease review the request in the admin panel."
-        send_mail(admin_subject, admin_message, "abhirampashok1@gmail.com", [admin_email], fail_silently=False)
-
-        messages.success(request, "Registration submitted! Awaiting admin approval.")
-        return redirect('workerregister')
-
+        messages.success(request, "Registration successful! Please complete the payment.")
+        password_pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
+        if not re.match(password_pattern, password):
+            return redirect('payment')
     return render(request, 'worker_reg.html')
 # Approve Worker View
 @staff_member_required
@@ -207,21 +256,26 @@ def worker_login(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        worker = Worker.objects.filter(email=email).first()
-
-        if worker and worker.status == 'approved':
-            if check_password(password, worker.password):  # Validate password
-                request.session['worker_id'] = worker.id
-                request.session['worker_email'] = worker.email
-                messages.success(request, "Login successful!")
-                return redirect('worker_dashboard')
+        try:
+            worker = Worker.objects.get(email=email)
+            if check_password(password, worker.password):  # Verify hashed password
+                if worker.is_approved:  # Check if the worker is approved
+                    request.session["worker_id"] = worker.id  # Store worker ID in session
+                    request.session["is_worker"] = True  # Add a flag to differentiate session
+                    messages.success(request, "Login successful!")
+                    return redirect("worker_dashboard")
+                else:
+                    messages.error(request, "Your account is pending approval by the admin.")
+                    return redirect("worker_login")
             else:
-                messages.error(request, "Invalid credentials.")
-        else:
-            messages.error(request, "Your account is pending approval or has been rejected.")
+                messages.error(request, "Invalid password!")
+                return redirect("worker_login")
+        except Worker.DoesNotExist:
+            messages.error(request, "Worker not found!")
+            return redirect("worker_login")
 
     return render(request, "worker_login.html")
-    # worker dashboard------------------------------------------------>
+# worker dashboard------------------------------------------------>
 
 @login_required
 def worker_dashboard(request):
@@ -264,8 +318,20 @@ def update_request(request, request_id, action):
         # Mark worker as not available when the job is accepted
         request_obj.worker.status = False
         request_obj.worker.save()
+
+        subject = "Your Work Request Was Accepted"
+        message = f"Hello {request_obj.user.name},\n\nYour work request has been accepted by {request_obj.worker.first_name}. They will contact you soon!"
+        send_mail(subject, message, "fixit1361@gmail.com", [request_obj.user.email])
+
+
     elif action == "reject":
         request_obj.status = "Rejected"
+
+        subject = "Your Work Request Was Rejected"
+        message = f"Hello {request_obj.user.name},\n\nUnfortunately, {request_obj.worker.first_name} has rejected your work request. You can try requesting another worker."
+        send_mail(subject, message, "fixit1361@gmail.com", [request_obj.user.email])
+
+
     request_obj.save()
     
     return redirect("worker_dashboard")
@@ -296,6 +362,16 @@ def user_register(request):
         # Create a new user
         user = User(name=name, email=email, phone=phone, address=address, city=city, password=password, confirm_password=confirm_password)
         user.save()
+
+        subject = "Welcome to CallIt!"
+        message = f"Hello {name},\n\nYour registration was successful. Welcome to Call It!\n\nBest Regards,\nThe CallIt Team"
+        from_email = "fixit1361@gmail.com"
+        recipient_list = [email]
+
+        send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+
+        messages.success(request, "Registration successful! Please login.")
+        return redirect('user_login')
 
         messages.success(request, "Registration successful! Please login.")
         return redirect('user_login')
@@ -396,6 +472,14 @@ def send_request(request, worker_id):
         return redirect("user_dashboard")
 
     Request.objects.create(user=user, worker=worker)
+
+    subject = "New Work Request Received"
+    message = f"Hello {worker.first_name},\n\nYou have received a new work request from {user.name}.\n\nPlease check your dashboard for more details."
+    send_mail(subject, message, "fixit1361@gmail.com", [worker.email])
+
+
+
+
     messages.success(request, "Request sent successfully!")
     return redirect("user_dashboard")
 
@@ -445,7 +529,4 @@ def edit_worker_profile(request, worker_id):
         return redirect('worker_dashboard')
 
     return render(request, 'edit_worker_profile.html', {'worker': worker})
-
-
-
 

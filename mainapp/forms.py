@@ -14,9 +14,3 @@ class AddForm(forms.ModelForm):
         model = User
         
         fields = "__all__"
-
-
-
-
-
-            
