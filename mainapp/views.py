@@ -15,6 +15,14 @@ import re
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.urls import reverse
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib.admin.views.decorators import staff_member_required
+from django.core.mail import EmailMessage
+from django.utils.html import strip_tags
+from email.mime.image import MIMEImage
+import os
+
 
 
 
@@ -68,10 +76,82 @@ def worker_register(request):
         phone = request.POST.get('phone')
         profession = request.POST.get('profession')
         experience = request.POST.get('experience')
-        worker = Worker.objects.create(title=title,first_name=first_name,last_name=last_name,email=email,password=password,confirm_password=confirm_password,gender=gender,phone=phone,profession=profession,experience=experience)
+        worker = Worker.objects.create(title=title,first_name=first_name,last_name=last_name,email=email,password=password,confirm_password=confirm_password,gender=gender,phone=phone,profession=profession,experience=experience,is_approved=False)
         
         # Save worker ID in session for payment reference
         request.session['worker_id'] = worker.id
+
+        # Stylish HTML email content with inline image
+        subject = "🎉 Registration Successful - Pending Approval 🎉"
+        html_content = f"""
+        <html>
+            <head>
+                <style>
+                    body {{
+                        font-family: Arial, sans-serif;
+                        background-color: #f9f9f9;
+                        margin: 0;
+                        padding: 0;
+                        color: #333;
+                    }}
+                    .container {{
+                        width: 100%;
+                        max-width: 600px;
+                        margin: 20px auto;
+                        background-color: #ffffff;
+                        padding: 20px;
+                        border-radius: 10px;
+                        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                    }}
+                    h2 {{
+                        color: #4CAF50;
+                    }}
+                    p {{
+                        font-size: 16px;
+                        line-height: 1.6;
+                    }}
+                    .footer {{
+                        margin-top: 20px;
+                        text-align: center;
+                        font-size: 14px;
+                        color: #888;
+                    }}
+                    img {{
+                        display: block;
+                        margin: 20px auto;
+                        width: 100px;
+                        height: auto;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h2>Welcome to <strong>FIXIT</strong>, {first_name}!</h2>
+                    <p>Thank you for registering with <strong>FIXIT</strong>. Your account is currently pending approval by the admin.</p>
+                    <p>You will receive another email once your account has been approved.</p>
+                    <img src="cid:fixit_logo" alt="FIXIT Logo"/>
+                    <p class="footer">Best regards,<br>
+                    <strong>The FIXIT Team</strong></p>
+                </div>
+            </body>
+        </html>
+        """
+
+        # Create EmailMessage instance
+        email_message = EmailMessage(subject, html_content, settings.DEFAULT_FROM_EMAIL, [email])
+        email_message.content_subtype = 'html'
+
+        # Attach the image inline
+        image_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'fixit_logo.png')
+        if os.path.exists(image_path):
+            with open(image_path, 'rb') as img:
+                mime_image = MIMEImage(img.read(), _subtype="png")
+                mime_image.add_header('Content-ID', '<fixit_logo>')
+                mime_image.add_header('Content-Disposition', 'inline', filename='fixit_logo.png')
+                email_message.attach(mime_image)
+
+        # Send email
+        email_message.send()
 
         messages.success(request, "Registration successful! Please complete the payment.")
         password_pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
@@ -153,17 +233,22 @@ def worker_login(request):
         try:
             worker = Worker.objects.get(email=email)
             if check_password(password, worker.password):  # Verify hashed password
-                request.session["worker_id"] = worker.id  # Store worker ID in session
-                request.session["is_worker"] = True  # Add a flag to differentiate session
-                messages.success(request, "Login successful!")
-                return redirect("worker_dashboard")
+                if worker.is_approved:  # Check if the worker is approved
+                    request.session["worker_id"] = worker.id  # Store worker ID in session
+                    request.session["is_worker"] = True  # Add a flag to differentiate session
+                    messages.success(request, "Login successful!")
+                    return redirect("worker_dashboard")
+                else:
+                    messages.error(request, "Your account is pending approval by the admin.")
+                    return redirect("worker_login")
             else:
-                return render(request, "worker_login.html", {"error": "Invalid password!"})
+                messages.error(request, "Invalid password!")
+                return redirect("worker_login")
         except Worker.DoesNotExist:
-            return render(request, "worker_login.html", {"error": "Worker not found!"})
+            messages.error(request, "Worker not found!")
+            return redirect("worker_login")
 
     return render(request, "worker_login.html")
-
 # worker dashboard------------------------------------------------>
 
 @login_required
@@ -395,7 +480,4 @@ def edit_worker_profile(request, worker_id):
         return redirect('worker_dashboard')
 
     return render(request, 'edit_worker_profile.html', {'worker': worker})
-
-
-
 

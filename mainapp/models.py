@@ -30,6 +30,7 @@ class Worker(models.Model):
         
     ]
 
+
     title = models.CharField(max_length=10, choices=TITLE_CHOICES, default='Mr')
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -41,6 +42,9 @@ class Worker(models.Model):
     profession = models.TextField()
     experience = models.TextField()
     status = models.BooleanField(default=True, )  # Worker availability
+    is_approved = models.BooleanField(default=False)  # New field
+
+    
     
 
     def __str__(self):
@@ -57,11 +61,3 @@ class Request(models.Model):
 
     def __str__(self):
         return f"Request by {self.user.name} - {self.status}"
-
-
-
-
-
-
-
-
