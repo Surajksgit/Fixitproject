@@ -1,11 +1,12 @@
 # views.py is a file that contains the views for the mainapp application.
 
 
-from django.shortcuts import render, redirect  
+from django.shortcuts import render, redirect 
 from .forms import AddForm
 from .models import User, Worker,Request, User
 from django.contrib import messages  # ✅ Import messages for flash messages
 from django.contrib.auth import authenticate   # ✅ Import authenticate and login
+from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.sessions.models import Session
 from django.contrib.auth.hashers import make_password, check_password
@@ -15,6 +16,9 @@ import re
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.urls import reverse
+from django.contrib.admin.views.decorators import staff_member_required
+from django.core.mail import send_mail
+from django.contrib.auth.hashers import make_password
 
 
 
@@ -54,34 +58,87 @@ def painting(request):
 def contactus(request):
     return render(request, 'contactus.html')  # Render plumbing.html
 
-# worker registration------------------------------------------------>
-
+# Worker Registration View
 def worker_register(request):
     if request.method == 'POST':
+        # Extract form data
         title = request.POST.get('title')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
-        password = make_password(request.POST.get('password'))
-        confirm_password = make_password(request.POST.get('confirm_password'))
+        raw_password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
         gender = request.POST.get('gender')
         phone = request.POST.get('phone')
         profession = request.POST.get('profession')
         experience = request.POST.get('experience')
-        worker = Worker.objects.create(title=title,first_name=first_name,last_name=last_name,email=email,password=password,confirm_password=confirm_password,gender=gender,phone=phone,profession=profession,experience=experience)
-        
-        # Save worker ID in session for payment reference
-        request.session['worker_id'] = worker.id
 
-        messages.success(request, "Registration successful! Please complete the payment.")
-        password_pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
-        if not re.match(password_pattern, password):
-            return redirect('payment')
+        # Password validation
+        if raw_password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return redirect('workerregister')
+
+        # ✅ Check if email already exists
+        if Worker.objects.filter(email=email).exists():
+            messages.error(request, "Email already registered. Please use a different email.")
+            return redirect('workerregister')
+
+
+        hashed_password = make_password(raw_password)
+
+        # ✅ Create Worker with status 'pending'
+        worker = Worker.objects.create(
+            title=title,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=make_password(raw_password),  # Password will be hashed automatically in the model
+            gender=gender,
+            phone=phone,
+            profession=profession,
+            experience=experience,
+            status='pending'
+        )
+
+        # ✅ Notify Admin
+        admin_email = "abhirampashok1@gmail.com"  # Replace with your admin email
+        admin_subject = "New Worker Registration Request"
+        admin_message = f"A new worker {first_name} {last_name} has registered and is awaiting approval.\n\nPlease review the request in the admin panel."
+        send_mail(admin_subject, admin_message, "abhirampashok1@gmail.com", [admin_email], fail_silently=False)
+
+        messages.success(request, "Registration submitted! Awaiting admin approval.")
+        return redirect('workerregister')
+
     return render(request, 'worker_reg.html')
-    return render(request, "worker_reg.html", {"error": "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, and one number. No spaces or underscores allowed."})
+# Approve Worker View
+@staff_member_required
+def approve_worker(request, worker_id):
+    worker = get_object_or_404(Worker, id=worker_id)
+    worker.status = 'approved'
+    worker.save()
 
-        
+    # Notify Worker via Email (Plain Text)
+    subject = "Registration Approved"
+    message = f"Dear {worker.first_name},\n\nYour registration has been approved! You can now log in to your account.\n\nBest Regards,\nYour Team"
+    send_mail(subject, message, "abhirampashok1@gmail.com", [worker.email], fail_silently=False)
 
+    messages.success(request, f"Worker {worker.first_name} {worker.last_name} has been approved.")
+    return redirect('admin_dashboard')
+
+# Reject Worker View
+@staff_member_required
+def reject_worker(request, worker_id):
+    worker = get_object_or_404(Worker, id=worker_id)
+    worker.status = 'rejected'
+    worker.save()
+
+    # Notify Worker via Email (Plain Text)
+    subject = "Registration Rejected"
+    message = f"Dear {worker.first_name},\n\nUnfortunately, your registration has been rejected.\n\nBest Regards,\nYour Team"
+    send_mail(subject, message, "abhirampashok1@gmail.com", [worker.email], fail_silently=False)
+
+    messages.success(request, f"Worker {worker.first_name} {worker.last_name} has been rejected.")
+    return redirect('admin_dashboard')
 
 # Payment Page View
 def payment(request):
@@ -147,37 +204,30 @@ def process_payment(request):
 
 def worker_login(request):
     if request.method == "POST":
-        email = request.POST.get("email")
-        password = request.POST.get("password")
+        email = request.POST.get('email')
+        password = request.POST.get('password')
 
-        try:
-            worker = Worker.objects.get(email=email)
-            if check_password(password, worker.password):  # Verify hashed password
-                request.session["worker_id"] = worker.id  # Store worker ID in session
-                request.session["is_worker"] = True  # Add a flag to differentiate session
+        worker = Worker.objects.filter(email=email).first()
+
+        if worker and worker.status == 'approved':
+            if check_password(password, worker.password):  # Validate password
+                request.session['worker_id'] = worker.id
+                request.session['worker_email'] = worker.email
                 messages.success(request, "Login successful!")
-                return redirect("worker_dashboard")
+                return redirect('worker_dashboard')
             else:
-                return render(request, "worker_login.html", {"error": "Invalid password!"})
-        except Worker.DoesNotExist:
-            return render(request, "worker_login.html", {"error": "Worker not found!"})
+                messages.error(request, "Invalid credentials.")
+        else:
+            messages.error(request, "Your account is pending approval or has been rejected.")
 
     return render(request, "worker_login.html")
-
-# worker dashboard------------------------------------------------>
+    # worker dashboard------------------------------------------------>
 
 @login_required
 def worker_dashboard(request):
-    if "worker_id" not in request.session:
-        return redirect("worker_login")
-
-    worker = Worker.objects.get(id=request.session["worker_id"])
-    
-    # Fetch only accepted jobs
-    jobs = Request.objects.filter(worker=worker, status="Accepted")
-    
+    worker = request.user  # Get the logged-in worker
+    jobs = Request.objects.filter(worker=worker, status="Accepted")  # Fetch accepted jobs
     return render(request, 'worker_dashboard.html', {'worker': worker, 'jobs': jobs})
-
 
 # worker logout------------------------------------------------>
 

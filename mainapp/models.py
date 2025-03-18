@@ -2,6 +2,8 @@
 
 
 from django.db import models
+from django.contrib.auth.hashers import make_password
+from django.utils.timezone import now  # Ensure this import exists
 
 # Create your models here.
 
@@ -20,31 +22,40 @@ class User(models.Model):
     def __str__(self):
         return self.name
 
-# Worker Model
 
 class Worker(models.Model):
 
     TITLE_CHOICES = [
         ('Mr', 'Mr.'),
         ('Ms', 'Ms.'),
-        
+    ]
+
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
     ]
 
     title = models.CharField(max_length=10, choices=TITLE_CHOICES, default='Mr')
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)
-    password = models.CharField(max_length=100)
-    confirm_password = models.CharField(max_length=100)
-    gender = models.CharField(max_length=10, choices=[('Male', 'Male'), ('Female', 'Female')] )
-    phone = models.IntegerField()
+    password = models.CharField(max_length=255)  # Hashed password storage
+    gender = models.CharField(max_length=10, choices=[('Male', 'Male'), ('Female', 'Female')])
+    phone = models.CharField(max_length=15)
     profession = models.TextField()
     experience = models.TextField()
-    status = models.BooleanField(default=True, )  # Worker availability
-    
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')  # Admin approval required
+    created_at = models.DateTimeField(default=now)
+    updated_at = models.DateTimeField(auto_now=True)  # Auto-update on changes
 
+def save(self, *args, **kwargs):
+    """ Hash password before saving the worker """
+    if self.pk is None or not self.password.startswith('pbkdf2_sha256$'):  # Avoid rehashing if already hashed
+        self.password = make_password(self.password)
+    super().save(*args, **kwargs)
     def __str__(self):
-        return f"{self.title} {self.first_name} {self.last_name}"
+        return f"{self.title} {self.first_name} {self.last_name} - {self.status}"
 
 
 
@@ -57,11 +68,4 @@ class Request(models.Model):
 
     def __str__(self):
         return f"Request by {self.user.name} - {self.status}"
-
-
-
-
-
-
-
 

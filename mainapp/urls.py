@@ -3,12 +3,14 @@
 
 from django.urls import path
 from . import views
-from .views import home, worker_logout , user_dashboard, send_request,edit_worker_profile
+from .views import home, worker_logout , user_dashboard, send_request,edit_worker_profile,approve_worker, reject_worker,worker_login
 
 urlpatterns = [
     path('', views.home, name='home'),
     path('workerregister/', views.worker_register, name='workerregister'),
     path('worker_dashboard/', views.worker_dashboard, name='worker_dashboard'),
+    path('approve-worker/<int:worker_id>/', approve_worker, name='approve_worker'),
+    path('reject-worker/<int:worker_id>/', reject_worker, name='reject_worker'),
     path("worker/login/", views.worker_login, name="worker_login"),
     path('worker/logout/', worker_logout, name='worker_logout'),
     path('user_reg/', views.user_register, name='user_reg'),
