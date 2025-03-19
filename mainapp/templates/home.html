@@ -213,18 +213,7 @@ body {
 }
 
 
-/* Paragraph Text */
-/* .p-text {
-    font-size: 1.2rem;
-    color: #ccc;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 0;
-    border-right: 3px solid transparent;
-    animation: typing 2s steps(40, end) forwards, blink 0.8s infinite;
-    opacity: 0;
-    animation-delay: 0.3s; 
-} */
+
 /* Typing Animation */
 @keyframes typing {
     from {
@@ -245,6 +234,64 @@ body {
 }
 
 
+/* Chatbot Styling */
+
+/* Chatbot Styling */
+#chatbot-container {
+    font-family: Arial, sans-serif;
+}
+
+#chatbot-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message {
+    padding: 8px 12px;
+    border-radius: 5px;
+    max-width: 80%;
+}
+
+.message.user {
+    background: #2575fc;
+    color: white;
+    align-self: flex-end;
+}
+
+.message.bot {
+    background: #f1f1f1;
+    color: #333;
+    align-self: flex-start;
+}
+
+
+
+
+
+    .tooltip-text {
+        visibility: hidden;
+        width: 120px;
+        background-color: #2575fc;
+        color:white;
+        text-align: center;
+        padding: 5px;
+        border-radius: 5px;
+        position: absolute;
+        bottom: 60px;
+        left: 50%;
+        transform: translateX(-80%);
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 0.8s;
+        font-size: 14px;
+        pointer-events: none;
+    }
+
+    #chatbot-toggle:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+    }
 
 
 
@@ -369,6 +416,40 @@ body {
       <!-- homepage end----------------------------- -->
 
 
+        <!-- chatbot---------------------------> 
+      <div class="chatbotcircle" id="chatbot-container" style="position: fixed; bottom: 20px; right: 20px; width: 300px; background: white; border: 1px solid #ccc; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); display: none;">
+        <div id="chatbot-header" style="background: #2575fc; color: white; padding: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px; cursor: pointer;">
+            <span>Chat with Us</span>
+            <button id="close-chatbot" style="float: right; background: none; border: none; color: white; cursor: pointer;">×</button>
+        </div>
+        <div id="chatbot-body" style="height: 200px; overflow-y: auto; padding: 10px;">
+            <div id="chatbot-messages"></div>
+        </div>
+        <div style="padding: 10px;">
+            <input type="text" id="chatbot-input" placeholder="Type your message..." style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px;">
+            <button id="send-message" style="width: 100%; padding: 8px; margin-top: 10px; background: #2575fc; color: white; border: none; border-radius: 5px; cursor: pointer;">Send</button>
+            <!-- Clear Chat Button -->
+            <button id="clear-chat" style="width: 100%; padding: 8px; margin-top: 10px; background: #ff4d4d; color: white; border: none; border-radius: 5px; cursor: pointer;">Clear Chat</button>
+        </div>
+    </div>
+    
+    <!-- Chatbot Toggle Button -->
+    <button id="chatbot-toggle" style="position: fixed; bottom: 20px; right: 20px; background: #2575fc; color: white; border: none; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <i class="fas fa-comment"></i>
+        <!-- Tooltip -->
+    <span class="tooltip-text">Chat with us</span>
+    </button>
+
+
+
+
+
+
+
+
+
+
+
       
     
       
@@ -405,7 +486,112 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-      </script>
+// Chatbot
+
+document.addEventListener("DOMContentLoaded", function () {
+    const chatbotContainer = document.getElementById("chatbot-container");
+    const chatbotToggle = document.getElementById("chatbot-toggle");
+    const closeChatbot = document.getElementById("close-chatbot");
+    const chatbotMessages = document.getElementById("chatbot-messages");
+    const chatbotInput = document.getElementById("chatbot-input");
+    const sendMessageButton = document.getElementById("send-message");
+    const clearChatButton = document.getElementById("clear-chat");
+
+    // Toggle chatbot visibility
+    chatbotToggle.addEventListener("click", () => {
+        chatbotContainer.style.display = chatbotContainer.style.display === "none" ? "block" : "none";
+    });
+
+    // Close chatbot
+    closeChatbot.addEventListener("click", () => {
+        chatbotContainer.style.display = "none";
+    });
+
+    // Send message
+    sendMessageButton.addEventListener("click", () => {
+        const userMessage = chatbotInput.value.trim();
+        if (userMessage) {
+            addMessage(userMessage, "user");
+            chatbotInput.value = "";
+            setTimeout(() => {
+                addMessage(getBotResponse(userMessage), "bot");
+            }, 500);
+        }
+    });
+
+    // Clear chat
+    clearChatButton.addEventListener("click", () => {
+        chatbotMessages.innerHTML = ""; // Clear all messages
+    });
+
+    // Add message to chat
+    function addMessage(text, sender) {
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", sender);
+        messageDiv.textContent = text;
+        chatbotMessages.appendChild(messageDiv);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+
+    // Bot response logic
+    function getBotResponse(userMessage) {
+        const lowerCaseMessage = userMessage.toLowerCase();
+
+        if (lowerCaseMessage.includes("hello") || lowerCaseMessage.includes("hi") || lowerCaseMessage.includes("hey")) {
+            return "Hello! How can I assist you today?";
+        }
+
+        if (lowerCaseMessage.includes("service") || lowerCaseMessage.includes("services")) {
+            return "We offer a wide range of services including plumbing, electrician, gardening, cleaning, and painting. Which service are you interested in?";
+        }
+
+        if (lowerCaseMessage.includes("plumbing") || lowerCaseMessage.includes("pipe") || lowerCaseMessage.includes("leak")) {
+            return "Our plumbing services include fixing leaks, pipe repairs, and installation of plumbing fixtures. Would you like to book a plumber?";
+        }
+
+        if (lowerCaseMessage.includes("electrician") || lowerCaseMessage.includes("wiring") || lowerCaseMessage.includes("electrical")) {
+            return "Our electricians can help with wiring, electrical repairs, and installations. How can we assist you with electrical services?";
+        }
+
+        if (lowerCaseMessage.includes("gardening") || lowerCaseMessage.includes("garden") || lowerCaseMessage.includes("lawn")) {
+            return "We provide gardening services like lawn care, planting, and landscaping. Would you like to schedule a gardening service?";
+        }
+
+        if (lowerCaseMessage.includes("cleaning") || lowerCaseMessage.includes("clean")) {
+            return "Our cleaning services include home cleaning, office cleaning, and deep cleaning. What type of cleaning service do you need?";
+        }
+
+        if (lowerCaseMessage.includes("painting") || lowerCaseMessage.includes("paint")) {
+            return "We offer interior and exterior painting services. Would you like to get a quote for a painting job?";
+        }
+
+        if (lowerCaseMessage.includes("price") || lowerCaseMessage.includes("cost") || lowerCaseMessage.includes("how much")) {
+            return "Pricing depends on the service and scope of work. Could you provide more details so we can give you an accurate estimate?";
+        }
+
+        if (lowerCaseMessage.includes("book") || lowerCaseMessage.includes("schedule") || lowerCaseMessage.includes("appointment")) {
+            return "You can book a service by visiting our 'Book Our Service' page or by calling us at +123-456-7890. Would you like help with booking?";
+        }
+
+        if (lowerCaseMessage.includes("contact") || lowerCaseMessage.includes("call") || lowerCaseMessage.includes("email")) {
+            return "You can contact us at fixit1361@gmail.com or call us at +123-456-7890. How else can I assist you?";
+        }
+
+        if (lowerCaseMessage.includes("thank you") || lowerCaseMessage.includes("thanks")) {
+            return "You're welcome! Let me know if you need further assistance.";
+        }
+
+        return "I'm sorry, I didn't understand that. Could you please provide more details or rephrase your question?";
+    }
+});
+</script>
+
+
+
+
+
+
+
 
 
       <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

@@ -28,7 +28,6 @@ import os
 
 
 
-
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
@@ -322,7 +321,7 @@ def update_request(request, request_id, action):
     
     return redirect("worker_dashboard")
 
-
+# DONT TOUCH THE BELOW CODE---------------------------------->
 # Approve Worker View----------------------------------->
 @staff_member_required
 def approve_worker(request, worker_id):
@@ -353,7 +352,7 @@ def reject_worker(request, worker_id):
     messages.success(request, f"Worker {worker.first_name} {worker.last_name} has been rejected.")
     return redirect('admin_dashboard')
 
-
+# DONT TOUCH THE ABOVE CODE---------------------------------->
 
 
 # user registration------------------------------------------------>
@@ -494,12 +493,13 @@ def send_request(request, worker_id):
     return redirect("user_dashboard")
 
 
-
+# view worker------------------------------------------------>
 
 def view_worker(request, worker_id):
     worker = get_object_or_404(Worker, id=worker_id)
     return render(request, 'view_worker.html', {'worker': worker})
 
+# privacy policy------------------------------------------------>
 
 def privacy_policy(request):
     return render(request, 'privacy_policy.html')
@@ -539,4 +539,13 @@ def edit_worker_profile(request, worker_id):
         return redirect('worker_dashboard')
 
     return render(request, 'edit_worker_profile.html', {'worker': worker})
+
+
+
+
+
+
+
+
+
 

@@ -35,4 +35,5 @@ urlpatterns = [
     path('payment/', views.payment, name='payment'),
     path('process_payment/', views.process_payment, name='process_payment'),
     
+    
 ]
