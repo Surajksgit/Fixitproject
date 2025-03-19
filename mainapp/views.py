@@ -71,13 +71,27 @@ def worker_register(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
-        raw_password = request.POST.get('password')
+        password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
         gender = request.POST.get('gender')
         phone = request.POST.get('phone')
         profession = request.POST.get('profession')
         experience = request.POST.get('experience')
-        worker = Worker.objects.create(title=title,first_name=first_name,last_name=last_name,email=email,password=password,confirm_password=confirm_password,gender=gender,phone=phone,profession=profession,experience=experience,is_approved=False)
+        # ✅ Check if passwords match
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return redirect('worker_register')
+
+        # ✅ Validate password strength
+        password_pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
+        if not re.match(password_pattern, password):
+            messages.error(request, "Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, and one digit.")
+            return redirect('worker_register')
+
+        # ✅ Hash the password before saving
+        hashed_password = make_password(password)
+
+        worker = Worker.objects.create(title=title,first_name=first_name,last_name=last_name,email=email,password=make_password(password),gender=gender,phone=phone,profession=profession,experience=experience,is_approved=False)
         
         # Save worker ID in session for payment reference
         request.session['worker_id'] = worker.id
@@ -155,41 +169,11 @@ def worker_register(request):
         email_message.send()
 
         messages.success(request, "Registration successful! Please complete the payment.")
-        password_pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
-        if not re.match(password_pattern, password):
-            return redirect('payment')
+        return redirect('payment')
     return render(request, 'worker_reg.html')
-# Approve Worker View
-@staff_member_required
-def approve_worker(request, worker_id):
-    worker = get_object_or_404(Worker, id=worker_id)
-    worker.status = 'approved'
-    worker.save()
 
-    # Notify Worker via Email (Plain Text)
-    subject = "Registration Approved"
-    message = f"Dear {worker.first_name},\n\nYour registration has been approved! You can now log in to your account.\n\nBest Regards,\nYour Team"
-    send_mail(subject, message, "abhirampashok1@gmail.com", [worker.email], fail_silently=False)
 
-    messages.success(request, f"Worker {worker.first_name} {worker.last_name} has been approved.")
-    return redirect('admin_dashboard')
-
-# Reject Worker View
-@staff_member_required
-def reject_worker(request, worker_id):
-    worker = get_object_or_404(Worker, id=worker_id)
-    worker.status = 'rejected'
-    worker.save()
-
-    # Notify Worker via Email (Plain Text)
-    subject = "Registration Rejected"
-    message = f"Dear {worker.first_name},\n\nUnfortunately, your registration has been rejected.\n\nBest Regards,\nYour Team"
-    send_mail(subject, message, "abhirampashok1@gmail.com", [worker.email], fail_silently=False)
-
-    messages.success(request, f"Worker {worker.first_name} {worker.last_name} has been rejected.")
-    return redirect('admin_dashboard')
-
-# Payment Page View
+# worker Payment Page View----------------------------------->
 def payment(request):
     if 'worker_id' not in request.session:
         return redirect('worker_login')
@@ -242,12 +226,6 @@ def process_payment(request):
 
 
 
-
-
-
-
-
-
 # worker login------------------------------------------------>
 
 
@@ -275,19 +253,26 @@ def worker_login(request):
             return redirect("worker_login")
 
     return render(request, "worker_login.html")
+    
 # worker dashboard------------------------------------------------>
 
 @login_required
 def worker_dashboard(request):
-    worker = request.user  # Get the logged-in worker
-    jobs = Request.objects.filter(worker=worker, status="Accepted")  # Fetch accepted jobs
-    return render(request, 'worker_dashboard.html', {'worker': worker, 'jobs': jobs})
+    worker_id = request.session.get("worker_id")
+    if not worker_id:
+        messages.error(request, "You are not logged in as a worker.")
+        return redirect("worker_login")
+    
+    try:
+        worker = Worker.objects.get(id=worker_id)  # Fetch the Worker instance using session
+        jobs = Request.objects.filter(worker=worker, status="Accepted")  # Filter accepted jobs
+        return render(request, 'worker_dashboard.html', {'worker': worker, 'jobs': jobs})
+    except Worker.DoesNotExist:
+        messages.error(request, "Worker not found.")
+        return redirect("worker_login")
 
 # worker logout------------------------------------------------>
 
-# def worker_logout(request):
-#     request.session.flush()  # Clear worker session
-#     return redirect('worker_login')  # Redirect to worker login page
 
 def worker_logout(request):
     if "worker_id" in request.session:
@@ -337,6 +322,38 @@ def update_request(request, request_id, action):
     return redirect("worker_dashboard")
 
 
+# Approve Worker View----------------------------------->
+@staff_member_required
+def approve_worker(request, worker_id):
+    worker = get_object_or_404(Worker, id=worker_id)
+    worker.status = 'approved'
+    worker.save()
+
+    # Notify Worker via Email (Plain Text)
+    subject = "Registration Approved"
+    message = f"Dear {worker.first_name},\n\nYour registration has been approved! You can now log in to your account.\n\nBest Regards,\nYour Team"
+    send_mail(subject, message, "abhirampashok1@gmail.com", [worker.email], fail_silently=False)
+
+    messages.success(request, f"Worker {worker.first_name} {worker.last_name} has been approved.")
+    return redirect('admin_dashboard')
+
+# Reject Worker View------------------------------>
+@staff_member_required
+def reject_worker(request, worker_id):
+    worker = get_object_or_404(Worker, id=worker_id)
+    worker.status = 'rejected'
+    worker.save()
+
+    # Notify Worker via Email (Plain Text)
+    subject = "Registration Rejected"
+    message = f"Dear {worker.first_name},\n\nUnfortunately, your registration has been rejected.\n\nBest Regards,\nYour Team"
+    send_mail(subject, message, "abhirampashok1@gmail.com", [worker.email], fail_silently=False)
+
+    messages.success(request, f"Worker {worker.first_name} {worker.last_name} has been rejected.")
+    return redirect('admin_dashboard')
+
+
+
 
 # user registration------------------------------------------------>
 
@@ -363,8 +380,8 @@ def user_register(request):
         user = User(name=name, email=email, phone=phone, address=address, city=city, password=password, confirm_password=confirm_password)
         user.save()
 
-        subject = "Welcome to CallIt!"
-        message = f"Hello {name},\n\nYour registration was successful. Welcome to Call It!\n\nBest Regards,\nThe CallIt Team"
+        subject = "Welcome to FIXIT!"
+        message = f"Hello {name},\n\nYour registration was successful. Welcome to FIXIT!\n\nBest Regards,\nThe Fixit Team"
         from_email = "fixit1361@gmail.com"
         recipient_list = [email]
 
@@ -434,19 +451,11 @@ def user_dashboard(request):
     })
 
 
-
-
-
-
-
-
-
-
 # user logout------------------------------------------------>
 
 def user_logout(request):
-    request.session.flush()  # Clear user session
-    return redirect('user_login')  # Redirect to user login page
+    request.session.pop("user_id", None)  # Remove only the user session key
+    return redirect('user_login')
 
 
 # user send request------------------------------------------------>

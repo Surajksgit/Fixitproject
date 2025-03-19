@@ -13,18 +13,7 @@ admin.site.register(User)
 
 
 
-# class WorkerAdmin(admin.ModelAdmin):
-#     list_display = ('first_name', 'last_name', 'email', 'profession', 'is_approved')
-#     list_filter = ('is_approved', 'profession')
-#     actions = ['approve_workers', 'reject_workers']
 
-#     def approve_workers(self, request, queryset):
-#         queryset.update(is_approved=True)
-#     approve_workers.short_description = "Approve selected workers"
-
-#     def reject_workers(self, request, queryset):
-#         queryset.update(is_approved=False)
-#     reject_workers.short_description = "Reject selected workers"
 
 
 class WorkerAdmin(admin.ModelAdmin):
@@ -69,7 +58,26 @@ class WorkerAdmin(admin.ModelAdmin):
         for worker in queryset:
             if not worker.is_approved:
                 worker.delete()
-                messages.success(request, f"{worker.first_name} {worker.last_name} has been rejected.")
 
+                # Send email rejection to the worker
+                subject = "❌ Your Registration Has Been Rejected"
+                message = f"""
+                Dear {worker.first_name} {worker.last_name},
+                Unfortunately, your registration has been rejected by admin.
+                
+                Best regards,  
+                The FIXIT Team 
+                """
+                try:
+                    send_mail(
+                        subject,
+                        message,
+                        settings.DEFAULT_FROM_EMAIL,
+                        [worker.email],
+                        fail_silently=False
+                    )
+                    messages.success(request, f"{worker.first_name} {worker.last_name} has been rejected.")
+                except Exception as e:
+                    messages.error(request, f"Failed to send email to {worker.email}: {e}")
 admin.site.register(Worker, WorkerAdmin)  # ✅ Correct
 
