@@ -46,6 +46,7 @@ class Worker(models.Model):
     phone = models.CharField(max_length=15)
     profession = models.TextField()
     experience = models.TextField()
+    amount = models.TextField()
     status = models.BooleanField(default=True, )  # Worker availability
     is_approved = models.BooleanField(default=False)  # New field
 

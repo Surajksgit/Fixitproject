@@ -77,6 +77,7 @@ def worker_register(request):
         phone = request.POST.get('phone')
         profession = request.POST.get('profession')
         experience = request.POST.get('experience')
+        amount = request.POST.get('amount')
         # ✅ Check if passwords match
         if password != confirm_password:
             messages.error(request, "Passwords do not match.")
@@ -91,7 +92,7 @@ def worker_register(request):
         # ✅ Hash the password before saving
         hashed_password = make_password(password)
 
-        worker = Worker.objects.create(title=title,first_name=first_name,last_name=last_name,email=email,password=make_password(password),gender=gender,phone=phone,profession=profession,experience=experience,is_approved=False)
+        worker = Worker.objects.create(title=title,first_name=first_name,last_name=last_name,email=email,password=make_password(password),gender=gender,phone=phone,profession=profession,experience=experience,amount=amount,is_approved=False)
         
         # Save worker ID in session for payment reference
         request.session['worker_id'] = worker.id
