@@ -65,21 +65,11 @@ body {
         }
 
         /* Offcanvas Styling */
-        .offcanvas {
+        /* .offcanvas {
             background: linear-gradient(135deg, #6a11cb, #2575fc);
             color: white;
         }
-        .alredy-user:hover{
-            color: white;
-
-        }
-        .alredy-worker:hover{
-            color: white;
-
-        }
-        .alredy-user, .alredy-worker{
-            color: #16b5ef;
-        }
+        
         .btn-custom {
             width: 100%;
             padding: 12px;
@@ -94,7 +84,7 @@ body {
         .btn-custom:hover {
             background-color: #6a11cb;
             transform: scale(1.05);
-        }
+        } */
 
         /* Hero Section */
         .slider_section {
@@ -147,35 +137,10 @@ body {
             transform: scale(1.05);
         }
 
-        /* Social Media Links */
-        .social-links a {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            background-color: #333;
-            color: white;
-            text-align: center;
-            line-height: 40px;
-            border-radius: 50%;
-            margin: 5px;
-            margin-top: 400px;
-            transition: 0.3s ease;
-        }
-
-        .social-links a:hover {
-            background-color: #007bff;
-            transform: translateY(-3px);
-        }
+        
 
         /* Footer Styling */
-        .footer-col h4 {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #f8f9fa;
-            position: relative;
-            top: 400px;
-        }
+        
 
         @media (max-width: 768px) {
             .navbar-brand {
@@ -300,6 +265,113 @@ body {
 
 
 
+    .offcanvas {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #000;
+    width: 320px;
+}
+
+.offcanvas-header {
+    background-color: #2575fc;
+    border-bottom: 1px solid #eee;
+}
+
+.alredy-user:hover{
+            color: white;
+
+        }
+        .alredy-worker:hover{
+            color: white;
+
+        }
+        .alredy-user, .alredy-worker{
+            color: #16b5ef;
+        }
+
+
+.logo-icon {
+    
+    width: 60px; /* Set the width */
+    height: 60px; /* Set the height */
+    border-radius: 50%; /* Makes the image circular */
+    object-fit: cover; /* Ensures the image fills the circle without distortion */
+    
+
+
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    font-size: 14px;
+    color: whitesmoke;
+    text-decoration: none;
+    transition: background 0.2s;
+    
+}
+
+.menu-item:hover {
+    background-color:#16b5ef;
+    border-radius: 5px;
+    color: #000;
+}
+
+.menu-item i {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.menu-item.disabled {
+    color: #bbb;
+    pointer-events: none;
+}
+
+.footer-col {
+    margin-top: 20px;
+}
+
+.footer-col h6 {
+
+    font-size: 14px;
+    color: white;
+    position: relative;
+    top: 280px;
+    margin-left: 10px;
+}
+
+
+
+.social-links a:hover {
+    color: #000;
+}
+/* Social Media Links */
+.social-links a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-color: #333;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 50%;
+    margin: 5px;
+    margin-top: 300px;
+    transition: 0.3s ease;
+    color: #888;
+    font-size: 18px;
+    margin-right: 15px;
+    transition: color 0.2s;
+        }
+
+.social-links a:hover {
+    background-color:#16b5ef;
+    transform: translateY(-3px);
+        }
+
+
+
+
+
 
 
 
@@ -358,33 +430,71 @@ body {
 
 <!-- offcanvas -------------------------->
 
-
-  <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel" style="background-color: #cdc9f8;">
+<div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="staticBackdropLabel">FIXIT</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <h5 class="offcanvas-title" id="staticBackdropLabel"><b>FIXIT</b></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
+
     <div class="offcanvas-body">
-      <div class="d-flex flex-column gap-3">
-        <a href="user_reg/" class="btn btn-primary">User Registration</a>
-        <a class="alredy-user" style="text-decoration: none;position: relative; left: 130px; top: 5px;" href="user_login/">Already a User?</a>
-        <a href="workerregister/" class="btn btn-success">Worker Registration</a>
-        <a class="alredy-worker" style="text-decoration: none;position: relative; left: 120px; top: 5px;" href="worker/login/">Already a Worker?</a>
-        
+      
+        <div class="special-offer d-flex align-items-center mb-3">
+            <img src="{% static 'images/tab_icon.ico' %}" alt="Offer" class="logo-icon">
+            <div class="ms-2">
+                <p class="mb-0 text-primary" style="font-size: 18px; margin-left: 10px; color: #0799ce;">Your Perfect Home Service</p>
+            </div>
+            
+            
+        </div>
+            <a href="user_reg/" class="btn btn-primary btn-sm ms-auto">User/Register</a>
+            
+            <a href="workerregister/" class="btn btn-success btn-sm ms-auto">Worker/Register</a>
+
+
+        <!-- Menu Options -->
+        <a href="user_login/" class="menu-item mt-5">
+            <i class="fa-solid fa-user"></i>
+            <span>Already-User?</span>
+        </a>
+
+        <a href="worker/login/" class="menu-item ">
+            <i class="fa-solid fa-user"></i>
+            <span>Already-Worker?</span>
+        </a>
+
+        <a href="/notifications" class="menu-item ">
+            <i class="fas fa-bell"></i>
+            <span>Notifications</span>
+        </a>
+
+
+        <a href="/help-support" class="menu-item">
+            <i class="fas fa-question-circle"></i>
+            <span>Help & Support</span>
+           
+        </a>
+
+        <a href="/settings" class="menu-item ">
+            <i class="fas fa-cog"></i>
+            <span>Accounts & Settings</span>
+        </a>
+
+
+        <!-- Social Media Links -->
         <div class="footer-col">
-          <h4>Follow Us</h4>
-          <div class="social-links">
-              <a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
-              <a href="https://twitter.com/"><i class="fab fa-twitter"></i></a>
-              <a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
-              
-          </div>
-      </div>
-
-
-      </div>
+            <h6>Follow Us</h6>
+            <div class="social-links">
+                <a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com/"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
+
+
+
+ 
             
     
     <!-- homepage ---------------------------------->
