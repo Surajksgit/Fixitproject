@@ -60,6 +60,17 @@
     background-color: #ffffff;
 }
 
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+
     </style>
 
 </head>
@@ -92,6 +103,7 @@
   </nav>
 <!-- navbar endd -->
 
+<!-- aert messages -->
 <div class="container mt-4">
         <h2>Welcome, {{ user.name }}</h2>
 
@@ -103,12 +115,13 @@
     {% endfor %}
 {% endif %}
 
+<!-- offcanvas starts -->
 <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="staticBackdropLabel"><b>FIXIT</b></h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-
+<!-- offcanvas    notofication  -->
     <div class="offcanvas-body">
         <div class="special-offer d-flex align-items-center mb-4">
             <div class="ms-2">
@@ -118,7 +131,15 @@
             </div>
         </div>
 
-        <h6 class="mb-3"><i class="fas fa-bell"></i> Notifications</h6>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6><i class="fas fa-bell"></i> Notifications</h6>
+            {% if notifications %}
+            <form method="POST" action="{% url 'clear_notifications' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm">Clear All</button>
+            </form>
+            {% endif %}
+        </div>
         <div class="list-group">
             {% for notification in notifications %}
             <div class="list-group-item d-flex justify-content-between align-items-center {% if not notification.is_read %} bg-light {% else %} bg-white {% endif %}">
@@ -145,6 +166,7 @@
 </div>
 
 
+    <!-- filter by profession -->
 
         <form method="GET" action="{% url 'user_dashboard' %}" class="mb-3">
             <div class="input-group" style="max-width: 400px;">
@@ -182,7 +204,7 @@
             </div>
         </form>
         
-        
+        <!-- select worker -->
 
         <h3 class="mt-4">Select a Worker</h3>
         <div class="row">

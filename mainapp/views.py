@@ -308,7 +308,8 @@ def update_request(request, request_id, action):
         # ✅ Create notification for worker using worker's email
         Notification.objects.create(
             worker_email=request_obj.worker.email,  # Use the worker's email
-            message=f"Your work request has been accepted by {request_obj.worker.first_name}."
+            message=f"Your work request has been accepted by {request_obj.worker.first_name}.",
+            type='accept'
         )
 
 
@@ -323,7 +324,8 @@ def update_request(request, request_id, action):
         # ✅ Create notification for worker using worker's email
         Notification.objects.create(
             worker_email=request_obj.worker.email,  # Use the worker's email
-            message=f"Unfortunately, {request_obj.worker.first_name} has rejected your work request."
+            message=f"Unfortunately, {request_obj.worker.first_name} has rejected your work request.",
+            type='reject'
         )
 
         subject = "Your Work Request Was Rejected"
@@ -339,7 +341,8 @@ def update_request(request, request_id, action):
         # ✅ Create notification for worker using worker's email
         Notification.objects.create(
             worker_email=request_obj.worker.email,  # Use the worker's email
-            message=f"Your work request handled by {request_obj.worker.first_name} has been marked as completed."
+            message=f"Your work request handled by {request_obj.worker.first_name} has been marked as completed.",
+            type='complete'
         )
 
         subject = "Work Completed Successfully"
@@ -478,7 +481,7 @@ def user_dashboard(request):
 
     # Get notifications for workers associated with the user's requests
     worker_emails = requests.values_list('worker__email', flat=True)
-    notifications = Notification.objects.filter(worker_email__in=worker_emails).order_by('-created_at')[:10]
+    notifications = Notification.objects.filter(worker_email__in=worker_emails,type__in=['accept', 'reject', 'complete']).order_by('-created_at')[:10]
     
 
     return render(request, "user_dashboard.html", {
@@ -593,7 +596,13 @@ def mark_as_read(request, notification_id):
         notification.save()
     return redirect('user_dashboard')
 
-
+def clear_notifications(request):
+    if request.method == "POST":
+        Notification.objects.all().delete()
+        # Or if you just want to mark as read:
+        # Notification.objects.update(is_read=True)
+        
+    return redirect('user_dashboard')
 
 
 

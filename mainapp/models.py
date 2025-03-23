@@ -5,9 +5,7 @@ from django.db import models
 from django.contrib.auth.hashers import make_password
 from django.utils.timezone import now  # Ensure this import exists
 
-# Create your models here.
-
-# Custom User Model
+# User Model-------------------------------->
 
 class User(models.Model):
     
@@ -22,7 +20,7 @@ class User(models.Model):
     def __str__(self):
         return self.name
 
-
+#worker model--------------------------------->
 class Worker(models.Model):
 
     TITLE_CHOICES = [
@@ -57,7 +55,7 @@ class Worker(models.Model):
         return f"{self.title} {self.first_name} {self.last_name} - {self.status}"
 
 
-
+#request model------------------------------->
 class Request(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     worker = models.ForeignKey(Worker, on_delete=models.CASCADE)
@@ -68,8 +66,16 @@ class Request(models.Model):
     def __str__(self):
         return f"Request by {self.user.name} - {self.status}"
 
-
+#notification model----------------------------->
 class Notification(models.Model):
+    NOTIFICATION_TYPES = [
+        ('accept', 'Accept'),
+        ('reject', 'Reject'),
+        ('complete', 'Complete'),
+        ('request', 'Request'),
+    ]
     worker_email = models.EmailField()  # Store the worker's email
     message = models.CharField(max_length=255)
+    type = models.CharField(max_length=10, choices=NOTIFICATION_TYPES)  # Type of notification
+    is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
