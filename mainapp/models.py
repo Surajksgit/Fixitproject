@@ -67,3 +67,9 @@ class Request(models.Model):
 
     def __str__(self):
         return f"Request by {self.user.name} - {self.status}"
+
+
+class Notification(models.Model):
+    worker_email = models.EmailField()  # Store the worker's email
+    message = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)

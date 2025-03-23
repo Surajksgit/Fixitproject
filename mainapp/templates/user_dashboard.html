@@ -10,9 +10,57 @@
     <title>fixit/user-dashboard-page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/userdash.style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
     <link rel = "icon" href = "{% static 'images/favicon.ico' %}" type = "image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+    <style>
+        .offcanvas {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #000;
+    width: 320px;
+}
 
+.offcanvas-header {
+    background-color: #2575fc;
+    border-bottom: 1px solid #eee;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    font-size: 14px;
+    color: whitesmoke;
+    text-decoration: none;
+    transition: background 0.2s;
+    
+}
+
+.menu-item:hover {
+    background-color:#16b5ef;
+    border-radius: 5px;
+    color: #000;
+}
+
+.menu-item i {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.menu-item.disabled {
+    color: #bbb;
+    pointer-events: none;
+}
+.bg-light {
+    background-color: #f0f8ff;
+}
+
+.bg-white {
+    background-color: #ffffff;
+}
+
+    </style>
 
 </head>
 <body>
@@ -42,7 +90,7 @@
     </div>    
     
   </nav>
-
+<!-- navbar endd -->
 
 <div class="container mt-4">
         <h2>Welcome, {{ user.name }}</h2>
@@ -55,18 +103,86 @@
     {% endfor %}
 {% endif %}
 
+<div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="staticBackdropLabel"><b>FIXIT</b></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+
+    <div class="offcanvas-body">
+        <div class="special-offer d-flex align-items-center mb-4">
+            <div class="ms-2">
+                <p class="mb-0 text-primary" style="font-size: 16px; margin-left: 10px; color: #0799ce;">
+                    Your Perfect Home Service
+                </p>
+            </div>
+        </div>
+
+        <h6 class="mb-3"><i class="fas fa-bell"></i> Notifications</h6>
+        <div class="list-group">
+            {% for notification in notifications %}
+            <div class="list-group-item d-flex justify-content-between align-items-center {% if not notification.is_read %} bg-light {% else %} bg-white {% endif %}">
+
+                <span>
+                    {{ notification.message }}
+                    <br>
+                    <small class="text-muted">{{ notification.created_at|date:"M d, Y H:i" }}</small>
+                </span>
+                {% if not notification.is_read %}
+                <form method="POST" action="{% url 'mark_as_read' notification.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-primary btn-sm">
+                        Mark as Read
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+            {% empty %}
+            <p class="text-muted">No new notifications</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
 
         <form method="GET" action="{% url 'user_dashboard' %}" class="mb-3">
-            <label for="profession" class="form-label"></label>
-            <select name="profession" id="profession" class="form-select" onchange="this.form.submit()">
-                <option value="">All</option>
-                {% for profession in professions %}
-                    <option value="{{ profession }}" {% if selected_profession == profession %}selected{% endif %}>
-                        {{ profession }}
-                    </option>
-                {% endfor %}
-            </select>
+            <div class="input-group" style="max-width: 400px;">
+                <label for="profession" class="input-group-text bg-gradient text-white rounded-start" 
+                    style="
+                        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+                        font-weight: 500;
+                        padding: 10px 15px;
+                        border: none;
+                    ">
+                    <i class="fa-solid fa-filter" style="padding-right: 8px;"></i> Filter by Profession
+                </label>
+                <select name="profession" id="profession" class="form-select rounded-end shadow-sm" 
+                    onchange="this.form.submit()" 
+                    style="
+                        border: 2px solid #6a11cb;
+                        padding: 12px;
+                        font-size: 16px;
+                        font-weight: 400;
+                        color: #333;
+                        background-color: #f9f9f9;
+                        transition: all 0.3s ease;
+                    "
+                    onfocus="this.style.borderColor='#2575fc';"
+                    onblur="this.style.borderColor='#6a11cb';"
+                    onmouseover="this.style.backgroundColor='#f1f1f1';"
+                    onmouseout="this.style.backgroundColor='#f9f9f9';">
+                    <option value="">All</option>
+                    {% for profession in professions %}
+                        <option value="{{ profession }}" {% if selected_profession == profession %}selected{% endif %}>
+                            {{ profession }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
         </form>
+        
+        
 
         <h3 class="mt-4">Select a Worker</h3>
         <div class="row">
@@ -90,26 +206,79 @@
             {% endfor %}
         </div>
     
-        <h3 class="mt-4">My Requests</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Worker</th>
-                    <th>Profession</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for request in requests %}
-                <tr>
-                    <td>{{ request.worker.first_name }} {{ request.worker.last_name }}</td>
-                    <td>{{ request.worker.profession }}</td>
-                    <td>{{ request.status }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+        
+
+    <h3 class="mt-4 mb-3" style="
+    font-size: 24px;
+    font-weight: 600;
+    color:white;
+    border-bottom: 3px solid #6a11cb;
+    padding-bottom: 10px;
+    display: inline-block;
+">
+    <i class="fa-solid fa-list-check" style="margin-right: 8px; color: #6a11cb;"></i>
+    My Requests
+</h3>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle shadow-sm" style="
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 10px;
+        overflow: hidden;
+    ">
+        <thead style="
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            font-size: 16px;
+        ">
+            <tr>
+                <th style="padding: 12px; text-align: center;">Worker</th>
+                <th style="padding: 12px; text-align: center;">Profession</th>
+                <th style="padding: 12px; text-align: center;">Status</th>
+            
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in requests %}
+            <tr style="
+                transition: background-color 0.3s ease;
+                font-size: 15px;
+            " 
+            onmouseover="this.style.backgroundColor='#f1f1f1';" 
+            onmouseout="this.style.backgroundColor='';">
+                <td style="padding: 14px; text-align: center; font-weight: 500; color: #333;">
+                    {{ request.worker.first_name }} {{ request.worker.last_name }}
+                </td>
+                <td style="padding: 14px; text-align: center; color: #555;">
+                    {{ request.worker.profession }}
+                </td>
+                <td style="padding: 14px; text-align: center;">
+                    {% if request.status == 'Pending' %}
+                        <span class="badge bg-warning text-dark" style="font-size: 14px; padding: 6px 12px; border-radius: 20px;">
+                            {{ request.status }}
+                        </span>
+                    {% elif request.status == 'Accepted' %}
+                        <span class="badge bg-success" style="font-size: 14px; padding: 6px 12px; border-radius: 20px;">
+                            {{ request.status }}
+                        </span>
+                    {% elif request.status == 'Rejected' %}
+                        <span class="badge bg-danger" style="font-size: 14px; padding: 6px 12px; border-radius: 20px;">
+                            {{ request.status }}
+                        </span>
+                    {% elif request.status == 'Completed' %}
+                        <span class="badge bg-primary" style="font-size: 14px; padding: 6px 12px; border-radius: 20px;">
+                            {{ request.status }}
+                        </span>
+                    {% endif %}
+                </td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
     
     <!-- Bootstrap Logout Confirmation Modal -->
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
@@ -144,68 +313,13 @@
 
 
     <script>
-        // // Fade in effect on page load
-        // document.addEventListener("DOMContentLoaded", () => {
-        //     document.querySelectorAll('.alert').forEach((alert) => {
-        //         setTimeout(() => {
-        //             alert.classList.add('show'); // Add fade-in transition
-        //         }, 100); // Small delay for smoother appearance
-    
-        //         // Auto fade out after 3 seconds
-        //         setTimeout(() => {
-        //             alert.classList.remove('show');
-        //             setTimeout(() => alert.remove(), 500); // Remove from DOM after fading out
-        //         }, 3000);
-        //     });
-        // });
-
-
-
-    //back button ----------------------------------------->
+        //back button ----------------------------------------->
         
     // Prevent going back to the login page after logging in
     history.pushState(null, null, location.href);
     window.onpopstate = function () {
         history.go(1);
     };
-
-
-
-
-   
-    // // Fade in effect on page load
-    // document.addEventListener("DOMContentLoaded", () => {
-    //     document.querySelectorAll('.alert').forEach((alert) => {
-    //         setTimeout(() => {
-    //             alert.classList.add('show'); // Add fade-in transition
-    //         }, 100); // Small delay for smoother appearance
-
-    //         // Auto fade out after 3 seconds
-    //         setTimeout(() => {
-    //             alert.classList.remove('show');
-    //             setTimeout(() => alert.remove(), 500); // Remove from DOM after fading out
-    //         }, 3000);
-    //     });
-    // });
-
-    // // Show logout confirmation on back button press
-    // window.onpopstate = function () {
-    //     const confirmLogout = confirm("Do you want to logout?");
-    //     if (confirmLogout) {
-    //         window.location.href = "{% url 'user_logout' %}"; // Redirect to logout URL
-    //     } else {
-    //         history.pushState(null, null, location.href); // Stay on the current page
-    //     }
-    // };
-
-    // // Push initial state to prevent back navigation issue
-    // history.pushState(null, null, location.href);
-
-
-
-
-
-
 
 // logut confomation script---------------------------------------------------------------->
 

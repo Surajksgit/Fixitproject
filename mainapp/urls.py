@@ -34,6 +34,7 @@ urlpatterns = [
     path('worker/edit/<int:worker_id>/', edit_worker_profile, name='edit_worker_profile'),
     path('payment/', views.payment, name='payment'),
     path('process_payment/', views.process_payment, name='process_payment'),
+    path('notification/read/<int:notification_id>/', views.mark_as_read, name='mark_as_read'),
     
     
 ]

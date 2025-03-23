@@ -23,6 +23,7 @@ from django.core.mail import EmailMessage
 from django.utils.html import strip_tags
 from email.mime.image import MIMEImage
 import os
+from .models import Notification
 
 
 
@@ -304,6 +305,13 @@ def update_request(request, request_id, action):
         request_obj.worker.status = False
         request_obj.worker.save()
 
+        # ✅ Create notification for worker using worker's email
+        Notification.objects.create(
+            worker_email=request_obj.worker.email,  # Use the worker's email
+            message=f"Your work request has been accepted by {request_obj.worker.first_name}."
+        )
+
+
         subject = "Your Work Request Was Accepted"
         message = f"Hello {request_obj.user.name},\n\nYour work request has been accepted by {request_obj.worker.first_name}. They will contact you soon!"
         send_mail(subject, message, "fixit1361@gmail.com", [request_obj.user.email])
@@ -312,9 +320,33 @@ def update_request(request, request_id, action):
     elif action == "reject":
         request_obj.status = "Rejected"
 
+        # ✅ Create notification for worker using worker's email
+        Notification.objects.create(
+            worker_email=request_obj.worker.email,  # Use the worker's email
+            message=f"Unfortunately, {request_obj.worker.first_name} has rejected your work request."
+        )
+
         subject = "Your Work Request Was Rejected"
         message = f"Hello {request_obj.user.name},\n\nUnfortunately, {request_obj.worker.first_name} has rejected your work request. You can try requesting another worker."
         send_mail(subject, message, "fixit1361@gmail.com", [request_obj.user.email])
+
+
+    elif action == "completed":
+        request_obj.status = "Completed"
+        request_obj.worker.status = True  # Mark worker as available again
+        request_obj.worker.save()
+
+        # ✅ Create notification for worker using worker's email
+        Notification.objects.create(
+            worker_email=request_obj.worker.email,  # Use the worker's email
+            message=f"Your work request handled by {request_obj.worker.first_name} has been marked as completed."
+        )
+
+        subject = "Work Completed Successfully"
+        message = f"Hello {request_obj.user.name},\n\nYour work request handled by {request_obj.worker.first_name} has been marked as completed. Thank you for using FixIt!"
+        send_mail(subject, message, "fixit1361@gmail.com", [request_obj.user.email])
+
+
 
 
     request_obj.save()
@@ -440,14 +472,22 @@ def user_dashboard(request):
     else:
         workers = Worker.objects.all()
 
+    
+    # Get all notifications for the user
     requests = Request.objects.filter(user=user)
+
+    # Get notifications for workers associated with the user's requests
+    worker_emails = requests.values_list('worker__email', flat=True)
+    notifications = Notification.objects.filter(worker_email__in=worker_emails).order_by('-created_at')[:10]
+    
 
     return render(request, "user_dashboard.html", {
         "user": user,
         "workers": workers,
         "requests": requests,
         "professions": professions,
-        "selected_profession": selected_profession
+        "selected_profession": selected_profession,
+        "notifications": notifications
     })
 
 
@@ -459,7 +499,6 @@ def user_logout(request):
 
 
 # user send request------------------------------------------------>
-
 
 def send_request(request, worker_id):
     if "user_id" not in request.session:
@@ -481,6 +520,12 @@ def send_request(request, worker_id):
         return redirect("user_dashboard")
 
     Request.objects.create(user=user, worker=worker)
+
+    # ✅ Create notification for worker using worker's email
+    Notification.objects.create(
+        worker_email=worker.email,  # Store the worker's email
+        message=f"You have a new work request from {user.name}."
+    )
 
     subject = "New Work Request Received"
     message = f"Hello {worker.first_name},\n\nYou have received a new work request from {user.name}.\n\nPlease check your dashboard for more details."
@@ -540,8 +585,13 @@ def edit_worker_profile(request, worker_id):
 
     return render(request, 'edit_worker_profile.html', {'worker': worker})
 
-
-
+# notification------------------------------------------------>
+def mark_as_read(request, notification_id):
+    notification = get_object_or_404(Notification, id=notification_id)
+    if notification.user == request.user:
+        notification.is_read = True
+        notification.save()
+    return redirect('user_dashboard')
 
 
 
