@@ -12,60 +12,71 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/about.style.css' %}">
     <link rel = "icon" href = "{% static 'images/favicon.ico' %}" type = "image/x-icon">
+    
 
   
 
 </head>
-<body>
+<body >
          
   
   <!-- navebar ---------------------->
     
-    
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary" style=" width: 100%;">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#" style="font-size:40px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-left: 50px;" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">FIXIT</a>
-
+    <!-- About Page Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top  custom-navbar"
+    style="background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            padding: 10px 20px;">
+  <div class="container-fluid">
+      <!-- Menu Icon -->
           
 
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-         
-            <div class="container" style="margin-left: 850px; font-size: 20px;">
-                <ul class="navbar-nav" >
-                      <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-                      </li>
-                      
-                      <li class="nav-item" style="padding-left: 30px;">
-                        <div>
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"  href="#service">Services</a>
-                        <ul class="dropdown-menu" style="margin-left: 1100px; background-color: #2575fc;">
-                            <li><a class="dropdown-item" href="{% url 'plumbing' %}">PLUMPING</a></li>
-                            <li><a class="dropdown-item" href="{% url 'electrician' %}">ELECTRICIAN</a></li>
-                            <li><a class="dropdown-item" href="{% url 'gardening' %}">GARDENING</a></li>
-                            <li><a class="dropdown-item" href="{% url 'cleaning' %}">CLEANING</a></li>
-                            <li><a class="dropdown-item" href="{% url 'painting' %}">PAINTING</a></li>
-                          </ul>
-                    </div>
-                      </li>
-                      <li class="nav-item"style="padding-left: 30px;">
-                        <a class="nav-link" href="{% url 'contactus' %}">ContactUs</a>
-                      </li>
-                      
-                    </ul>
-            </div>    
-        </div>    
-    </div>    
-    
-  </nav>
+      <!-- Brand Name -->
+      <a class="navbar-brand brand-title" style="margin-left: 50px;">FIXIT</a>
+
+      <!-- Mobile Toggle Button -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navigation Links -->
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav">
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'home' %}" style="margin-right: 50px;">Home</a>
+              </li>
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="margin-right: 50px;" href="#">Services</a>
+                  <ul class="dropdown-menu" style="background: rgba(0, 0, 0, 0.9);
+                                                    border: none;
+                                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+                                                    animation: fadeIn 0.3s ease-in-out;">
+                      <li><a class="dropdown-item" style="color: white !important;
+    transition: background 0.3s ease, color 0.3s ease;"  href="{% url 'plumbing' %}">PLUMBING</a></li>
+                      <li><a class="dropdown-item" style="color: white !important;
+    transition: background 0.3s ease, color 0.3s ease;" href="{% url 'electrician' %}">ELECTRICIAN</a></li>
+                      <li><a class="dropdown-item" style="color: white !important;
+    transition: background 0.3s ease, color 0.3s ease;" href="{% url 'gardening' %}">GARDENING</a></li>
+                      <li><a class="dropdown-item" style="color: white !important;
+    transition: background 0.3s ease, color 0.3s ease;" href="{% url 'cleaning' %}">CLEANING</a></li>
+                      <li><a class="dropdown-item" style="color: white !important;
+    transition: background 0.3s ease, color 0.3s ease;" href="{% url 'painting' %}">PAINTING</a></li>
+                  </ul>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'contactus' %}" style="margin-right: 50px;">Contact Us</a>
+              </li>
+          </ul>
+      </div>    
+  </div>    
+</nav>
+
 
 
   <!-- About Section -->
-  <section class="container mt-5">
-    <h1 class="text-center">About Us</h1>
+  <section class="container mt-5 " style="padding-top: 100px;">
+    <h1 class="text-center" >About Us</h1>
     
     <div class="image-column mt-4">
       <img class="Image1" src="{% static 'images/about-img.jpg' %}" alt="Image 1" />
