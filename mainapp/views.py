@@ -31,7 +31,7 @@ from .models import Notification
 
 # Create your views here.
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'index.html')
 
 def workerreg(request):
     return render(request, 'worker_reg.html')
