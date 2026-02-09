@@ -1,380 +1,520 @@
-<!-- user_dashboard.html -->
-
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fixit/user-dashboard-page</title>
+    <title>FIXIT | User Dashboard</title>
+
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+
+    <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/userdash.style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
-    <link rel = "icon" href = "{% static 'images/favicon.ico' %}" type = "image/x-icon">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- GSAP & Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
     <style>
-        .offcanvas {
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    color: #000;
-    width: 320px;
-}
+        .dashboard-hero {
+            padding-top: 140px;
+            padding-bottom: 60px;
+            background: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.05), transparent 40%);
+        }
 
-.offcanvas-header {
-    background-color: #2575fc;
-    border-bottom: 1px solid #eee;
-}
+        .notification-trigger {
+            position: relative;
+            cursor: pointer;
+        }
 
-.menu-item {
-    display: flex;
-    align-items: center;
-    padding: 12px 15px;
-    font-size: 14px;
-    color: whitesmoke;
-    text-decoration: none;
-    transition: background 0.2s;
-    
-}
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 2px solid var(--bg-body);
+        }
 
-.menu-item:hover {
-    background-color:#16b5ef;
-    border-radius: 5px;
-    color: #000;
-}
+        .filter-section {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            padding: 25px;
+            border-radius: 24px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
 
-.menu-item i {
-    font-size: 18px;
-    margin-right: 10px;
-}
+        .worker-grid {
+            margin-bottom: 80px;
+        }
 
-.menu-item.disabled {
-    color: #bbb;
-    pointer-events: none;
-}
-.bg-light {
-    background-color: #f0f8ff;
-}
+        .worker-card-premium {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 25px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
 
-.bg-white {
-    background-color: #ffffff;
-}
+        .worker-card-premium:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
 
-.btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-}
+        .worker-status-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
 
-.btn-danger:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-}
+        .status-available {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
 
+        .status-unavailable {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
 
+        .service-table-container {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            overflow: hidden;
+            margin-bottom: 60px;
+        }
+
+        .table-premium {
+            margin-bottom: 0;
+            color: white;
+        }
+
+        .table-premium thead th {
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            padding: 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .table-premium tbody td {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: middle;
+        }
+
+        .request-status {
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+
+        .status-accepted {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        .status-rejected {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .status-completed {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .offcanvas-premium {
+            background: var(--bg-body);
+            border-left: 1px solid var(--glass-border);
+            width: 400px !important;
+        }
+
+        .notification-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .notification-item.unread {
+            background: rgba(59, 130, 246, 0.05);
+            border-color: var(--primary);
+        }
+
+        .form-select-premium {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: white;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .form-select-premium:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: none;
+        }
     </style>
-
 </head>
+
 <body>
 
-    <!-- navebar ---------------------->
-    
-    
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary" style=" width: 100%;">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#" style="font-size:40px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-left: 50px;" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">FIXIT</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-         
-            <div class="container1" style="margin-left: 850px; font-size: 20px;">
-                <ul class="navbar-nav" >
-                      <li class="nav-item">
-                        <a class="nav-link active" style="margin-left: 200px;" aria-current="page" href="{% url 'home' %}">Home</a>
-                      </li>
-                    
-                      <li class="nav-item"><a style="margin-left: 50px;" class="nav-link" href="{% url 'user_logout' %}">Logout</a></li>
-            
-                    </ul>
-            </div>    
-        </div>    
-    </div>    
-    
-  </nav>
-<!-- navbar endd -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
 
-<!-- aert messages -->
-<div class="container mt-4">
-        <h2>Welcome, {{ user.name }}</h2>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
+        <div class="container">
+            <a class="navbar-brand brand-title" href="{% url 'home' %}">FIXIT</a>
 
-        {% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
+            <div class="d-flex align-items-center gap-3">
+                <div class="notification-trigger me-2" data-bs-toggle="offcanvas"
+                    data-bs-target="#notificationOffcanvas">
+                    <i class="bi bi-bell text-white fs-4"></i>
+                    {% if notifications %}
+                    <span class="notification-badge"></span>
+                    {% endif %}
+                </div>
 
-<!-- offcanvas starts -->
-<div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="staticBackdropLabel"><b>FIXIT</b></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-<!-- offcanvas    notofication  -->
-    <div class="offcanvas-body">
-        <div class="special-offer d-flex align-items-center mb-4">
-            <div class="ms-2">
-                <p class="mb-0 text-primary" style="font-size: 16px; margin-left: 10px; color: #0799ce;">
-                    Your Perfect Home Service
-                </p>
+                <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Services</a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" href="{% url 'plumbing' %}">Plumbing</a></li>
+                            <li><a class="dropdown-item" href="{% url 'electrician' %}">Electrician</a></li>
+                            <li><a class="dropdown-item" href="{% url 'gardening' %}">Gardening</a></li>
+                            <li><a class="dropdown-item" href="{% url 'cleaning' %}">Cleaning</a></li>
+                            <li><a class="dropdown-item" href="{% url 'painting' %}">Painting</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item ms-lg-4">
+                        <button class="btn btn-premium btn-primary-custom" data-bs-toggle="modal"
+                            data-bs-target="#logoutModal">
+                            Logout <i class="bi bi-box-arrow-right ms-2"></i>
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
+    </nav>
 
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6><i class="fas fa-bell"></i> Notifications</h6>
-            {% if notifications %}
-            <form method="POST" action="{% url 'clear_notifications' %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger btn-sm">Clear All</button>
-            </form>
-            {% endif %}
+    <!-- Notification Offcanvas -->
+    <div class="offcanvas offcanvas-end offcanvas-premium text-white" tabindex="-1" id="notificationOffcanvas">
+        <div class="offcanvas-header border-bottom border-secondary p-4">
+            <h5 class="offcanvas-title brand-title" style="font-size: 1.5rem;">Notifications</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
         </div>
-        <div class="list-group">
-            {% for notification in notifications %}
-            <div class="list-group-item d-flex justify-content-between align-items-center {% if not notification.is_read %} bg-light {% else %} bg-white {% endif %}">
-
-                <span>
-                    {{ notification.message }}
-                    <br>
-                    <small class="text-muted">{{ notification.created_at|date:"M d, Y H:i" }}</small>
-                </span>
-                {% if not notification.is_read %}
-                <form method="POST" action="{% url 'mark_as_read' notification.id %}">
+        <div class="offcanvas-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <p class="text-muted mb-0 small">Latest Updates</p>
+                {% if notifications %}
+                <form method="POST" action="{% url 'clear_notifications' %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-primary btn-sm">
-                        Mark as Read
-                    </button>
+                    <button type="submit" class="btn btn-sm btn-outline-danger border-0">Clear All</button>
                 </form>
                 {% endif %}
             </div>
-            {% empty %}
-            <p class="text-muted">No new notifications</p>
-            {% endfor %}
+
+            <div class="notification-list">
+                {% for notification in notifications %}
+                <div class="notification-item {% if not notification.is_read %}unread{% endif %}">
+                    <p class="mb-2">{{ notification.message }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-muted small">{{ notification.created_at|date:"M d, H:i" }}</span>
+                        {% if not notification.is_read %}
+                        <form method="POST" action="{% url 'mark_as_read' notification.id %}">
+                            {% csrf_token %}
+                            <button type="submit"
+                                class="btn btn-sm btn-link text-primary p-0 text-decoration-none small">Mark as
+                                Read</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-5 opacity-50">
+                    <i class="bi bi-bell-slash fs-1 mb-3 d-block"></i>
+                    <p>No new notifications</p>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
-</div>
 
+    <main>
+        <section class="dashboard-hero">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <span class="hero-tagline reveal">Dashboard Overview</span>
+                        <h1 class="hero-title reveal">Welcome, <span>{{ user.name }}</span></h1>
+                        <p class="hero-desc reveal">Find the best professionals for your home needs today.</p>
+                    </div>
+                </div>
 
-    <!-- filter by profession -->
-
-        <form method="GET" action="{% url 'user_dashboard' %}" class="mb-3">
-            <div class="input-group" style="max-width: 400px;">
-                <label for="profession" class="input-group-text bg-gradient text-white rounded-start" 
-                    style="
-                        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-                        font-weight: 500;
-                        padding: 10px 15px;
-                        border: none;
-                    ">
-                    <i class="fa-solid fa-filter" style="padding-right: 8px;"></i> Filter by Profession
-                </label>
-                <select name="profession" id="profession" class="form-select rounded-end shadow-sm" 
-                    onchange="this.form.submit()" 
-                    style="
-                        border: 2px solid #6a11cb;
-                        padding: 12px;
-                        font-size: 16px;
-                        font-weight: 400;
-                        color: #333;
-                        background-color: #f9f9f9;
-                        transition: all 0.3s ease;
-                    "
-                    onfocus="this.style.borderColor='#2575fc';"
-                    onblur="this.style.borderColor='#6a11cb';"
-                    onmouseover="this.style.backgroundColor='#f1f1f1';"
-                    onmouseout="this.style.backgroundColor='#f9f9f9';">
-                    <option value="">All</option>
-                    {% for profession in professions %}
-                        <option value="{{ profession }}" {% if selected_profession == profession %}selected{% endif %}>
-                            {{ profession }}
-                        </option>
+                {% if messages %}
+                <div class="mt-4">
+                    {% for message in messages %}
+                    <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %} alert-dismissible fade show border-0 rounded-4"
+                        role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
                     {% endfor %}
-                </select>
+                </div>
+                {% endif %}
             </div>
-        </form>
-        
-        <!-- select worker -->
+        </section>
 
-        <h3 class="mt-4">Select a Worker</h3>
-        <div class="row">
-            {% for worker in workers %}
-            <div class="col-md-4 mt-2">
-                <div class="card p-3">
-                    <h5>{{ worker.first_name }} {{ worker.last_name }}</h5>
-                    <p>Profession: {{ worker.profession }}</p>
-                    <p>Experience: {{ worker.experience }} </p>
-                    <p>MinCharge: {{ worker.amount }}</p>
-                    <p class="worker-info"><strong></strong> 
-                        {% if worker.status %}
-                            <span class="badge bg-success">Available</span>
-                        {% else %}
-                            <span class="badge bg-danger">Not Available</span>
-                        {% endif %}
-                    </p>
-                    <a href="{% url 'view_worker' worker.id %}" style="width: 130px;position: relative; left: 120px; " class="btn btn-primary">View Worker</a>
+        <section class="worker-selection">
+            <div class="container">
+                <!-- Filter Section -->
+                <div class="filter-section reveal">
+                    <form method="GET" action="{% url 'user_dashboard' %}" class="row g-3 align-items-center">
+                        <div class="col-auto">
+                            <label class="text-white"><i class="bi bi-funnel me-2"></i>Filter by Expertise</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select name="profession" class="form-select form-select-premium"
+                                onchange="this.form.submit()">
+                                <option value="">All Regions & Expertise</option>
+                                {% for profession in professions %}
+                                <option value="{{ profession }}" {% if selected_profession == profession %}selected{% endif %}>
+                                    {{ profession }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="section-label mb-5 reveal">
+                    <h2>Available <span>Professionals</span></h2>
+                </div>
+
+                <!-- Worker Grid -->
+                <div class="row g-4 worker-grid">
+                    {% for worker in workers %}
+                    <div class="col-md-6 col-lg-4 reveal">
+                        <div class="worker-card-premium">
+                            {% if worker.status %}
+                            <span class="worker-status-badge status-available">Available</span>
+                            {% else %}
+                            <span class="worker-status-badge status-unavailable">Engaged</span>
+                            {% endif %}
+
+                            <h4 class="mb-3">{{ worker.first_name }} {{ worker.last_name }}</h4>
+
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center mb-2 text-muted">
+                                    <i class="bi bi-briefcase me-2 text-primary"></i>
+                                    <span>{{ worker.profession }}</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2 text-muted">
+                                    <i class="bi bi-award me-2 text-primary"></i>
+                                    <span>{{ worker.experience }} Experience</span>
+                                </div>
+                                <div class="d-flex align-items-center text-muted">
+                                    <i class="bi bi-currency-rupee me-2 text-primary"></i>
+                                    <span>Min Charge: {{ worker.amount }}</span>
+                                </div>
+                            </div>
+
+                            <div class="mt-auto">
+                                <a href="{% url 'view_worker' worker.id %}"
+                                    class="btn-premium btn-primary-custom w-100 justify-content-center">
+                                    View Profile <i class="bi bi-arrow-right ms-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12 text-center py-5">
+                        <p class="text-muted">No workers found matching your criteria.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- My Requests Section -->
+                <div class="section-label mb-5 reveal">
+                    <h2>Recent <span>Requests</span></h2>
+                </div>
+
+                <div class="service-table-container reveal shadow-lg">
+                    <div class="table-responsive">
+                        <table class="table table-premium">
+                            <thead>
+                                <tr>
+                                    <th>Service Provider</th>
+                                    <th>Expertise</th>
+                                    <th class="text-center">Current Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for request in requests %}
+                                <tr>
+                                    <td>
+                                        <div class="fw-bold">{{ request.worker.first_name }} {{ request.worker.last_name
+                                            }}</div>
+                                    </td>
+                                    <td>{{ request.worker.profession }}</td>
+                                    <td class="text-center">
+                                        <span class="request-status 
+                                            {% if request.status == 'Pending' %}status-pending
+                                            {% elif request.status == 'Accepted' %}status-accepted
+                                            {% elif request.status == 'Rejected' %}status-rejected
+                                            {% elif request.status == 'Completed' %}status-completed
+                                            {% endif %}">
+                                            {{ request.status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center py-5 opacity-50">
+                                        <p>You haven't made any service requests yet.</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            {% endfor %}
-        </div>
-    
-        
+        </section>
+    </main>
 
-    <h3 class="mt-4 mb-3" style="
-    font-size: 24px;
-    font-weight: 600;
-    color:white;
-    border-bottom: 3px solid #6a11cb;
-    padding-bottom: 10px;
-    display: inline-block;
-">
-    <i class="fa-solid fa-list-check" style="margin-right: 8px; color: #6a11cb;"></i>
-    My Requests
-</h3>
-
-<div class="table-responsive">
-    <table class="table table-hover align-middle shadow-sm" style="
-        border-collapse: separate;
-        border-spacing: 0;
-        border-radius: 10px;
-        overflow: hidden;
-    ">
-        <thead style="
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
-            font-size: 16px;
-        ">
-            <tr>
-                <th style="padding: 12px; text-align: center;">Worker</th>
-                <th style="padding: 12px; text-align: center;">Profession</th>
-                <th style="padding: 12px; text-align: center;">Status</th>
-            
-            </tr>
-        </thead>
-        <tbody>
-            {% for request in requests %}
-            <tr style="
-                transition: background-color 0.3s ease;
-                font-size: 15px;
-            " 
-            onmouseover="this.style.backgroundColor='#f1f1f1';" 
-            onmouseout="this.style.backgroundColor='';">
-                <td style="padding: 14px; text-align: center; font-weight: 500; color: #333;">
-                    {{ request.worker.first_name }} {{ request.worker.last_name }}
-                </td>
-                <td style="padding: 14px; text-align: center; color: #555;">
-                    {{ request.worker.profession }}
-                </td>
-                <td style="padding: 14px; text-align: center;">
-                    {% if request.status == 'Pending' %}
-                        <span class="badge bg-warning text-dark" style="font-size: 14px; padding: 6px 12px; border-radius: 20px;">
-                            {{ request.status }}
-                        </span>
-                    {% elif request.status == 'Accepted' %}
-                        <span class="badge bg-success" style="font-size: 14px; padding: 6px 12px; border-radius: 20px;">
-                            {{ request.status }}
-                        </span>
-                    {% elif request.status == 'Rejected' %}
-                        <span class="badge bg-danger" style="font-size: 14px; padding: 6px 12px; border-radius: 20px;">
-                            {{ request.status }}
-                        </span>
-                    {% elif request.status == 'Completed' %}
-                        <span class="badge bg-primary" style="font-size: 14px; padding: 6px 12px; border-radius: 20px;">
-                            {{ request.status }}
-                        </span>
-                    {% endif %}
-                </td>
-                
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-    
-    <!-- Bootstrap Logout Confirmation Modal -->
-<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="border-radius: 12px;">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="logoutModalLabel">Logout Confirmation</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Make sure you've logout?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 8px;">Cancel</button>
-                <a href="{% url 'user_logout' %}" class="btn btn-danger" style="border-radius: 8px;">Logout</a>
+    <!-- Logout Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-card p-4 border-secondary border-opacity-25" style="border-radius: 30px;">
+                <div class="text-center">
+                    <div class="mb-4 text-primary" style="font-size: 3rem;"><i class="bi bi-box-arrow-right"></i></div>
+                    <h3 class="text-white">Signing Out?</h3>
+                    <p class="text-muted shadow-lg">Are you sure you want to log out of your dashboard? You'll need to
+                        sign back in to book services.</p>
+                </div>
+                <div class="d-flex gap-3 mt-4">
+                    <button type="button" class="btn btn-outline-custom flex-grow-1"
+                        data-bs-dismiss="modal">Cancel</button>
+                    <a href="{% url 'user_logout' %}" class="btn btn-primary-custom flex-grow-1">Logout</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <script>
-        //back button ----------------------------------------->
-        
-    // Prevent going back to the login page after logging in
-    history.pushState(null, null, location.href);
-    window.onpopstate = function () {
-        history.go(1);
-    };
-
-// logut confomation script---------------------------------------------------------------->
-
-    // Fade in effect on page load
-    document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll('.alert').forEach((alert) => {
-            setTimeout(() => {
-                alert.classList.add('show'); // Add fade-in transition
-            }, 100); // Small delay for smoother appearance
-
-            // Auto fade out after 3 seconds
-            setTimeout(() => {
-                alert.classList.remove('show');
-                setTimeout(() => alert.remove(), 500); // Remove from DOM after fading out
-            }, 3000);
-        });
-    });
-
-    // Show custom Bootstrap modal on back button press
-    window.onpopstate = function () {
-        var logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
-        logoutModal.show();
-
-        // Prevent going back after canceling
-        history.pushState(null, null, location.href);
-    };
-
-    // Push initial state to prevent back navigation issue
-    history.pushState(null, null, location.href);
-
-
-
-    </script>
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Smooth scroll
+        const lenis = new Lenis();
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Custom Cursor
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            gsap.set(cursorDot, { x: e.clientX, y: e.clientY });
+            gsap.to(cursorOutline, {
+                x: e.clientX - 20,
+                y: e.clientY - 20,
+                duration: 0.5,
+                ease: "power3.out"
+            });
+        });
+
+        // Split text branding animation
+        const splitH1 = new SplitType('.hero-title', { types: 'chars,words' });
+        gsap.from(splitH1.chars, {
+            opacity: 0,
+            y: 30,
+            rotateX: -90,
+            stagger: 0.02,
+            duration: 1,
+            ease: "back.out(1.7)",
+            delay: 0.3
+        });
+
+        // Entrance animation for sections
+        const reveals = document.querySelectorAll('.reveal');
+        reveals.forEach(el => {
+            gsap.from(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 90%",
+                    toggleActions: "play none none none"
+                },
+                opacity: 0,
+                y: 30,
+                duration: 1,
+                ease: "power3.out"
+            });
+        });
+
+        // Prevention logic
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            var logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+            logoutModal.show();
+            history.pushState(null, null, location.href);
+        };
+    </script>
 </body>
+
 </html>

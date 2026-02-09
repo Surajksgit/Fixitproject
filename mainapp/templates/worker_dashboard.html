@@ -1,175 +1,324 @@
-<!-- worker_dashboard.html -->
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fixit/Worker-Dashboard-page</title>
+    <title>FIXIT | Partner Dashboard</title>
+
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+
+    <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/workerdash.style.css' %}">
-    <link rel = "icon" href = "{% static 'images/favicon.ico' %}" type = "image/x-icon">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
 
+    <!-- Styles -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- GSAP & Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        .dashboard-content {
+            padding-top: 140px;
+            padding-bottom: 80px;
+            min-height: 100vh;
+        }
+
+        .profile-section {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .profile-avatar-wrapper {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .worker-avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--primary);
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .info-pill {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .info-pill i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .job-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .job-card:hover {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(10px);
+        }
+
+        .status-badge {
+            padding: 6px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-accepted {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+
+        .status-completed {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 40px;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            color: white;
+            border-radius: 25px;
+        }
+    </style>
 </head>
+
 <body>
 
-    
-<!-- navebar ---------------------->
-    
-    
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary" style=" width: 100%;">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#" style="font-size:40px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-left: 50px;" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">FIXIT</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-         
-            <div class="container" style="margin-left: 850px; font-size: 20px;">
-                <ul class="navbar-nav" >
-                      <li class="nav-item">
-                        <a class="nav-link active" style="margin-left: 140px;" aria-current="page" href="{% url 'home' %}">Home</a>
-                      </li>
-                      
-                      <li class="nav-item"><a style="margin-left: 50px;" class="nav-link" href="{% url 'worker_requests' %}">Requests</a></li>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
 
-                      <li class="nav-item"><a style="margin-left: 50px;" class="nav-link" href="{% url 'worker_logout' %}">Logout</a></li>
-                      
-            
-                    </ul>
-            </div>    
-        </div>    
-    </div>    
-    
-  </nav>
+    <!-- Dashboard Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
+        <div class="container">
+            <a class="navbar-brand brand-title" href="{% url 'home' %}">FIXIT</a>
+            <div class="d-flex align-items-center gap-3">
+                <a href="{% url 'worker_requests' %}" class="btn btn-outline-custom d-none d-md-flex">
+                    <i class="bi bi-bell-fill me-2"></i> New Requests
+                </a>
+                <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'worker_requests' %}">Jobs</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <button class="btn btn-premium btn-primary-custom px-4" data-bs-toggle="modal"
+                            data-bs-target="#logoutModal">
+                            Logout <i class="bi bi-box-arrow-right ms-2"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-
-
-
-  
-<div class="container mt-5">
-    {% if messages %}
-  {% for message in messages %}
-      <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}">
-          {{ message }}
-      </div>
-  {% endfor %}
-{% endif %}
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="profile-card text-center">
-                <!-- <img style="height: 300px; width: 300px;" src="{% static 'images/190691.png' %}" alt="Profile Image" class="rounded-circle mb-3"> -->
-                <img style="height: 300px; width: 300px;" src="{% if worker.gender == 'Male' %}
-                {% static 'images/190691.png' %}
-            {% elif worker.gender == 'Female' %}
-                {% static 'images/female_avatarjpg.jpg' %}
-            {% else %}
-                {% static 'images/190691.png' %}
-            {% endif %}" 
-            alt="Profile Image" class="rounded-circle mb-3">
-            
-                <h2>{{ worker.title }} {{ worker.first_name }} {{ worker.last_name }}</h2>
-                <p class="text-muted">{{ worker.profession }}</p>
-
-                <div class="d-flex justify-content-center gap-4">
-                    <p><strong>Email:</strong><i class="fas fa-envelope"></i> {{ worker.email }}</p>
-                    
-                </div>
-                <p><strong>Phone:</strong><i class="fas fa-phone"></i> {{ worker.phone }}</p>
-                <p><strong>Experience:</strong> {{ worker.experience }} years</p>
-                <a href="{% url 'edit_worker_profile' worker.id %}" class="btn btn-primary btn-sm">Edit Profile</a>
-
-
-                <h3 class="mt-4">Assigned Jobs</h3>
-<ul class="list-group job-list">
-    {% for job in jobs %}
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            Requested by: {{ job.user.name }}
-            {% if job.status == "Accepted" %}
-                <a href="{% url 'complete_job' job.id %}" class="btn btn-sm btn-warning">Mark as Completed</a>
-            {% else %}
-                <span class="badge bg-success">{{ job.status }}</span>
+    <div class="dashboard-content">
+        <div class="container">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %} alert-dismissible fade show mb-5"
+                role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
             {% endif %}
-        </li>
-    {% empty %}
-        <li class="list-group-item text-muted text-center">No assigned jobs yet.</li>
-    {% endfor %}
-</ul>
 
+            <div class="row g-5">
+                <!-- Profile Sidebar -->
+                <div class="col-lg-4">
+                    <div class="profile-section reveal">
+                        <div class="profile-avatar-wrapper">
+                            <img src="{% if worker.gender == 'Male' %}{% static 'images/190691.png' %}{% elif worker.gender == 'Female' %}{% static 'images/female_avatarjpg.jpg' %}{% else %}{% static 'images/190691.png' %}{% endif %}"
+                                class="worker-avatar" alt="Profile">
+                        </div>
+                        <h2 class="mb-1">{{ worker.title }} {{ worker.first_name }}</h2>
+                        <p class="category-tag mb-4">{{ worker.profession }}</p>
 
+                        <div class="info-list text-start">
+                            <div class="info-pill">
+                                <i class="bi bi-envelope"></i>
+                                <div>
+                                    <small class="text-muted d-block">Work Email</small>
+                                    <span>{{ worker.email }}</span>
+                                </div>
+                            </div>
+                            <div class="info-pill">
+                                <i class="bi bi-telephone"></i>
+                                <div>
+                                    <small class="text-muted d-block">Phone Number</small>
+                                    <span>{{ worker.phone }}</span>
+                                </div>
+                            </div>
+                            <div class="info-pill">
+                                <i class="bi bi-award"></i>
+                                <div>
+                                    <small class="text-muted d-block">Experience</small>
+                                    <span>{{ worker.experience }} years</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="{% url 'edit_worker_profile' worker.id %}"
+                            class="btn btn-outline-custom w-100 mt-4 rounded-15">
+                            Edit Professional Profile <i class="bi bi-pencil-square ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="col-lg-8">
+                    <div class="dashboard-header reveal">
+                        <div>
+                            <span class="hero-tagline">Network Portal</span>
+                            <h2 class="mb-0">Assigned <span>Jobs</span></h2>
+                        </div>
+                    </div>
+
+                    <div class="job-list-container reveal">
+                        {% for job in jobs %}
+                        <div class="job-card">
+                            <div>
+                                <h5 class="mb-1">{{ job.user.name }}</h5>
+                                <p class="text-muted small mb-0"><i class="bi bi-geo-alt me-1"></i> {{ job.user.city }}
+                                </p>
+                            </div>
+                            <div class="text-end">
+                                {% if job.status == "Accepted" %}
+                                <span class="status-badge status-accepted mb-2 d-inline-block">In Progress</span>
+                                <a href="{% url 'complete_job' job.id %}"
+                                    class="btn btn-sm btn-primary-custom d-block">Mark Complete</a>
+                                {% else %}
+                                <span class="status-badge status-completed">{{ job.status }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="glass-card p-5 text-center">
+                            <i class="bi bi-calendar-x opacity-25" style="font-size: 3rem;"></i>
+                            <h4 class="mt-3 opacity-50">No active jobs assigned yet</h4>
+                            <p class="text-muted">Check your requests page for new leads.</p>
+                            <a href="{% url 'worker_requests' %}" class="btn btn-primary-custom mt-3">View New
+                                Requests</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-
-
-
-<!-- Bootstrap Logout Confirmation Modal -->
-<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="border-radius: 12px;">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="logoutModalLabel">Logout Confirmation</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to leave the dashboard?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 8px;">Cancel</button>
-                <a href="{% url 'worker_logout' %}" class="btn btn-danger" style="border-radius: 8px;">Yes</a>
+    <!-- Logout Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-4">
+                <div class="text-center">
+                    <div class="mb-4 text-primary" style="font-size: 3rem;"><i class="bi bi-box-arrow-right"></i></div>
+                    <h3>Signing Out?</h3>
+                    <p class="text-muted">Are you sure you want to leave your partner dashboard? Any unsaved changes
+                        will be lost.</p>
+                </div>
+                <div class="d-flex gap-3 mt-4">
+                    <button type="button" class="btn btn-outline-custom flex-grow-1"
+                        data-bs-dismiss="modal">Cancel</button>
+                    <a href="{% url 'worker_logout' %}" class="btn btn-primary-custom flex-grow-1">Yes, Logout</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-
-
-
-
-   
-<script>
-    // Fade in effect on page load
-    document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll('.alert').forEach((alert) => {
-            setTimeout(() => {
-                alert.classList.add('show'); // Add fade-in transition
-            }, 100); // Small delay for smoother appearance
-
-            // Auto fade out after 3 seconds
-            setTimeout(() => {
-                alert.classList.remove('show');
-                setTimeout(() => alert.remove(), 500); // Remove from DOM after fading out
-            }, 3000);
-        });
-    });
-
-
-    window.onpopstate = function () {
-        // Show the modal when the back button is pressed
-        var logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
-        logoutModal.show();
-
-        // Prevent going back after canceling
-        history.pushState(null, null, location.href);
-    };
-
-    // Push initial state to prevent back navigation issue
-    history.pushState(null, null, location.href);
-    
-    
-
-    
-
-    
-
-
-</script>
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const lenis = new Lenis();
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Custom Cursor
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        window.addEventListener('mousemove', (e) => {
+            gsap.set(cursorDot, { x: e.clientX, y: e.clientY });
+            gsap.to(cursorOutline, { x: e.clientX - 20, y: e.clientY - 20, duration: 0.5, ease: "power3.out" });
+        });
+
+        // Entrance Reveals
+        const reveals = document.querySelectorAll('.reveal');
+        reveals.forEach(el => {
+            gsap.from(el, {
+                opacity: 0,
+                y: 30,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power3.out"
+            });
+        });
+
+        // Prevention logic
+        window.onpopstate = function () {
+            var logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+            logoutModal.show();
+            history.pushState(null, null, location.href);
+        };
+        history.pushState(null, null, location.href);
+    </script>
 </body>
+
 </html>

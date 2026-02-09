@@ -1,70 +1,249 @@
 <!-- view_worker.html -->
 
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fixit/Worker-Details-page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/viewworker.style.css' %}">
-    <link rel = "icon" href = "{% static 'images/favicon.ico' %}" type = "image/x-icon">
+    <title>FIXIT | {{ worker.first_name }} - Profile</title>
 
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{% static 'css/viewworker.style.css' %}">
 </head>
+
 <body>
 
-    <!-- navebar ---------------------->
-    
-    
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary" style=" width: 100%;">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#" style="font-size:40px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-left: 50px;" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">FIXIT</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-         
-            
-        </div>    
-    </div>    
-    
-  </nav>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
 
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top custom-nav">
+        <div class="container px-4">
+            <a class="navbar-brand brand-title" href="{% url 'user_dashboard' %}">FIXIT</a>
+            <div class="ms-auto d-flex align-items-center">
+                <a href="{% url 'user_dashboard' %}" class="btn-back-nav hover-lift">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+        </div>
+    </nav>
 
+    <main class="main-wrapper">
+        <!-- Hero Section -->
+        <section class="worker-hero section-padding">
+            <div class="hero-bg-elements">
+                <div class="orb orb-1"></div>
+                <div class="orb orb-2"></div>
+                <div class="orb orb-3"></div>
+                <div class="grid-overlay"></div>
+            </div>
 
+            <div class="container">
+                <div class="row min-vh-100 align-items-center">
+                    <div class="col-lg-6">
+                        <div class="hero-text-content">
+                            <div class="badge-wrapper mb-4">
+                                <span class="premium-badge split-text">Verified Professional</span>
+                            </div>
+                            <h1 class="display-1 hero-name mb-4">
+                                <span class="reveal-text">{{ worker.first_name }}</span>
+                                <span class="reveal-text highlight text-gradient">{{ worker.last_name }}</span>
+                            </h1>
+                            <p class="hero-lead mb-5 split-text">
+                                Master {{ worker.profession }} with a proven track record of {{ worker.experience }}
+                                years in delivering excellence.
+                            </p>
 
-  <div class="worker-container">
-    <!-- <img src="{% static 'images/190691.png' %}" alt="Worker Image" class="worker-img"> -->
-    <img src="{% if worker.gender == 'Male' %}
-    {% static 'images/190691.png' %}
-{% elif worker.gender == 'Female' %}
-    {% static 'images/female_avatarjpg.jpg' %}
-{% else %}
-    {% static 'images/190691.png' %}
-{% endif %}" 
-alt="Worker Image" class="worker-img">
+                            <div class="stats-container d-flex gap-5 mb-5">
+                                <div class="stat-box">
+                                    <h3 class="stat-val" data-target="{{ worker.experience }}">{{ worker.experience }}
+                                    </h3>
+                                    <p class="stat-lab">Years Exp.</p>
+                                </div>
+                                <div class="stat-box">
+                                    <h3 class="stat-val" data-target="4.9">4.9</h3>
+                                    <p class="stat-lab">Rating</p>
+                                </div>
+                                <div class="stat-box">
+                                    <h3 class="stat-val" data-target="240">240+</h3>
+                                    <p class="stat-lab">Jobs Done</p>
+                                </div>
+                            </div>
 
-    <h2 class="worker-name">{{ worker.first_name }} {{ worker.last_name }}</h2>
-    
-    <p class="worker-info"><strong>Profession:</strong> {{ worker.profession }}</p>
-    <p class="worker-info"><strong>Experience:</strong> {{ worker.experience }} </p>
-    <p class="worker-info"><strong>MinCharge:</strong> {{ worker.amount }}</p>
+                            <div class="hero-actions d-flex gap-3 align-items-center">
+                                {% if worker.status %}
+                                <a href="{% url 'send_request' worker.id %}" class="btn-premium-action">
+                                    <span>Book Now</span>
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+                                {% else %}
+                                <button class="btn-premium-action disabled" disabled>
+                                    <span>Currently Busy</span>
+                                </button>
+                                {% endif %}
+                                <a href="#details" class="scroll-down-btn">
+                                    <span>View Details</span>
+                                    <i class="bi bi-mouse"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
-    <p class="worker-info"><strong>Phone:</strong> {{ worker.phone }}</p>
-    
-    
-        
-    
-{% if worker.status %}
-    <a href="{% url 'send_request' worker.id %}" class="btn btn-primary mt-3">Send Request</a>
-{% else %}
-    <button class="btn btn-primary mt-3" disabled>Not Available</button>
-{% endif %}
-    <a href="{% url 'user_dashboard' %}" class="btn btn-secondary mt-3">Back</a>
-</div>
+                    <div class="col-lg-6">
+                        <div class="hero-visual">
+                            <div class="main-image-wrapper">
+                                <div class="image-inner">
+                                    <img src="{% if worker.gender == 'Male' %}
+                                        {% static 'images/190691.png' %}
+                                    {% elif worker.gender == 'Female' %}
+                                        {% static 'images/female_avatarjpg.jpg' %}
+                                    {% else %}
+                                        {% static 'images/190691.png' %}
+                                    {% endif %}" alt="{{ worker.first_name }}" class="worker-img img-fluid">
+                                </div>
+                                <div class="floating-info-card card-1" data-parallax="0.1">
+                                    <i class="bi bi-shield-check"></i>
+                                    <span>Background Checked</span>
+                                </div>
+                                <div class="floating-info-card card-2" data-parallax="-0.15">
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <span>Top Rated</span>
+                                </div>
+                                <div
+                                    class="availability-status {% if worker.status %}online{% else %}offline{% endif %}">
+                                    <span class="status-dot"></span>
+                                    {% if worker.status %}Available{% else %}Busy{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <!-- Detailed Info Section -->
+        <section id="details" class="details-section section-padding">
+            <div class="container">
+                <div class="section-header mb-5 text-center">
+                    <h2 class="section-title reveal-text">Core Competencies</h2>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="info-card-premium hover-lift">
+                            <div class="icon-wrap">
+                                <i class="bi bi-telephone"></i>
+                            </div>
+                            <div class="content">
+                                <h5>Contact</h5>
+                                <p>{{ worker.phone }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="info-card-premium hover-lift">
+                            <div class="icon-wrap">
+                                <i class="bi bi-briefcase"></i>
+                            </div>
+                            <div class="content">
+                                <h5>Experience</h5>
+                                <p>{{ worker.experience }} Years</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="info-card-premium hover-lift">
+                            <div class="icon-wrap">
+                                <i class="bi bi-currency-rupee"></i>
+                            </div>
+                            <div class="content">
+                                <h5>Hourly Rate</h5>
+                                <p>₹{{ worker.amount }}/hr</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="info-card-premium hover-lift">
+                            <div class="icon-wrap">
+                                <i class="bi bi-person"></i>
+                            </div>
+                            <div class="content">
+                                <h5>Gender</h5>
+                                <p>{{ worker.gender }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="worker-description mt-5">
+                    <div class="glass-container p-5">
+                        <h3 class="mb-4 text-gradient">About {{ worker.first_name }}</h3>
+                        <p class="lead text-muted">A dedicated professional committed to high-quality service.
+                            Specialized in technical problem-solving and efficient project completion within the {{
+                            worker.profession }} domain.</p>
+                        <div class="tags mt-4">
+                            <span class="tag">Expert {{ worker.profession }}</span>
+                            <span class="tag">Punctual</span>
+                            <span class="tag">Tool Expert</span>
+                            <span class="tag">Safety Certified</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta-section section-padding">
+            <div class="container">
+                <div class="cta-card glass-container p-5 text-center overflow-hidden">
+                    <div class="cta-content position-relative z-1">
+                        <h2 class="mb-4 reveal-text">Ready to experience premium service?</h2>
+                        <p class="mb-5 lead opacity-75">Click below to send a request and get started today.</p>
+                        {% if worker.status %}
+                        <a href="{% url 'send_request' worker.id %}" class="btn-premium btn-massive">
+                            Send Request
+                            <i class="bi bi-arrow-right ms-2"></i>
+                        </a>
+                        {% else %}
+                        <button class="btn-premium btn-massive opacity-50" disabled>Worker is Busy</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Space -->
+    <footer class="py-5 text-center border-top border-secondary border-opacity-25">
+        <p class="text-muted small m-0">&copy; 2024 FIXIT Home Services. All rights reserved.</p>
+    </footer>
+
+    <!-- Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <!-- Custom Script -->
+    <script src="{% static 'js/viewworker.animation.js' %}"></script>
 </body>
+
 </html>

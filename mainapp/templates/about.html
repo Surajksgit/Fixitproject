@@ -1,134 +1,462 @@
-<!-- about.html -->
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fixit/about-page</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIXIT | About Our Mission</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/about.style.css' %}">
-    <link rel = "icon" href = "{% static 'images/favicon.ico' %}" type = "image/x-icon">
-    
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
 
-  
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500&display=swap"
+    rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <!-- GSAP & Plugins -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/split-type"></script>
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+  <style>
+    .about-hero {
+      height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .about-hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1), transparent 70%);
+      z-index: -1;
+    }
+
+    .story-section {
+      padding: 100px 0;
+    }
+
+    .story-image-wrapper {
+      position: relative;
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .story-image-wrapper img {
+      width: 100%;
+      height: auto;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .story-image-wrapper:hover img {
+      transform: scale(1.05);
+    }
+
+    .stats-grid {
+      margin-top: 50px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 30px;
+    }
+
+    .stat-item h3 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+
+    .stat-item p {
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.8rem;
+    }
+
+    .how-it-works-alt {
+      padding: 100px 0;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 50px;
+      margin: 50px 0;
+    }
+
+    .step-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      padding: 40px;
+      border-radius: 24px;
+      height: 100%;
+      transition: all 0.4s ease;
+    }
+
+    .step-pill:hover {
+      border-color: var(--primary);
+      transform: translateY(-5px);
+    }
+
+    .step-num {
+      width: 50px;
+      height: 50px;
+      background: var(--primary);
+      color: white;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+    }
+
+    .step-pill h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+    }
+
+    .step-pill p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 0;
+    }
+
+    /* Read More Custom Styles */
+    #moreText {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    #moreText.show {
+      display: inline;
+      opacity: 1;
+    }
+
+    #readMoreBtn {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 10px 25px;
+      border-radius: 50px;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+    }
+
+    #readMoreBtn:hover {
+      background: var(--primary);
+      color: white;
+    }
+  </style>
 </head>
-<body >
-         
-  
-  <!-- navebar ---------------------->
-    
-    <!-- About Page Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top  custom-navbar"
-    style="background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            padding: 10px 20px;">
-  <div class="container-fluid">
-      <!-- Menu Icon -->
-          
 
-      <!-- Brand Name -->
-      <a class="navbar-brand brand-title" style="margin-left: 50px;">FIXIT</a>
+<body>
 
-      <!-- Mobile Toggle Button -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+  <!-- Custom Cursor -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-outline"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
+    <div class="container">
+      <a class="navbar-brand menu-icon me-3" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop">
+        <i class="bi bi-list"></i>
+      </a>
+      <a class="navbar-brand brand-title" href="{% url 'home' %}">FIXIT</a>
+
+      <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarNav">
+        <i class="bi bi-list"></i>
       </button>
 
-      <!-- Navigation Links -->
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul class="navbar-nav">
-              <li class="nav-item">
-                  <a class="nav-link" href="{% url 'home' %}" style="margin-right: 50px;">Home</a>
-              </li>
-              <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="margin-right: 50px;" href="#">Services</a>
-                  <ul class="dropdown-menu" style="background: rgba(0, 0, 0, 0.9);
-                                                    border: none;
-                                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-                                                    animation: fadeIn 0.3s ease-in-out;">
-                      <li><a class="dropdown-item" style="color: white !important;
-    transition: background 0.3s ease, color 0.3s ease;"  href="{% url 'plumbing' %}">PLUMBING</a></li>
-                      <li><a class="dropdown-item" style="color: white !important;
-    transition: background 0.3s ease, color 0.3s ease;" href="{% url 'electrician' %}">ELECTRICIAN</a></li>
-                      <li><a class="dropdown-item" style="color: white !important;
-    transition: background 0.3s ease, color 0.3s ease;" href="{% url 'gardening' %}">GARDENING</a></li>
-                      <li><a class="dropdown-item" style="color: white !important;
-    transition: background 0.3s ease, color 0.3s ease;" href="{% url 'cleaning' %}">CLEANING</a></li>
-                      <li><a class="dropdown-item" style="color: white !important;
-    transition: background 0.3s ease, color 0.3s ease;" href="{% url 'painting' %}">PAINTING</a></li>
-                  </ul>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="{% url 'contactus' %}" style="margin-right: 50px;">Contact Us</a>
-              </li>
-          </ul>
-      </div>    
-  </div>    
-</nav>
-
-
-
-  <!-- About Section -->
-  <section class="container mt-5 " style="padding-top: 100px;">
-    <h1 class="text-center" >About Us</h1>
-    
-    <div class="image-column mt-4">
-      <img class="Image1" src="{% static 'images/about-img.jpg' %}" alt="Image 1" />
-    
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="{% url 'about' %}">About</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Services</a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="{% url 'plumbing' %}">Plumbing</a></li>
+              <li><a class="dropdown-item" href="{% url 'electrician' %}">Electrician</a></li>
+              <li><a class="dropdown-item" href="{% url 'gardening' %}">Gardening</a></li>
+              <li><a class="dropdown-item" href="{% url 'cleaning' %}">Cleaning</a></li>
+              <li><a class="dropdown-item" href="{% url 'painting' %}">Painting</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'contactus' %}">Contact</a></li>
+          <li class="nav-item ms-lg-4">
+            <a href="{% url 'user_reg' %}" class="btn btn-primary-custom btn-premium py-2 px-4 shadow-sm">Get
+              Started</a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <p class="text-center mt-5" style="font-size: larger; color: gray; " >
-      Welcome to FIXIT! We provide top-quality home services, including plumbing,electrical repairs, gardening, cleaning, painting, and more.
-      Our skilled professionals ensure the best service at your convenience. Available 24/7, we guarantee satisfaction for all your home maintenance needs.
-      <span id="moreText" style="display: none;">
-        From fixing a leaky faucet to painting your entire house, we cover it all with precision and care. 
-        Our team of certified professionals brings years of experience, ensuring that every job is completed efficiently and to the highest standards. 
-        We use advanced tools and techniques to provide quick, reliable solutions, saving you time and effort. 
-        With a commitment to excellence and customer satisfaction, FIXIT is your trusted partner for maintaining a comfortable and well-functioning home. 
-        Let us handle the hard work so you can focus on what matters most. Contact us today to book your service and experience the FIXIT difference!
-    </span>
+  </nav>
 
-  </p>
+  <!-- Offcanvas Redesign -->
+  <div class="offcanvas offcanvas-start bg-dark text-white" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop">
+    <div class="offcanvas-header border-bottom border-secondary">
+      <div>
+        <h5 class="offcanvas-title brand-title m-0" id="staticBackdropLabel">FIXIT</h5>
+        <p class="text-muted small mb-0">Premium Home Services</p>
+      </div>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column justify-content-between">
+      <div class="nav-links-wrapper">
+        <a href="{% url 'user_reg' %}" class="offcanvas-link">
+          <i class="bi bi-person-plus"></i> User Registration
+        </a>
+        <a href="{% url 'workerregister' %}" class="offcanvas-link">
+          <i class="bi bi-tools"></i> Worker Registration
+        </a>
+        <div class="my-4 border-bottom border-secondary opacity-25"></div>
+        <a href="{% url 'user_login' %}" class="offcanvas-link">
+          <i class="bi bi-box-arrow-in-right"></i> User Login
+        </a>
+        <a href="{% url 'worker_login' %}" class="offcanvas-link">
+          <i class="bi bi-briefcase"></i> Worker Login
+        </a>
+      </div>
 
-  <div class="text-center">
-    <button  id="readMoreBtn" class="btn " onclick="toggleReadMore()">Read More</button>
-</div>
-
-</section>
-
-<section class="how-it-works">
-  <h2>How It Works</h2>
-  <div class="steps">
-      <div class="step"><span>📄</span> <h3>Book Service on Website</h3>Submit your requirement & preferred service time.</div>
-      <div class="step"><span>📅</span> <h3>Same Day Home Visit</h3>Our expert visit as per your schedule.</div>
-      <div class="step"><span>🔧</span> <h3>Repair Done</h3>Get service done after your approval.</div>
-      <div class="step"><span>💳</span> <h3>Make Payment</h3>With any UPI app or cash.</div>
+      <div class="offcanvas-footer mt-auto">
+        <p class="text-muted small mb-3 letter-spacing-2">STAY CONNECTED</p>
+        <div class="d-flex gap-3">
+          <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </div>
   </div>
-</section>
 
+  <!-- Hero Section -->
+  <section class="about-hero">
+    <div class="about-hero-bg"></div>
+    <div class="container">
+      <span class="hero-tagline reveal">Our Mission</span>
+      <h1 class="hero-title reveal">We Architect <span>Better</span> Homes</h1>
+    </div>
+  </section>
 
+  <!-- Story Section -->
+  <section class="story-section">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6 reveal">
+          <div class="story-image-wrapper">
+            <img src="{% static 'images/about-img.jpg' %}" alt="Our Story" class="img-fluid">
+          </div>
+        </div>
+        <div class="col-lg-6 reveal">
+          <span class="hero-tagline">Since 2024</span>
+          <h2 class="mb-4">Crafting Excellence in Every Corner</h2>
+          <p class="text-muted mb-4" style="font-size: 1.1rem;">
+            Welcome to FIXIT! We provide top-quality home services, including plumbing, electrical repairs, gardening,
+            cleaning, painting, and more.
+            Our skilled professionals ensure the best service at your convenience. Available 24/7, we guarantee
+            satisfaction for all your home maintenance needs.
+          </p>
+          <div id="moreText">
+            <p class="text-muted mb-4" style="font-size: 1.1rem;">
+              From fixing a leaky faucet to painting your entire house, we cover it all with precision and care.
+              Our team of certified professionals brings years of experience, ensuring that every job is completed
+              efficiently and to the highest standards.
+              We use advanced tools and techniques to provide quick, reliable solutions, saving you time and effort.
+              With a commitment to excellence and customer satisfaction, FIXIT is your trusted partner for maintaining a
+              comfortable and well-functioning home.
+            </p>
+          </div>
+          <button id="readMoreBtn" onclick="toggleReadMore()">Read More</button>
 
-<!-- JavaScript -->
-<script>
-  function toggleReadMore() {
+          <div class="stats-grid">
+            <div class="stat-item">
+              <h3 class="counter">500</h3>
+              <p>Projects Done</p>
+            </div>
+            <div class="stat-item">
+              <h3 class="counter">50</h3>
+              <p>Expert Workers</p>
+            </div>
+            <div class="stat-item">
+              <h3 class="counter">24</h3>
+              <p>Hours Support</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works-alt">
+    <div class="container">
+      <div class="section-label reveal text-center mb-5">
+        <span class="hero-tagline">Process</span>
+        <h2>How It Works</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-3 reveal">
+          <div class="step-pill">
+            <div class="step-num">01</div>
+            <h3>Book Online</h3>
+            <p>Submit your requirements and preferred time through our simple booking system.</p>
+          </div>
+        </div>
+        <div class="col-md-3 reveal">
+          <div class="step-pill">
+            <div class="step-num gold">02</div>
+            <h3>Site Visit</h3>
+            <p>Our expert visits as per your schedule for a detailed assessment and quote.</p>
+          </div>
+        </div>
+        <div class="col-md-3 reveal">
+          <div class="step-pill">
+            <div class="step-num">03</div>
+            <h3>Fast Repair</h3>
+            <p>Get the job done with precision after your approval of the work plan.</p>
+          </div>
+        </div>
+        <div class="col-md-3 reveal">
+          <div class="step-pill">
+            <div class="step-num">04</div>
+            <h3>Easy Pay</h3>
+            <p>Complete your payment securely via any UPI app or cash after satisfaction.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer-like CTA -->
+  <section class="py-5 text-center reveal">
+    <div class="container">
+      <div class="glass-card p-5 border-radius-30"
+        style="background: var(--glass); border: 1px solid var(--glass-border); border-radius: 40px;">
+        <h2 class="mb-4">Ready to fix your home?</h2>
+        <a href="{% url 'services' %}" class="btn-premium btn-primary-custom">Browse Our Services</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Initialize Lenis Smooth Scroll
+    const lenis = new Lenis()
+    function raf(time) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+    requestAnimationFrame(raf)
+
+    // GSAP Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Custom Cursor
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorOutline = document.querySelector('.cursor-outline');
+
+    window.addEventListener('mousemove', (e) => {
+      const posX = e.clientX;
+      const posY = e.clientY;
+
+      gsap.set(cursorDot, { x: posX, y: posY });
+      gsap.to(cursorOutline, {
+        x: posX - 20,
+        y: posY - 20,
+        duration: 0.5,
+        ease: "power3.out"
+      });
+    });
+
+    // Split Text Animation
+    const splitTitles = new SplitType('.hero-title', { types: 'chars,words' });
+    gsap.from(splitTitles.chars, {
+      opacity: 0,
+      y: 50,
+      rotateX: -90,
+      stagger: 0.02,
+      duration: 1,
+      ease: "back.out(1.7)",
+      delay: 0.5
+    });
+
+    // Scroll Reveal
+    const reveals = document.querySelectorAll('.reveal');
+    reveals.forEach(el => {
+      gsap.from(el, {
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+          toggleActions: "play none none none"
+        },
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        ease: "power3.out"
+      });
+    });
+
+    // Counter Animation
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter => {
+      const target = +counter.innerText;
+      gsap.from(counter, {
+        scrollTrigger: {
+          trigger: counter,
+          start: "top 90%"
+        },
+        innerText: 0,
+        duration: 2,
+        snap: { innerText: 1 },
+        ease: "power2.out"
+      });
+    });
+
+    // Toggle Read More
+    function toggleReadMore() {
       const moreText = document.getElementById('moreText');
       const btnText = document.getElementById('readMoreBtn');
 
-      if (moreText.style.display === 'none') {
-          moreText.style.display = 'inline';
-          btnText.textContent = 'Read Less';
+      if (moreText.style.display === 'none' || moreText.style.display === '') {
+        moreText.style.display = 'block';
+        setTimeout(() => moreText.style.opacity = '1', 10);
+        btnText.textContent = 'Read Less';
       } else {
-          moreText.style.display = 'none';
-          btnText.textContent = 'Read More';
+        moreText.style.opacity = '0';
+        setTimeout(() => moreText.style.display = 'none', 500);
+        btnText.textContent = 'Read More';
       }
-  }
-</script>
+    }
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    // Navbar Scroll Effect
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('.custom-navbar');
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+  </script>
 </body>
+
 </html>

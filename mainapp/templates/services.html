@@ -1,118 +1,444 @@
-<!-- service.html -->
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fixit/Our-Services-page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/service.style.css' %}">
-    <link rel = "icon" href = "{% static 'images/favicon.ico' %}" type = "image/x-icon">
-</head>
+    <title>FIXIT | Premium Services</title>
 
-    
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- GSAP & Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        .services-hero {
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1), transparent 70%);
+        }
+
+        .services-grid {
+            padding-bottom: 100px;
+        }
+
+        .service-card-premium {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            overflow: hidden;
+            height: 100%;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .service-card-premium:hover {
+            transform: translateY(-15px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .service-img-container {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .service-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .service-card-premium:hover .service-img-container img {
+            transform: scale(1.1);
+        }
+
+        .service-content {
+            padding: 35px;
+        }
+
+        .service-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        .service-content p {
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .service-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .btn-view {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view:hover {
+            gap: 15px;
+            color: white;
+        }
+
+        .category-tag {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        /* Floating background shapes */
+        .shape {
+            position: absolute;
+            z-index: -1;
+            filter: blur(80px);
+            border-radius: 50%;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: rgba(59, 130, 246, 0.1);
+            top: 10%;
+            left: -5%;
+        }
+
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            background: rgba(249, 115, 22, 0.05);
+            bottom: 10%;
+            right: -5%;
+        }
+    </style>
+</head>
 
 <body>
 
-   <!-- navebar ---------------------->
-    
-    
-   <nav class="navbar navbar-expand-lg navbar-light bg-primary" style=" width: 100%;">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#" style="font-size:40px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-left: 50px;" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">FIXIT</a>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
 
-      
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
+        <div class="container">
+            <a class="navbar-brand menu-icon me-3" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop">
+                <i class="bi bi-list"></i>
+            </a>
+            <a class="navbar-brand brand-title" href="{% url 'home' %}">FIXIT</a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-     
-        <div class="container" style="margin-left: 850px; font-size: 20px;">
-            <ul class="navbar-nav" >
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-                  </li>
-                  <li class="nav-item" style="padding-left: 30px;">
-                    <a class="nav-link" href="{% url 'about' %}">About</a>
-                  </li>
-                  
-                  <li class="nav-item"style="padding-left: 30px;">
-                    <a class="nav-link" href="{% url 'contactus' %}">ContactUs</a>
-                  </li>
-                 
+            <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'services' %}">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'contactus' %}">Contact</a></li>
+                    <li class="nav-item ms-lg-4">
+                        <a href="{% url 'user_reg' %}"
+                            class="btn btn-primary-custom btn-premium py-2 px-4 shadow-sm">Get Started</a>
+                    </li>
                 </ul>
-        </div>    
-    </div>    
-</div>    
-
-</nav>
-
-    <!-- Services Section -->
-    <div class="service-section" style="background-color: #2c2c2c; padding-top: 10px; padding-bottom: 250px;">
-    <div class="container mt-5">
-        <h2 class="text-center" style="font-weight: bold; color: #2575fc;">Our Services</h2>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="{% static 'images/pro-plumbin2.jpg' %}" class="card-img-top" alt="Plumbing">
-                    <div class="card-body">
-                        <h5 class="card-title">Plumbing</h5>
-                        <p class="card-text">Professional plumbing services available 24/7.</p>
-                        <a href="{% url 'plumbing' %}" class="btn ">View Details</a>
-                    </div>
-                </div>
             </div>
-            
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="{% static 'images/electrician1.jpg' %}" class="card-img-top" alt="Electrician">
-                    <div class="card-body">
-                        <h5 class="card-title">Electrician</h5>
-                        <p class="card-text">Expert electricians for all electrical works.</p>
-                        <a href="{% url 'electrician' %}" class="btn ">View Details</a>
-                    </div>
-                </div>
+        </div>
+    </nav>
+
+    <!-- Offcanvas Redesign -->
+    <div class="offcanvas offcanvas-start bg-dark text-white" data-bs-backdrop="static" tabindex="-1"
+        id="staticBackdrop">
+        <div class="offcanvas-header border-bottom border-secondary">
+            <div>
+                <h5 class="offcanvas-title brand-title m-0" id="staticBackdropLabel">FIXIT</h5>
+                <p class="text-muted small mb-0">Premium Home Services</p>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column justify-content-between">
+            <div class="nav-links-wrapper">
+                <a href="{% url 'user_reg' %}" class="offcanvas-link">
+                    <i class="bi bi-person-plus"></i> User Registration
+                </a>
+                <a href="{% url 'workerregister' %}" class="offcanvas-link">
+                    <i class="bi bi-tools"></i> Worker Registration
+                </a>
+                <div class="my-4 border-bottom border-secondary opacity-25"></div>
+                <a href="{% url 'user_login' %}" class="offcanvas-link">
+                    <i class="bi bi-box-arrow-in-right"></i> User Login
+                </a>
+                <a href="{% url 'worker_login' %}" class="offcanvas-link">
+                    <i class="bi bi-briefcase"></i> Worker Login
+                </a>
             </div>
 
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="{% static 'images/garden1.jpg' %}" class="card-img-top" alt="Gardening">
-                    <div class="card-body">
-                        <h5 class="card-title">Gardening</h5>
-                        <p class="card-text">Beautiful garden maintenance and landscaping.</p>
-                        <a href="{% url 'gardening' %}" class="btn ">View Details</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 mt-4">
-                <div class="card">
-                    <img src="{% static 'images/cleaner2.jpg' %}" class="card-img-top" alt="Cleaning">
-                    <div class="card-body">
-                        <h5 class="card-title">Cleaning</h5>
-                        <p class="card-text">Professional home and office cleaning services.</p>
-                        <a href="{% url 'cleaning' %}" class="btn ">View Details</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 mt-4">
-                <div class="card">
-                    <img src="{% static 'images/painting.jpg' %}" class="card-img-top" alt="Painting">
-                    <div class="card-body">
-                        <h5 class="card-title">Painting</h5>
-                        <p class="card-text">Quality painting services for your home and office.</p>
-                        <a href="{% url 'painting' %}" class="btn ">View Details</a>
-                    </div>
+            <div class="offcanvas-footer mt-auto">
+                <p class="text-muted small mb-3 letter-spacing-2">STAY CONNECTED</p>
+                <div class="d-flex gap-3">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
+    <!-- Hero Section -->
+    <section class="services-hero">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="container">
+            <span class="hero-tagline reveal">Expert Solutions</span>
+            <h1 class="hero-title reveal">Premium <span>Maintenance</span> For Every Home</h1>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="services-grid">
+        <div class="container">
+            <div class="row g-5">
+                <!-- Plumbing -->
+                <div class="col-lg-4 col-md-6 reveal">
+                    <div class="service-card-premium">
+                        <div class="service-img-container">
+                            <img src="{% static 'images/pro-plumbin2.jpg' %}" alt="Plumbing">
+                        </div>
+                        <div class="service-content">
+                            <span class="category-tag">Infrastructure</span>
+                            <h3>Plumbing</h3>
+                            <p>From emergency leak repairs to complete bathroom installations, our certified plumbers
+                                handle it all with precision.</p>
+                            <div class="service-footer">
+                                <a href="{% url 'plumbing' %}" class="btn-view">
+                                    Learn More <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Electrician -->
+                <div class="col-lg-4 col-md-6 reveal">
+                    <div class="service-card-premium">
+                        <div class="service-img-container">
+                            <img src="{% static 'images/electrician1.jpg' %}" alt="Electrician">
+                        </div>
+                        <div class="service-content">
+                            <span class="category-tag">Safety & Energy</span>
+                            <h3>Electrician</h3>
+                            <p>Professional wiring, fuse box upgrades, and smart home installations carried out by our
+                                safety-first expert electricians.</p>
+                            <div class="service-footer">
+                                <a href="{% url 'electrician' %}" class="btn-view">
+                                    Learn More <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gardening -->
+                <div class="col-lg-4 col-md-6 reveal">
+                    <div class="service-card-premium">
+                        <div class="service-img-container">
+                            <img src="{% static 'images/garden1.jpg' %}" alt="Gardening">
+                        </div>
+                        <div class="service-content">
+                            <span class="category-tag">Landscaping</span>
+                            <h3>Gardening</h3>
+                            <p>Transform your outdoor spaces with our professional landscaping and routine garden
+                                maintenance experts.</p>
+                            <div class="service-footer">
+                                <a href="{% url 'gardening' %}" class="btn-view">
+                                    Learn More <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cleaning -->
+                <div class="col-lg-4 col-md-6 reveal">
+                    <div class="service-card-premium">
+                        <div class="service-img-container">
+                            <img src="{% static 'images/cleaner2.jpg' %}" alt="Cleaning">
+                        </div>
+                        <div class="service-content">
+                            <span class="category-tag">Hygiene</span>
+                            <h3>Cleaning</h3>
+                            <p>Full deep-cleaning services for homes and offices. We use eco-friendly materials to leave
+                                your spaces sparkling.</p>
+                            <div class="service-footer">
+                                <a href="{% url 'cleaning' %}" class="btn-view">
+                                    Learn More <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Painting -->
+                <div class="col-lg-4 col-md-6 reveal">
+                    <div class="service-card-premium">
+                        <div class="service-img-container">
+                            <img src="{% static 'images/painting.jpg' %}" alt="Painting">
+                        </div>
+                        <div class="service-content">
+                            <span class="category-tag">Aesthetics</span>
+                            <h3>Painting</h3>
+                            <p>Add fresh vibrance to your rooms with our premium interior and exterior painting
+                                services. Flawless finish guaranteed.</p>
+                            <div class="service-footer">
+                                <a href="{% url 'painting' %}" class="btn-view">
+                                    Learn More <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom/All in one -->
+                <div class="col-lg-4 col-md-6 reveal">
+                    <div class="service-card-premium d-flex flex-column justify-content-center align-items-center p-5 text-center"
+                        style="background: linear-gradient(135deg, var(--primary), #1e40af);">
+                        <i class="bi bi-plus-circle" style="font-size: 4rem; margin-bottom: 20px;"></i>
+                        <h3 class="text-white">Need Something Else?</h3>
+                        <p class="text-white-50">Our team can handle almost any home requirement. Tell us what you need
+                            and we'll find the right expert.</p>
+                        <a href="{% url 'contactus' %}"
+                            class="btn btn-light rounded-pill px-4 py-2 mt-3 fw-bold">Contact Us</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <section class="py-5 text-center reveal">
+        <div class="container">
+            <div class="p-5 border-radius-30"
+                style="background: var(--glass); border: 1px solid var(--glass-border); border-radius: 40px;">
+                <h2 class="mb-4">Standard service in 2 hours</h2>
+                <p class="text-muted mb-4">Book now and get a certified professional at your doorstep today.</p>
+                <a href="{% url 'user_reg' %}" class="btn-premium btn-primary-custom">Book Service Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize Lenis Smooth Scroll
+        const lenis = new Lenis()
+        function raf(time) {
+            lenis.raf(time)
+            requestAnimationFrame(raf)
+        }
+        requestAnimationFrame(raf)
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Custom Cursor
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            gsap.set(cursorDot, { x: posX, y: posY });
+            gsap.to(cursorOutline, {
+                x: posX - 20,
+                y: posY - 20,
+                duration: 0.5,
+                ease: "power3.out"
+            });
+        });
+
+        // Split Text Animation
+        const splitTitles = new SplitType('.hero-title', { types: 'chars,words' });
+        gsap.from(splitTitles.chars, {
+            opacity: 0,
+            y: 50,
+            rotateX: -90,
+            stagger: 0.02,
+            duration: 1,
+            ease: "back.out(1.7)",
+            delay: 0.5
+        });
+
+        // Scroll Reveal
+        const reveals = document.querySelectorAll('.reveal');
+        reveals.forEach((el, index) => {
+            gsap.from(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 90%",
+                    toggleActions: "play none none none"
+                },
+                opacity: 0,
+                y: 60,
+                duration: 1,
+                ease: "power4.out",
+                delay: (index % 3) * 0.1 // Stagger row items
+            });
+        });
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.custom-navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
 </body>
+
 </html>
