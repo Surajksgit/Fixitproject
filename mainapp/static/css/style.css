@@ -142,6 +142,58 @@ html.lenis {
     transform: scale(1.1);
 }
 
+/* Custom Navbar Toggler Redesign */
+.custom-toggler {
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--glass);
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 12px;
+    transition: var(--transition);
+}
+
+.custom-toggler:hover {
+    background: var(--primary);
+    border-color: var(--primary) !important;
+    transform: scale(1.05);
+}
+
+.toggler-icon {
+    width: 22px;
+    height: 2px;
+    background-color: white;
+    display: block;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border-radius: 2px;
+}
+
+.middle-bar {
+    margin: 5px 0;
+}
+
+/* Animation to X */
+.custom-toggler:not(.collapsed) .top-bar {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.custom-toggler:not(.collapsed) .middle-bar {
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
+.custom-toggler:not(.collapsed) .bottom-bar {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+.custom-toggler:focus {
+    box-shadow: none;
+}
+
 /* Hero Section */
 .hero {
     height: 100vh;
@@ -438,13 +490,133 @@ html.lenis {
     background: var(--primary);
 }
 
-/* Mobile Adjustments */
-@media (max-width: 768px) {
+/* Mobile Adjustments & Full Screen Menu */
+@media (max-width: 991.98px) {
+    .custom-navbar.scrolled {
+        margin: 10px;
+        width: calc(100% - 20px);
+    }
+
+    .navbar-collapse {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: var(--bg-dark);
+        background-image:
+            radial-gradient(circle at 70% 20%, rgba(59, 130, 246, 0.1), transparent 40%),
+            radial-gradient(circle at 20% 80%, rgba(249, 115, 22, 0.05), transparent 40%);
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 1050;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 80px 20px;
+    }
+
+    .navbar-collapse.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .navbar-nav {
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-item {
+        margin: 15px 0;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .navbar-collapse.show .nav-item {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Staggered entry for links */
+    .navbar-collapse.show .nav-item:nth-child(1) {
+        transition-delay: 0.1s;
+    }
+
+    .navbar-collapse.show .nav-item:nth-child(2) {
+        transition-delay: 0.15s;
+    }
+
+    .navbar-collapse.show .nav-item:nth-child(3) {
+        transition-delay: 0.2s;
+    }
+
+    .navbar-collapse.show .nav-item:nth-child(4) {
+        transition-delay: 0.25s;
+    }
+
+    .navbar-collapse.show .nav-item:nth-child(5) {
+        transition-delay: 0.3s;
+    }
+
+    .nav-link {
+        font-family: 'Outfit', sans-serif;
+        font-size: 2.5rem !important;
+        font-weight: 800 !important;
+        color: white !important;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        padding: 5px 0 !important;
+    }
+
+    .nav-link::after {
+        display: none;
+    }
+
+    .nav-link:hover {
+        color: var(--primary) !important;
+        transform: scale(1.1);
+    }
+
+    .dropdown-menu {
+        background: transparent !important;
+        border: none !important;
+        text-align: center;
+        position: static !important;
+        float: none !important;
+        transform: none !important;
+    }
+
+    .dropdown-item {
+        font-size: 1.2rem;
+        color: var(--text-muted) !important;
+        background: transparent !important;
+        padding: 10px 0;
+    }
+
+    .dropdown-item:hover {
+        color: white !important;
+    }
+
+    /* Keep toggler above the menu */
+    .custom-toggler {
+        z-index: 1100;
+        position: relative;
+    }
+
     .hero-title {
-        font-size: 3rem;
+        font-size: 3.5rem;
     }
 
     .hero-btns {
         flex-direction: column;
+        width: 100%;
+    }
+
+    .btn-premium {
+        width: 100%;
+        justify-content: center;
     }
 }
