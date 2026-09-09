@@ -68,6 +68,26 @@
             padding: 0;
         }
 
+        /* Smooth Scrolling Configuration */
+        html {
+            scroll-behavior: smooth;
+        }
+        html.lenis, html.lenis body {
+            height: auto;
+        }
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+        .lenis.lenis-scrolling iframe {
+            pointer-events: none;
+        }
+
         body {
             background-color: var(--bg-page);
             color: var(--text-body);
@@ -2028,9 +2048,14 @@
         // 1. Lenis Smooth Scroll
         // ==========================================================================
         const lenis = new Lenis({
-            duration: 1.1,
+            duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            smooth: true
+            orientation: 'vertical',
+            gestureOrientation: 'vertical',
+            smoothWheel: true,
+            wheelMultiplier: 1.0,
+            touchMultiplier: 1.5,
+            infinite: false
         });
 
         function raf(time) {
@@ -2038,6 +2063,27 @@
             requestAnimationFrame(raf);
         }
         requestAnimationFrame(raf);
+
+        if (typeof ScrollTrigger !== 'undefined' && typeof gsap !== 'undefined') {
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => {
+                lenis.raf(time * 1000);
+            });
+            gsap.ticker.lagSmoothing(0);
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId.length > 1 && targetId.startsWith('#')) {
+                    const targetEl = document.querySelector(targetId);
+                    if (targetEl) {
+                        e.preventDefault();
+                        lenis.scrollTo(targetEl, { offset: -20, duration: 1.2 });
+                    }
+                }
+            });
+        });
 
         // ==========================================================================
         // 2. Animated Stats Counter

@@ -74,13 +74,17 @@ h4,
     transform: scale(2);
 }
 
-/* Smooth Scrolling Container */
-html.lenis {
+/* Smooth Scrolling Configuration */
+html {
+    scroll-behavior: smooth;
+}
+
+html.lenis, html.lenis body {
     height: auto;
 }
 
 .lenis.lenis-smooth {
-    scroll-behavior: auto;
+    scroll-behavior: auto !important;
 }
 
 .lenis.lenis-smooth [data-lenis-prevent] {
@@ -89,6 +93,10 @@ html.lenis {
 
 .lenis.lenis-stopped {
     overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+    pointer-events: none;
 }
 
 /* Premium Floating Navbar */
