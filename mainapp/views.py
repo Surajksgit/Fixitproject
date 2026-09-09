@@ -3,7 +3,8 @@
 
 from django.shortcuts import render, redirect 
 from .forms import AddForm
-from .models import User, Worker,Request, User
+from .models import User, Worker, Request
+from django.db import IntegrityError
 from django.contrib import messages  # ✅ Import messages for flash messages
 from django.contrib.auth import authenticate   # ✅ Import authenticate and login
 from django.contrib.auth import login
@@ -68,106 +69,124 @@ def worker_register(request):
     if request.method == 'POST':
         # Extract form data
         title = request.POST.get('title')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        email = request.POST.get('email')
+        first_name = request.POST.get('first_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()
+        email = request.POST.get('email', '').strip().lower()
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
         gender = request.POST.get('gender')
-        phone = request.POST.get('phone')
+        phone = request.POST.get('phone', '').strip()
         profession = request.POST.get('profession')
         experience = request.POST.get('experience')
         amount = request.POST.get('amount')
-        # ✅ Check if passwords match
+
+        # Check required fields
+        if not all([title, first_name, last_name, email, password, confirm_password, gender, phone, profession, experience, amount]):
+            messages.error(request, "Please fill in all required fields.")
+            return render(request, 'worker_reg.html', {"error": "All fields are required."})
+
+        # Check if passwords match
         if password != confirm_password:
             messages.error(request, "Passwords do not match.")
-            return redirect('worker_register')
+            return render(request, 'worker_reg.html', {"error": "Passwords do not match."})
 
-        # ✅ Validate password strength
+        # Validate password strength
         password_pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
         if not re.match(password_pattern, password):
             messages.error(request, "Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, and one digit.")
-            return redirect('worker_register')
+            return render(request, 'worker_reg.html', {"error": "Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, and one digit."})
 
-        # ✅ Hash the password before saving
-        hashed_password = make_password(password)
+        # Check if email is already registered as a worker
+        if Worker.objects.filter(email=email).exists():
+            messages.error(request, "A partner with this email address already exists. Please sign in instead.")
+            return render(request, 'worker_reg.html', {"error": "This email address is already registered as a partner. Please sign in."})
 
-        worker = Worker.objects.create(title=title,first_name=first_name,last_name=last_name,email=email,password=make_password(password),gender=gender,phone=phone,profession=profession,experience=experience,amount=amount,is_approved=False)
-        
+        # Create worker in database with IntegrityError protection
+        try:
+            hashed_password = make_password(password)
+            worker = Worker.objects.create(
+                title=title,
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=hashed_password,
+                gender=gender,
+                phone=phone,
+                profession=profession,
+                experience=experience,
+                amount=amount,
+                is_approved=False
+            )
+        except IntegrityError:
+            messages.error(request, "A partner with this email or phone number is already registered.")
+            return render(request, 'worker_reg.html', {"error": "A partner with this email or phone number is already registered."})
+
         # Save worker ID in session for payment reference
         request.session['worker_id'] = worker.id
 
-        # Stylish HTML email content with inline image
-        subject = "🎉 Registration Successful - Pending Approval 🎉"
-        html_content = f"""
-        <html>
-            <head>
-                <style>
-                    body {{
-                        font-family: Arial, sans-serif;
-                        background-color: #f9f9f9;
-                        margin: 0;
-                        padding: 0;
-                        color: #333;
-                    }}
-                    .container {{
-                        width: 100%;
-                        max-width: 600px;
-                        margin: 20px auto;
-                        background-color: #ffffff;
-                        padding: 20px;
-                        border-radius: 10px;
-                        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                    }}
-                    h2 {{
-                        color: #4CAF50;
-                    }}
-                    p {{
-                        font-size: 16px;
-                        line-height: 1.6;
-                    }}
-                    .footer {{
-                        margin-top: 20px;
-                        text-align: center;
-                        font-size: 14px;
-                        color: #888;
-                    }}
-                    img {{
-                        display: block;
-                        margin: 20px auto;
-                        width: 100px;
-                        height: auto;
-                    }}
-                </style>
-            </head>
-            <body>
-                <div class="container">
-                    <h2>Welcome to <strong>FIXIT</strong>, {first_name}!</h2>
-                    <p>Thank you for registering with <strong>FIXIT</strong>. Your account is currently pending approval by the admin.</p>
-                    <p>You will receive another email once your account has been approved.</p>
-                    <img src="cid:fixit_logo" alt="FIXIT Logo"/>
-                    <p class="footer">Best regards,<br>
-                    <strong>The FIXIT Team</strong></p>
-                </div>
-            </body>
-        </html>
-        """
+        # Send notification email with exception safety
+        try:
+            subject = "🎉 Registration Successful - Pending Approval 🎉"
+            html_content = f"""
+            <html>
+                <head>
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            background-color: #f9f9f9;
+                            margin: 0;
+                            padding: 0;
+                            color: #333;
+                        }}
+                        .container {{
+                            width: 100%;
+                            max-width: 600px;
+                            margin: 20px auto;
+                            background-color: #ffffff;
+                            padding: 20px;
+                            border-radius: 10px;
+                            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                        }}
+                        h2 {{
+                            color: #4CAF50;
+                        }}
+                        p {{
+                            font-size: 16px;
+                            line-height: 1.6;
+                        }}
+                        .footer {{
+                            margin-top: 20px;
+                            text-align: center;
+                            font-size: 14px;
+                            color: #888;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <h2>Welcome to <strong>FIXIT</strong>, {first_name}!</h2>
+                        <p>Thank you for registering with <strong>FIXIT</strong>. Your account is currently pending approval by the admin.</p>
+                        <p>You will receive another email once your account has been approved.</p>
+                        <p class="footer">Best regards,<br>
+                        <strong>The FIXIT Team</strong></p>
+                    </div>
+                </body>
+            </html>
+            """
+            email_message = EmailMessage(subject, html_content, settings.DEFAULT_FROM_EMAIL, [email])
+            email_message.content_subtype = 'html'
 
-        # Create EmailMessage instance
-        email_message = EmailMessage(subject, html_content, settings.DEFAULT_FROM_EMAIL, [email])
-        email_message.content_subtype = 'html'
+            image_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'fixit_logo.png')
+            if os.path.exists(image_path):
+                with open(image_path, 'rb') as img:
+                    mime_image = MIMEImage(img.read(), _subtype="png")
+                    mime_image.add_header('Content-ID', '<fixit_logo>')
+                    mime_image.add_header('Content-Disposition', 'inline', filename='fixit_logo.png')
+                    email_message.attach(mime_image)
 
-        # Attach the image inline
-        image_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'fixit_logo.png')
-        if os.path.exists(image_path):
-            with open(image_path, 'rb') as img:
-                mime_image = MIMEImage(img.read(), _subtype="png")
-                mime_image.add_header('Content-ID', '<fixit_logo>')
-                mime_image.add_header('Content-Disposition', 'inline', filename='fixit_logo.png')
-                email_message.attach(mime_image)
-
-        # Send email
-        email_message.send()
+            email_message.send(fail_silently=True)
+        except Exception:
+            pass
 
         messages.success(request, "Registration successful! Please complete the payment.")
         return redirect('payment')
@@ -395,35 +414,43 @@ def reject_worker(request, worker_id):
 
 def user_register(request):
     if request.method == "POST":
-        name = request.POST["name"]
-        email = request.POST["email"]
-        phone = request.POST["phone"]
-        address = request.POST["address"]
-        city = request.POST["city"]
-        password = request.POST["password"]
-        confirm_password = request.POST["confirm_password"]
+        name = request.POST.get("name", "").strip()
+        email = request.POST.get("email", "").strip().lower()
+        phone = request.POST.get("phone", "").strip()
+        address = request.POST.get("address", "").strip()
+        city = request.POST.get("city", "").strip()
+        password = request.POST.get("password")
+        confirm_password = request.POST.get("confirm_password")
         password_pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
 
-        if not re.match(password_pattern, password):
-            return render(request, "user_reg.html", {"error": "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, and one number. No spaces or underscores allowed."})
+        if password != confirm_password:
+            return render(request, "user_reg.html", {"error": "Passwords do not match."})
 
-        # Check if the email is already registered
+        if not re.match(password_pattern, password):
+            return render(request, "user_reg.html", {"error": "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, and one number."})
+
+        # Check if the email or phone is already registered
         if User.objects.filter(email=email).exists():
-            return render(request, 'user_reg.html', {"error": "Email already registered!"})
+            return render(request, 'user_reg.html', {"error": "Email already registered! Please log in."})
+
+        if User.objects.filter(phone=phone).exists():
+            return render(request, 'user_reg.html', {"error": "Phone number already registered!"})
 
         # Create a new user
-        user = User(name=name, email=email, phone=phone, address=address, city=city, password=password, confirm_password=confirm_password)
-        user.save()
+        try:
+            user = User(name=name, email=email, phone=phone, address=address, city=city, password=password, confirm_password=confirm_password)
+            user.save()
+        except IntegrityError:
+            return render(request, 'user_reg.html', {"error": "An account with this email or phone number already exists."})
 
-        subject = "Welcome to FIXIT!"
-        message = f"Hello {name},\n\nYour registration was successful. Welcome to FIXIT!\n\nBest Regards,\nThe Fixit Team"
-        from_email = "fixit1361@gmail.com"
-        recipient_list = [email]
-
-        send_mail(subject, message, from_email, recipient_list, fail_silently=False)
-
-        messages.success(request, "Registration successful! Please login.")
-        return redirect('user_login')
+        try:
+            subject = "Welcome to FIXIT!"
+            message = f"Hello {name},\n\nYour registration was successful. Welcome to FIXIT!\n\nBest Regards,\nThe Fixit Team"
+            from_email = "fixit1361@gmail.com"
+            recipient_list = [email]
+            send_mail(subject, message, from_email, recipient_list, fail_silently=True)
+        except Exception:
+            pass
 
         messages.success(request, "Registration successful! Please login.")
         return redirect('user_login')

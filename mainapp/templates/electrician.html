@@ -3,305 +3,506 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FIXIT | Certified Electrician Services</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIXIT | Professional Electrical Services</title>
+    <meta name="description" content="Certified electricians for circuit breaker repairs, home rewiring, EV charger setups, and smart lighting installations. 30-minute rapid dispatch.">
 
-  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
 
-  <!-- Bootstrap & Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Bootstrap 5 & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-  <!-- Google Fonts -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500&display=swap"
-    rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
 
-  <!-- GSAP & Plugins -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://unpkg.com/split-type"></script>
-  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <style>
+        :root {
+            --bg-page: #ffffff;
+            --bg-subtle: #f8fafc;
+            --bg-card: #ffffff;
+            --text-heading: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-soft: #eff6ff;
+            --primary-border: #bfdbfe;
+            --accent-emerald: #059669;
+            --border-color: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.05);
+            --shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
+            --shadow-xl: 0 20px 35px -10px rgba(15, 23, 42, 0.08);
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-xl: 24px;
+            --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-  <style>
-    .service-page-hero {
-      height: 70vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      text-align: center;
-    }
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-    .service-hero-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to bottom, rgba(5, 5, 5, 0.4), rgba(5, 5, 5, 1));
-      z-index: 1;
-    }
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-heading);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
 
-    .service-hero-img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 0;
-    }
+        .simple-navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+            transition: var(--transition);
+            z-index: 1030;
+        }
 
-    .service-hero-content {
-      position: relative;
-      z-index: 2;
-    }
+        .brand-logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
 
-    .what-we-do {
-      padding: 100px 0;
-    }
+        .brand-icon-box {
+            width: 38px;
+            height: 38px;
+            background: var(--primary);
+            color: #ffffff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+        }
 
-    .feature-list {
-      list-style: none;
-      padding: 0;
-    }
+        .brand-name {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            margin: 0;
+        }
 
-    .feature-item {
-      background: var(--bg-card);
-      border: 1px solid var(--glass-border);
-      padding: 25px;
-      border-radius: 20px;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      transition: all 0.3s ease;
-    }
+        .brand-name span {
+            color: var(--primary);
+        }
 
-    .feature-item:hover {
-      border-color: var(--primary);
-      transform: translateX(10px);
-    }
+        .nav-link-simple {
+            color: var(--text-body) !important;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 8px 16px !important;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
 
-    .feature-icon {
-      width: 50px;
-      height: 50px;
-      background: rgba(59, 130, 246, 0.1);
-      color: var(--primary);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      flex-shrink: 0;
-    }
+        .nav-link-simple:hover,
+        .nav-link-simple.active {
+            color: var(--primary) !important;
+            background-color: var(--primary-soft);
+        }
 
-    .feature-text {
-      font-size: 1.1rem;
-      font-weight: 500;
-    }
+        .dropdown-menu-simple {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 10px;
+            box-shadow: var(--shadow-lg);
+            min-width: 250px;
+        }
 
-    .booking-cta {
-      padding: 80px 0;
-      background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.05), transparent 70%);
-    }
-  </style>
+        .dropdown-item-simple {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            color: var(--text-body);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.92rem;
+            font-weight: 500;
+        }
+
+        .dropdown-item-simple:hover {
+            background-color: var(--bg-subtle);
+            color: var(--primary);
+        }
+
+        .btn-simple-primary {
+            background-color: var(--primary);
+            color: #ffffff !important;
+            font-weight: 600;
+            font-size: 0.92rem;
+            padding: 10px 22px;
+            border-radius: 50px;
+            border: 1px solid transparent;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .btn-simple-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-simple-outline {
+            background-color: transparent;
+            color: var(--text-body) !important;
+            font-weight: 600;
+            font-size: 0.92rem;
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .btn-simple-outline:hover {
+            background-color: var(--bg-subtle);
+            color: var(--text-heading) !important;
+        }
+
+        .btn-menu-trigger {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .service-detail-hero {
+            padding: 140px 0 70px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        }
+
+        .service-feature-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: var(--transition);
+        }
+
+        .service-feature-card:hover {
+            transform: translateX(6px);
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-md);
+        }
+
+        .feature-icon-circle {
+            width: 50px;
+            height: 50px;
+            background: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            flex-shrink: 0;
+        }
+
+        .img-framed {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 12px;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .img-framed img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-lg);
+            display: block;
+        }
+
+        .pricing-box {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 35px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .footer-simple {
+            background-color: var(--bg-subtle);
+            border-top: 1px solid var(--border-color);
+            padding: 70px 0 30px;
+        }
+
+        .footer-link-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-link-list li {
+            margin-bottom: 10px;
+        }
+
+        .footer-link-list a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-link-list a:hover {
+            color: var(--primary);
+            padding-left: 4px;
+        }
+    </style>
 </head>
 
 <body>
 
-  <!-- Custom Cursor -->
-  <div class="cursor-dot"></div>
-  <div class="cursor-outline"></div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top simple-navbar">
+        <div class="container">
+            <button class="btn-menu-trigger me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#fixitOffcanvas">
+                <i class="bi bi-grid"></i>
+            </button>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
-    <div class="container">
-      <a class="navbar-brand menu-icon me-3" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop">
-        <i class="bi bi-list"></i>
-      </a>
-      <a class="navbar-brand brand-title" href="{% url 'home' %}">FIXIT</a>
+            <a class="brand-logo-wrap" href="{% url 'home' %}">
+                <div class="brand-icon-box"><i class="bi bi-tools"></i></div>
+                <h1 class="brand-name">FIX<span>IT</span></h1>
+            </a>
 
-      <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarNav">
-        <i class="bi bi-list"></i>
-      </button>
+            <button class="navbar-toggler border-0 ms-auto d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navCollapseElec">
+                <i class="bi bi-list fs-2 text-dark"></i>
+            </button>
 
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav align-items-center">
-          <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" href="#">Services</a>
-            <ul class="dropdown-menu dropdown-menu-dark">
-              <li><a class="dropdown-item" href="{% url 'plumbing' %}">Plumbing</a></li>
-              <li><a class="dropdown-item" href="{% url 'electrician' %}">Electrician</a></li>
-              <li><a class="dropdown-item" href="{% url 'gardening' %}">Gardening</a></li>
-              <li><a class="dropdown-item" href="{% url 'cleaning' %}">Cleaning</a></li>
-              <li><a class="dropdown-item" href="{% url 'painting' %}">Painting</a></li>
-            </ul>
-          </li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'contactus' %}">Contact</a></li>
-          <li class="nav-item ms-lg-4">
-            <a href="{% url 'user_login' %}" class="btn btn-primary-custom btn-premium py-2 px-4 shadow-sm">Book
-              Service</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Offcanvas -->
-  <div class="offcanvas offcanvas-start bg-dark text-white" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop">
-    <div class="offcanvas-header border-bottom border-secondary">
-      <div>
-        <h5 class="offcanvas-title brand-title m-0" id="staticBackdropLabel">FIXIT</h5>
-        <p class="text-muted small mb-0">Premium Home Services</p>
-      </div>
-      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-    </div>
-    <div class="offcanvas-body d-flex flex-column justify-content-between">
-      <div class="nav-links-wrapper">
-        <a href="{% url 'user_reg' %}" class="offcanvas-link">
-          <i class="bi bi-person-plus"></i> User Registration
-        </a>
-        <a href="{% url 'workerregister' %}" class="offcanvas-link">
-          <i class="bi bi-tools"></i> Worker Registration
-        </a>
-        <div class="my-4 border-bottom border-secondary opacity-25"></div>
-        <a href="{% url 'user_login' %}" class="offcanvas-link">
-          <i class="bi bi-box-arrow-in-right"></i> User Login
-        </a>
-        <a href="{% url 'worker_login' %}" class="offcanvas-link">
-          <i class="bi bi-briefcase"></i> Worker Login
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Hero Section -->
-  <section class="service-page-hero">
-    <img src="{% static 'images/electrician1.jpg' %}" alt="Electrician" class="service-hero-img">
-    <div class="service-hero-overlay"></div>
-    <div class="container service-hero-content">
-      <span class="hero-tagline reveal">High Voltage Quality</span>
-      <h1 class="hero-title reveal">Certified Electrical <span>Services</span></h1>
-      <p class="hero-desc mx-auto reveal">Safety-first electrical work for homes and commercial spaces in Kochi.</p>
-    </div>
-  </section>
-
-  <!-- Content Section -->
-  <section class="what-we-do">
-    <div class="container">
-      <div class="row g-5 align-items-center">
-        <div class="col-lg-6 reveal">
-          <div class="section-label mb-5 text-start">
-            <span class="hero-tagline">Capabilities</span>
-            <h2>Powering Your Home</h2>
-          </div>
-          <ul class="feature-list">
-            <li class="feature-item reveal">
-              <div class="feature-icon"><i class="bi bi-lightning"></i></div>
-              <div class="feature-text">Wiring and rewiring services</div>
-            </li>
-            <li class="feature-item reveal">
-              <div class="feature-icon"><i class="bi bi-cpu"></i></div>
-              <div class="feature-text">Electrical panel upgrades</div>
-            </li>
-            <li class="feature-item reveal">
-              <div class="feature-icon"><i class="bi bi-lightbulb"></i></div>
-              <div class="feature-text">Installation of fans, lights, and switches</div>
-            </li>
-            <li class="feature-item reveal">
-              <div class="feature-icon"><i class="bi bi-battery-charging"></i></div>
-              <div class="feature-text">Power backup and inverter installation</div>
-            </li>
-            <li class="feature-item reveal">
-              <div class="feature-icon"><i class="bi bi-search"></i></div>
-              <div class="feature-text">Faulty wiring troubleshooting and repair</div>
-            </li>
-            <li class="feature-item reveal">
-              <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
-              <div class="feature-text">Circuit breaker and fuse repair</div>
-            </li>
-            <li class="feature-item reveal">
-              <div class="feature-icon"><i class="bi bi-tv"></i></div>
-              <div class="feature-text">Home appliance electrical repair</div>
-            </li>
-          </ul>
+            <div class="collapse navbar-collapse justify-content-end" id="navCollapseElec">
+                <ul class="navbar-nav align-items-center gap-1">
+                    <li class="nav-item"><a class="nav-link-simple" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link-simple" href="{% url 'about' %}">About</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link-simple dropdown-toggle active" href="{% url 'services' %}" role="button" data-bs-toggle="dropdown">Services</a>
+                        <ul class="dropdown-menu dropdown-menu-simple">
+                            <li><a class="dropdown-item-simple" href="{% url 'plumbing' %}"><i class="bi bi-droplet"></i> Plumbing</a></li>
+                            <li><a class="dropdown-item-simple active" href="{% url 'electrician' %}"><i class="bi bi-lightning-charge"></i> Electrician</a></li>
+                            <li><a class="dropdown-item-simple" href="{% url 'painting' %}"><i class="bi bi-paint-bucket"></i> Painting</a></li>
+                            <li><a class="dropdown-item-simple" href="{% url 'cleaning' %}"><i class="bi bi-stars"></i> Deep Cleaning</a></li>
+                            <li><a class="dropdown-item-simple" href="{% url 'gardening' %}"><i class="bi bi-tree"></i> Gardening</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link-simple" href="{% url 'contactus' %}">Contact</a></li>
+                    <li class="nav-item ms-lg-3"><a href="{% url 'user_login' %}" class="btn-simple-outline py-2 px-3">Sign In</a></li>
+                    <li class="nav-item ms-lg-2"><a href="{% url 'user_reg' %}" class="btn-simple-primary py-2 px-4">Book a Pro</a></li>
+                </ul>
+            </div>
         </div>
-        <div class="col-lg-6 reveal">
-          <div class="glass-card p-4 overflow-hidden rounded-30">
-            <img src="{% static 'images/electrician.jpg' %}" alt="Electrician Work" class="img-fluid rounded-30"
-              style="transition: transform 0.5s ease;">
-          </div>
+    </nav>
+
+    <!-- Offcanvas -->
+    <div class="offcanvas offcanvas-start bg-white" tabindex="-1" id="fixitOffcanvas">
+        <div class="offcanvas-header p-4 border-bottom">
+            <div class="d-flex align-items-center gap-2">
+                <div class="brand-icon-box"><i class="bi bi-tools"></i></div>
+                <h5 class="brand-name mb-0">FIX<span>IT</span></h5>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
-      </div>
+        <div class="offcanvas-body p-4 d-flex flex-column justify-content-between">
+            <div>
+                <p class="text-uppercase text-muted small fw-bold mb-3">Portals</p>
+                <a href="{% url 'user_reg' %}" class="dropdown-item-simple py-2 mb-2"><i class="bi bi-person-plus"></i> Customer Registration</a>
+                <a href="{% url 'user_login' %}" class="dropdown-item-simple py-2 mb-2"><i class="bi bi-box-arrow-in-right"></i> Customer Login</a>
+                <a href="{% url 'workerregister' %}" class="dropdown-item-simple py-2 mb-2"><i class="bi bi-tools"></i> Join as a Pro</a>
+                <a href="{% url 'worker_login' %}" class="dropdown-item-simple py-2 mb-2"><i class="bi bi-briefcase"></i> Pro Dashboard</a>
+            </div>
+            <div class="pt-4 border-top">
+                <a href="{% url 'contactus' %}" class="text-decoration-none text-muted small">Need assistance? Contact us</a>
+            </div>
+        </div>
     </div>
-  </section>
 
-  <!-- CTA Section -->
-  <section class="booking-cta text-center reveal">
-    <div class="container">
-      <h2 class="mb-4">Power outage or new installation?</h2>
-      <p class="text-muted mb-5">Get a certified electrician at your doorstep in no time.</p>
-      <a href="{% url 'user_login' %}" class="btn-premium btn-primary-custom">Book Service Now</a>
-    </div>
-  </section>
+    <!-- Hero -->
+    <section class="service-detail-hero">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill px-3 py-2 fw-bold text-uppercase small mb-3">
+                        <i class="bi bi-lightning-charge-fill me-1"></i> Licensed & Certified Electricians
+                    </span>
+                    <h1 class="fs-1 fw-bold mb-3">Precision Electrical & Wiring Solutions</h1>
+                    <p class="text-muted fs-5 mb-4">Safety-first electrical repairs, breaker panel replacements, EV charger setups, and smart home lighting installations.</p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="{% url 'user_reg' %}" class="btn-simple-primary py-3 px-4">Book an Electrician</a>
+                        <a href="{% url 'contactus' %}" class="btn-simple-outline py-3 px-4">Get a Quote</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="img-framed">
+                        <img src="{% static 'images/pro-elec.jpg' %}" alt="Certified Electrician">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    const lenis = new Lenis()
-    function raf(time) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
-    }
-    requestAnimationFrame(raf)
+    <!-- Services Details List -->
+    <section class="py-5" style="background-color: var(--bg-subtle);">
+        <div class="container py-4">
+            <div class="row g-5">
+                <div class="col-lg-7">
+                    <h3 class="fw-bold mb-4">What Our Electricians Handle</h3>
 
-    gsap.registerPlugin(ScrollTrigger);
+                    <div class="service-feature-card">
+                        <div class="feature-icon-circle"><i class="bi bi-cpu"></i></div>
+                        <div>
+                            <h5 class="fw-bold mb-1">Circuit Breaker & Panel Replacements</h5>
+                            <p class="text-muted small mb-0">Upgrading overloaded panels, installing surge protectors, and replacing tripping breakers safely.</p>
+                        </div>
+                    </div>
 
-    const cursorDot = document.querySelector('.cursor-dot');
-    const cursorOutline = document.querySelector('.cursor-outline');
-    window.addEventListener('mousemove', (e) => {
-      gsap.set(cursorDot, { x: e.clientX, y: e.clientY });
-      gsap.to(cursorOutline, { x: e.clientX - 20, y: e.clientY - 20, duration: 0.5, ease: "power3.out" });
-    });
+                    <div class="service-feature-card">
+                        <div class="feature-icon-circle"><i class="bi bi-lightbulb"></i></div>
+                        <div>
+                            <h5 class="fw-bold mb-1">Lighting & Smart Home Automation</h5>
+                            <p class="text-muted small mb-0">Installing architectural recessed lighting, ceiling fans, smart dimmers, and app-controlled switches.</p>
+                        </div>
+                    </div>
 
-    const splitTitles = new SplitType('.hero-title', { types: 'chars,words' });
-    gsap.from(splitTitles.chars, {
-      opacity: 0,
-      y: 50,
-      rotateX: -90,
-      stagger: 0.02,
-      duration: 1,
-      ease: "back.out(1.7)",
-      delay: 0.5
-    });
+                    <div class="service-feature-card">
+                        <div class="feature-icon-circle"><i class="bi bi-ev-front"></i></div>
+                        <div>
+                            <h5 class="fw-bold mb-1">EV Charger & Heavy Appliance Lines</h5>
+                            <p class="text-muted small mb-0">Dedicated 240V circuits for Level 2 EV charging stations, ovens, HVAC, and power equipment.</p>
+                        </div>
+                    </div>
 
-    const reveals = document.querySelectorAll('.reveal');
-    reveals.forEach(el => {
-      gsap.from(el, {
-        scrollTrigger: {
-          trigger: el,
-          start: "top 85%",
-          toggleActions: "play none none none"
-        },
-        opacity: 0,
-        y: 50,
-        duration: 1,
-        ease: "power3.out"
-      });
-    });
-  </script>
+                    <div class="service-feature-card">
+                        <div class="feature-icon-circle"><i class="bi bi-shield-check"></i></div>
+                        <div>
+                            <h5 class="fw-bold mb-1">Safety Inspections & Complete Rewiring</h5>
+                            <p class="text-muted small mb-0">Comprehensive diagnostic testing, earthing verification, and code-compliant rewiring.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing Box -->
+                <div class="col-lg-5">
+                    <div class="pricing-box">
+                        <span class="text-uppercase text-primary small fw-bold d-block mb-1">Standard Rates</span>
+                        <h4 class="fw-bold mb-3">Electrical Service Pricing</h4>
+                        
+                        <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                            <span class="text-muted">Safety Inspection & Diagnosis</span>
+                            <span class="fw-bold text-dark">$59</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                            <span class="text-muted">Switch / Socket Replacement</span>
+                            <span class="fw-bold text-dark">From $45</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                            <span class="text-muted">Ceiling Fan & Light Fixture</span>
+                            <span class="fw-bold text-dark">From $75</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                            <span class="text-muted">Main Panel Upgrade</span>
+                            <span class="fw-bold text-dark">From $199</span>
+                        </div>
+
+                        <div class="mt-4 p-3 bg-light rounded-3">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <i class="bi bi-shield-check text-success fs-5"></i>
+                                <span class="fw-bold small">100% Code-Compliant & Guaranteed</span>
+                            </div>
+                            <small class="text-muted">All work is conducted according to national electrical safety standards.</small>
+                        </div>
+
+                        <a href="{% url 'user_reg' %}" class="btn-simple-primary w-100 justify-content-center py-3 mt-4">
+                            Book Electrical Service
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-simple">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4 col-md-6">
+                    <a class="brand-logo-wrap mb-3 d-inline-flex" href="{% url 'home' %}">
+                        <div class="brand-icon-box"><i class="bi bi-tools"></i></div>
+                        <span class="brand-name">FIX<span>IT</span></span>
+                    </a>
+                    <p class="text-muted small mb-0">Professional home care with transparent rates and guaranteed quality.</p>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h6 class="fw-bold mb-3 text-uppercase text-dark small">Services</h6>
+                    <ul class="footer-link-list">
+                        <li><a href="{% url 'plumbing' %}">Plumbing</a></li>
+                        <li><a href="{% url 'electrician' %}">Electrician</a></li>
+                        <li><a href="{% url 'painting' %}">Painting</a></li>
+                        <li><a href="{% url 'cleaning' %}">Cleaning</a></li>
+                        <li><a href="{% url 'gardening' %}">Gardening</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h6 class="fw-bold mb-3 text-uppercase text-dark small">Company</h6>
+                    <ul class="footer-link-list">
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        <li><a href="{% url 'contactus' %}">Contact</a></li>
+                        <li><a href="{% url 'user_reg' %}">Book a Pro</a></li>
+                        <li><a href="{% url 'workerregister' %}">Partner Portal</a></li>
+                        <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h6 class="fw-bold mb-3 text-uppercase text-dark small">Emergency Dispatch</h6>
+                    <p class="text-muted small">Power outage or sparking socket? Call our emergency line.</p>
+                    <a href="tel:+18005553494" class="btn-simple-outline py-2 px-3">+1 (800) FIX-PROS</a>
+                </div>
+            </div>
+
+            <div class="mt-5 pt-3 border-top text-center text-muted small">
+                © 2026 FIXIT Technologies Inc. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const lenis = new Lenis({ duration: 1.1, smooth: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+    </script>
 </body>
 
 </html>

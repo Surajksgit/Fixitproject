@@ -5,328 +5,479 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FIXIT | User Dashboard</title>
+    <title>FIXIT | Customer Dashboard</title>
+    <meta name="description" content="Manage your home service requests, find available verified professionals, and check booking updates.">
 
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
 
-    <!-- Bootstrap & Icons -->
+    <!-- Bootstrap 5 & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
 
     <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500&display=swap"
-        rel="stylesheet">
-
-    <!-- Styles -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
-    <!-- GSAP & Plugins -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/split-type"></script>
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        .dashboard-hero {
-            padding-top: 140px;
-            padding-bottom: 60px;
-            background: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.05), transparent 40%);
+        :root {
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-heading: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-soft: #eff6ff;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+            --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
+            --shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        .dash-navbar {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+        }
+
+        .brand-logo-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .brand-icon-box {
+            width: 38px;
+            height: 38px;
+            background: var(--primary);
+            color: #ffffff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+        }
+
+        .brand-name {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            margin: 0;
+        }
+
+        .brand-name span {
+            color: var(--primary);
+        }
+
+        .nav-link {
+            color: var(--text-body);
+            font-weight: 500;
+            font-size: 0.94rem;
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+            background: var(--primary-soft);
         }
 
         .notification-trigger {
             position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-page);
+            border: 1px solid var(--border-color);
+            color: var(--text-heading);
             cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .notification-trigger:hover {
+            background: var(--primary-soft);
+            color: var(--primary);
+            border-color: var(--primary);
         }
 
         .notification-badge {
             position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 12px;
-            height: 12px;
-            background: var(--primary);
+            top: 6px;
+            right: 6px;
+            width: 9px;
+            height: 9px;
+            background: #ef4444;
             border-radius: 50%;
-            border: 2px solid var(--bg-body);
+            border: 2px solid #ffffff;
         }
 
-        .filter-section {
-            background: var(--bg-card);
-            border: 1px solid var(--glass-border);
-            padding: 25px;
-            border-radius: 24px;
-            margin-bottom: 40px;
-            backdrop-filter: blur(10px);
+        /* Hero Banner */
+        .dashboard-hero {
+            padding: 36px 0 24px;
         }
 
-        .worker-grid {
-            margin-bottom: 80px;
-        }
-
-        .worker-card-premium {
-            background: var(--bg-card);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 25px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
+        .welcome-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: var(--radius-xl);
+            padding: 36px 40px;
+            color: #ffffff;
             position: relative;
             overflow: hidden;
+            box-shadow: var(--shadow-md);
         }
 
-        .worker-card-premium:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .worker-status-badge {
+        .welcome-card::after {
+            content: '';
             position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 5px 12px;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
+            right: -50px;
+            top: -50px;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.25) 0%, transparent 70%);
+            border-radius: 50%;
         }
 
-        .status-available {
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-        }
-
-        .status-unavailable {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-        }
-
-        .service-table-container {
+        /* Filter Section */
+        .filter-card {
             background: var(--bg-card);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            overflow: hidden;
-            margin-bottom: 60px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px 24px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 32px;
         }
 
-        .table-premium {
-            margin-bottom: 0;
-            color: white;
-        }
-
-        .table-premium thead th {
-            background: rgba(255, 255, 255, 0.03);
-            border-bottom: 1px solid var(--glass-border);
-            color: var(--text-muted);
-            padding: 20px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .table-premium tbody td {
-            padding: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            vertical-align: middle;
-        }
-
-        .request-status {
-            padding: 5px 15px;
-            border-radius: 50px;
-            font-size: 0.8rem;
+        .form-select-clean {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 10px 16px;
+            font-size: 0.92rem;
+            color: var(--text-heading);
             font-weight: 500;
         }
 
-        .status-pending {
-            background: rgba(245, 158, 11, 0.1);
-            color: #f59e0b;
+        .form-select-clean:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
         }
 
-        .status-accepted {
-            background: rgba(59, 130, 246, 0.1);
-            color: #3b82f6;
+        /* Worker Cards */
+        .worker-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
-        .status-rejected {
-            background: rgba(239, 68, 68, 0.1);
+        .worker-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .worker-avatar-box {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .badge-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 50px;
+        }
+
+        .badge-available {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .badge-busy {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .worker-spec-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .worker-spec-item i {
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .btn-view-profile {
+            background: var(--primary-soft);
+            color: var(--primary);
+            border: 1px solid transparent;
+            font-weight: 600;
+            padding: 10px;
+            border-radius: var(--radius-md);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .btn-view-profile:hover {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        /* Requests Table */
+        .requests-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 48px;
+        }
+
+        .table-custom {
+            margin-bottom: 0;
+        }
+
+        .table-custom thead th {
+            background: #f8fafc;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table-custom tbody td {
+            padding: 18px 24px;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-body);
+            font-size: 0.92rem;
+        }
+
+        .table-custom tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .pill-status {
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        .pill-pending {
+            background: #fffbeb;
+            color: #d97706;
+        }
+
+        .pill-accepted {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .pill-rejected {
+            background: #fef2f2;
             color: #ef4444;
         }
 
-        .status-completed {
-            background: rgba(16, 185, 129, 0.1);
+        .pill-completed {
+            background: #ecfdf5;
             color: #10b981;
         }
 
-        .offcanvas-premium {
-            background: var(--bg-body);
-            border-left: 1px solid var(--glass-border);
-            width: 400px !important;
+        /* Notification Offcanvas */
+        .offcanvas-clean {
+            border-left: 1px solid var(--border-color);
+            width: 380px !important;
         }
 
-        .notification-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 15px;
-            margin-bottom: 15px;
-            transition: all 0.3s ease;
+        .notification-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            transition: var(--transition);
         }
 
-        .notification-item.unread {
-            background: rgba(59, 130, 246, 0.05);
-            border-color: var(--primary);
+        .notification-card.unread {
+            border-left: 3px solid var(--primary);
+            background: #f8fafc;
         }
 
-        .form-select-premium {
-            background-color: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            color: white;
-            border-radius: 12px;
-            padding: 12px;
-        }
-
-        .form-select-premium:focus {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: var(--primary);
-            color: white;
-            box-shadow: none;
+        /* Modal */
+        .modal-content-clean {
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-color);
+            padding: 24px;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="cursor-dot"></div>
-    <div class="cursor-outline"></div>
-
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
+    <nav class="dash-navbar">
         <div class="container">
-            <a class="navbar-brand brand-title" href="{% url 'home' %}">FIXIT</a>
+            <div class="d-flex align-items-center justify-content-between">
+                <a class="brand-logo-wrap" href="{% url 'home' %}">
+                    <div class="brand-icon-box"><i class="bi bi-tools"></i></div>
+                    <h1 class="brand-name">FIX<span>IT</span></h1>
+                </a>
 
-            <div class="d-flex align-items-center gap-3">
-                <div class="notification-trigger me-2" data-bs-toggle="offcanvas"
-                    data-bs-target="#notificationOffcanvas">
-                    <i class="bi bi-bell text-white fs-4"></i>
-                    {% if notifications %}
-                    <span class="notification-badge"></span>
-                    {% endif %}
-                </div>
-
-                <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav">
-                    <i class="bi bi-list"></i>
-                </button>
-            </div>
-
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Services</a>
-                        <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="{% url 'plumbing' %}">Plumbing</a></li>
-                            <li><a class="dropdown-item" href="{% url 'electrician' %}">Electrician</a></li>
-                            <li><a class="dropdown-item" href="{% url 'gardening' %}">Gardening</a></li>
-                            <li><a class="dropdown-item" href="{% url 'cleaning' %}">Cleaning</a></li>
-                            <li><a class="dropdown-item" href="{% url 'painting' %}">Painting</a></li>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="dropdown d-none d-md-block">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Services Directory
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border">
+                            <li><a class="dropdown-item" href="{% url 'plumbing' %}"><i class="bi bi-droplet me-2 text-primary"></i> Plumbing</a></li>
+                            <li><a class="dropdown-item" href="{% url 'electrician' %}"><i class="bi bi-lightning-charge me-2 text-warning"></i> Electrician</a></li>
+                            <li><a class="dropdown-item" href="{% url 'gardening' %}"><i class="bi bi-tree me-2 text-success"></i> Gardening</a></li>
+                            <li><a class="dropdown-item" href="{% url 'cleaning' %}"><i class="bi bi-stars me-2 text-info"></i> Cleaning</a></li>
+                            <li><a class="dropdown-item" href="{% url 'painting' %}"><i class="bi bi-brush me-2 text-danger"></i> Painting</a></li>
                         </ul>
-                    </li>
-                    <li class="nav-item ms-lg-4">
-                        <button class="btn btn-premium btn-primary-custom" data-bs-toggle="modal"
-                            data-bs-target="#logoutModal">
-                            Logout <i class="bi bi-box-arrow-right ms-2"></i>
-                        </button>
-                    </li>
-                </ul>
+                    </div>
+
+                    <!-- Notification Bell -->
+                    <div class="notification-trigger" data-bs-toggle="offcanvas" data-bs-target="#notificationOffcanvas" title="Notifications">
+                        <i class="bi bi-bell fs-5"></i>
+                        {% if notifications %}
+                        <span class="notification-badge"></span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Logout Button -->
+                    <button class="btn btn-outline-danger btn-sm px-3 rounded-pill fw-semibold" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                        <i class="bi bi-box-arrow-right me-1"></i> Sign Out
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Notification Offcanvas -->
-    <div class="offcanvas offcanvas-end offcanvas-premium text-white" tabindex="-1" id="notificationOffcanvas">
-        <div class="offcanvas-header border-bottom border-secondary p-4">
-            <h5 class="offcanvas-title brand-title" style="font-size: 1.5rem;">Notifications</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    <div class="offcanvas offcanvas-end offcanvas-clean" tabindex="-1" id="notificationOffcanvas">
+        <div class="offcanvas-header border-bottom p-3">
+            <h5 class="offcanvas-title fw-bold text-dark fs-5">Notifications</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
-        <div class="offcanvas-body p-4">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <p class="text-muted mb-0 small">Latest Updates</p>
+        <div class="offcanvas-body p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted small fw-semibold">Recent Updates</span>
                 {% if notifications %}
                 <form method="POST" action="{% url 'clear_notifications' %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-sm btn-outline-danger border-0">Clear All</button>
+                    <button type="submit" class="btn btn-sm btn-link text-danger text-decoration-none p-0 small">Clear All</button>
                 </form>
                 {% endif %}
             </div>
 
             <div class="notification-list">
                 {% for notification in notifications %}
-                <div class="notification-item {% if not notification.is_read %}unread{% endif %}">
-                    <p class="mb-2">{{ notification.message }}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="text-muted small">{{ notification.created_at|date:"M d, H:i" }}</span>
+                <div class="notification-card {% if not notification.is_read %}unread{% endif %}">
+                    <p class="mb-1 text-dark small fw-medium">{{ notification.message }}</p>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <span class="text-muted" style="font-size: 0.75rem;">{{ notification.created_at|date:"M d, H:i" }}</span>
                         {% if not notification.is_read %}
                         <form method="POST" action="{% url 'mark_as_read' notification.id %}">
                             {% csrf_token %}
-                            <button type="submit"
-                                class="btn btn-sm btn-link text-primary p-0 text-decoration-none small">Mark as
-                                Read</button>
+                            <button type="submit" class="btn btn-sm btn-link text-primary p-0 text-decoration-none" style="font-size: 0.75rem;">Mark as read</button>
                         </form>
                         {% endif %}
                     </div>
                 </div>
                 {% empty %}
-                <div class="text-center py-5 opacity-50">
-                    <i class="bi bi-bell-slash fs-1 mb-3 d-block"></i>
-                    <p>No new notifications</p>
+                <div class="text-center py-5 text-muted">
+                    <i class="bi bi-bell-slash fs-1 d-block mb-2 opacity-50"></i>
+                    <p class="small mb-0">No new notifications</p>
                 </div>
                 {% endfor %}
             </div>
         </div>
     </div>
 
-    <main>
+    <!-- Main Content -->
+    <main class="flex-grow-1">
         <section class="dashboard-hero">
             <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-8">
-                        <span class="hero-tagline reveal">Dashboard Overview</span>
-                        <h1 class="hero-title reveal">Welcome, <span>{{ user.name }}</span></h1>
-                        <p class="hero-desc reveal">Find the best professionals for your home needs today.</p>
-                    </div>
+                <div class="welcome-card mb-4">
+                    <span class="badge bg-primary-subtle text-primary fw-bold px-3 py-1 rounded-pill mb-2" style="background-color: rgba(37,99,235,0.2) !important; color: #93c5fd !important;">Customer Portal</span>
+                    <h2 class="fw-bold mb-1">Welcome back, {{ user.name }}</h2>
+                    <p class="mb-0 text-white-50 small">Book verified technicians for your home repair and maintenance needs.</p>
                 </div>
 
                 {% if messages %}
-                <div class="mt-4">
+                <div class="mb-4">
                     {% for message in messages %}
-                    <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %} alert-dismissible fade show border-0 rounded-4"
-                        role="alert">
+                    <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %} alert-dismissible fade show small rounded-3" role="alert">
                         {{ message }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                     {% endfor %}
                 </div>
                 {% endif %}
-            </div>
-        </section>
 
-        <section class="worker-selection">
-            <div class="container">
-                <!-- Filter Section -->
-                <div class="filter-section reveal">
+                <!-- Filter Card -->
+                <div class="filter-card">
                     <form method="GET" action="{% url 'user_dashboard' %}" class="row g-3 align-items-center">
-                        <div class="col-auto">
-                            <label class="text-white"><i class="bi bi-funnel me-2"></i>Filter by Expertise</label>
-                        </div>
                         <div class="col-md-4">
-                            <select name="profession" class="form-select form-select-premium"
-                                onchange="this.form.submit()">
-                                <option value="">All Regions & Expertise</option>
+                            <label class="form-label text-dark fw-bold small mb-1"><i class="bi bi-funnel me-1 text-primary"></i> Filter by Profession</label>
+                            <select name="profession" class="form-select form-select-clean" onchange="this.form.submit()">
+                                <option value="">All Services & Categories</option>
                                 {% for profession in professions %}
                                 <option value="{{ profession }}" {% if selected_profession == profession %}selected{% endif %}>
                                     {{ profession }}
@@ -334,94 +485,109 @@
                                 {% endfor %}
                             </select>
                         </div>
+                        <div class="col-md-8 text-md-end text-muted small pt-md-3">
+                            <span>Showing verified professionals in your local service radius</span>
+                        </div>
                     </form>
                 </div>
 
-                <div class="section-label mb-5 reveal">
-                    <h2>Available <span>Professionals</span></h2>
+                <!-- Workers Grid -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="fw-bold fs-5 mb-0 text-dark">Available Service Specialists</h3>
+                    <span class="text-muted small">{{ workers|length }} specialists found</span>
                 </div>
 
-                <!-- Worker Grid -->
-                <div class="row g-4 worker-grid">
+                <div class="row g-4 mb-5">
                     {% for worker in workers %}
-                    <div class="col-md-6 col-lg-4 reveal">
-                        <div class="worker-card-premium">
-                            {% if worker.status %}
-                            <span class="worker-status-badge status-available">Available</span>
-                            {% else %}
-                            <span class="worker-status-badge status-unavailable">Engaged</span>
-                            {% endif %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="worker-card">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="worker-avatar-box">
+                                    {{ worker.first_name|slice:":1" }}{{ worker.last_name|slice:":1" }}
+                                </div>
+                                {% if worker.status %}
+                                <span class="badge-status badge-available"><i class="bi bi-dot"></i> Available Now</span>
+                                {% else %}
+                                <span class="badge-status badge-busy"><i class="bi bi-dot"></i> Busy</span>
+                                {% endif %}
+                            </div>
 
-                            <h4 class="mb-3">{{ worker.first_name }} {{ worker.last_name }}</h4>
+                            <h4 class="fw-bold fs-5 mb-1 text-dark">{{ worker.first_name }} {{ worker.last_name }}</h4>
+                            <p class="text-primary fw-semibold small mb-3">{{ worker.profession }}</p>
 
                             <div class="mb-4">
-                                <div class="d-flex align-items-center mb-2 text-muted">
-                                    <i class="bi bi-briefcase me-2 text-primary"></i>
-                                    <span>{{ worker.profession }}</span>
+                                <div class="worker-spec-item">
+                                    <i class="bi bi-award"></i>
+                                    <span><strong>{{ worker.experience }}</strong> experience</span>
                                 </div>
-                                <div class="d-flex align-items-center mb-2 text-muted">
-                                    <i class="bi bi-award me-2 text-primary"></i>
-                                    <span>{{ worker.experience }} Experience</span>
+                                <div class="worker-spec-item">
+                                    <i class="bi bi-cash-stack"></i>
+                                    <span>Base rate: <strong>{{ worker.amount }}</strong></span>
                                 </div>
-                                <div class="d-flex align-items-center text-muted">
-                                    <i class="bi bi-currency-rupee me-2 text-primary"></i>
-                                    <span>Min Charge: {{ worker.amount }}</span>
+                                <div class="worker-spec-item">
+                                    <i class="bi bi-patch-check-fill text-success"></i>
+                                    <span>ID & Police Verified</span>
                                 </div>
                             </div>
 
                             <div class="mt-auto">
-                                <a href="{% url 'view_worker' worker.id %}"
-                                    class="btn-premium btn-primary-custom w-100 justify-content-center">
-                                    View Profile <i class="bi bi-arrow-right ms-2"></i>
+                                <a href="{% url 'view_worker' worker.id %}" class="btn-view-profile">
+                                    View Full Profile & Book <i class="bi bi-arrow-right"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
                     {% empty %}
-                    <div class="col-12 text-center py-5">
-                        <p class="text-muted">No workers found matching your criteria.</p>
+                    <div class="col-12">
+                        <div class="card border border-dashed text-center py-5 rounded-4">
+                            <i class="bi bi-search fs-1 text-muted opacity-50 mb-2"></i>
+                            <h5 class="fw-semibold text-dark">No professionals found</h5>
+                            <p class="text-muted small mb-0">Try changing your profession filter above.</p>
+                        </div>
                     </div>
                     {% endfor %}
                 </div>
 
-                <!-- My Requests Section -->
-                <div class="section-label mb-5 reveal">
-                    <h2>Recent <span>Requests</span></h2>
+                <!-- Recent Requests Section -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="fw-bold fs-5 mb-0 text-dark">Your Service Requests</h3>
+                    <span class="text-muted small">Tracking your bookings</span>
                 </div>
 
-                <div class="service-table-container reveal shadow-lg">
+                <div class="requests-card">
                     <div class="table-responsive">
-                        <table class="table table-premium">
+                        <table class="table table-custom">
                             <thead>
                                 <tr>
-                                    <th>Service Provider</th>
-                                    <th>Expertise</th>
-                                    <th class="text-center">Current Status</th>
+                                    <th>Technician</th>
+                                    <th>Category</th>
+                                    <th class="text-center">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for request in requests %}
                                 <tr>
                                     <td>
-                                        <div class="fw-bold">{{ request.worker.first_name }} {{ request.worker.last_name
-                                            }}</div>
+                                        <div class="fw-bold text-dark">{{ request.worker.first_name }} {{ request.worker.last_name }}</div>
                                     </td>
-                                    <td>{{ request.worker.profession }}</td>
+                                    <td>
+                                        <span class="badge bg-light text-dark border">{{ request.worker.profession }}</span>
+                                    </td>
                                     <td class="text-center">
-                                        <span class="request-status 
-                                            {% if request.status == 'Pending' %}status-pending
-                                            {% elif request.status == 'Accepted' %}status-accepted
-                                            {% elif request.status == 'Rejected' %}status-rejected
-                                            {% elif request.status == 'Completed' %}status-completed
-                                            {% endif %}">
+                                        <span class="pill-status 
+                                            {% if request.status == 'Pending' %}pill-pending
+                                            {% elif request.status == 'Accepted' %}pill-accepted
+                                            {% elif request.status == 'Rejected' %}pill-rejected
+                                            {% elif request.status == 'Completed' %}pill-completed
+                                            {% else %}pill-pending{% endif %}">
                                             {{ request.status }}
                                         </span>
                                     </td>
                                 </tr>
                                 {% empty %}
                                 <tr>
-                                    <td colspan="3" class="text-center py-5 opacity-50">
-                                        <p>You haven't made any service requests yet.</p>
+                                    <td colspan="3" class="text-center py-4 text-muted small">
+                                        You have not made any service requests yet. Browse the specialists above to get started.
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -433,88 +599,32 @@
         </section>
     </main>
 
-    <!-- Logout Modal -->
+    <!-- Logout Confirmation Modal -->
     <div class="modal fade" id="logoutModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content glass-card p-4 border-secondary border-opacity-25" style="border-radius: 30px;">
-                <div class="text-center">
-                    <div class="mb-4 text-primary" style="font-size: 3rem;"><i class="bi bi-box-arrow-right"></i></div>
-                    <h3 class="text-white">Signing Out?</h3>
-                    <p class="text-muted shadow-lg">Are you sure you want to log out of your dashboard? You'll need to
-                        sign back in to book services.</p>
+            <div class="modal-content modal-content-clean">
+                <div class="text-center mb-3">
+                    <div class="d-inline-flex p-3 rounded-circle bg-danger-subtle text-danger mb-3">
+                        <i class="bi bi-box-arrow-right fs-3"></i>
+                    </div>
+                    <h4 class="fw-bold text-dark">Sign Out?</h4>
+                    <p class="text-muted small">Are you sure you want to sign out of your FIXIT account?</p>
                 </div>
-                <div class="d-flex gap-3 mt-4">
-                    <button type="button" class="btn btn-outline-custom flex-grow-1"
-                        data-bs-dismiss="modal">Cancel</button>
-                    <a href="{% url 'user_logout' %}" class="btn btn-primary-custom flex-grow-1">Logout</a>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-light flex-grow-1 rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <a href="{% url 'user_logout' %}" class="btn btn-danger flex-grow-1 rounded-pill fw-semibold">Yes, Sign Out</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- Footer -->
+    <footer class="border-top py-3 text-center text-muted small bg-white mt-auto">
+        © 2026 FIXIT Technologies Inc. All rights reserved.
+    </footer>
+
+    <!-- Bootstrap Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Smooth scroll
-        const lenis = new Lenis();
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-
-        gsap.registerPlugin(ScrollTrigger);
-
-        // Custom Cursor
-        const cursorDot = document.querySelector('.cursor-dot');
-        const cursorOutline = document.querySelector('.cursor-outline');
-
-        window.addEventListener('mousemove', (e) => {
-            gsap.set(cursorDot, { x: e.clientX, y: e.clientY });
-            gsap.to(cursorOutline, {
-                x: e.clientX - 20,
-                y: e.clientY - 20,
-                duration: 0.5,
-                ease: "power3.out"
-            });
-        });
-
-        // Split text branding animation
-        const splitH1 = new SplitType('.hero-title', { types: 'chars,words' });
-        gsap.from(splitH1.chars, {
-            opacity: 0,
-            y: 30,
-            rotateX: -90,
-            stagger: 0.02,
-            duration: 1,
-            ease: "back.out(1.7)",
-            delay: 0.3
-        });
-
-        // Entrance animation for sections
-        const reveals = document.querySelectorAll('.reveal');
-        reveals.forEach(el => {
-            gsap.from(el, {
-                scrollTrigger: {
-                    trigger: el,
-                    start: "top 90%",
-                    toggleActions: "play none none none"
-                },
-                opacity: 0,
-                y: 30,
-                duration: 1,
-                ease: "power3.out"
-            });
-        });
-
-        // Prevention logic
-        history.pushState(null, null, location.href);
-        window.onpopstate = function () {
-            var logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
-            logoutModal.show();
-            history.pushState(null, null, location.href);
-        };
-    </script>
 </body>
 
 </html>

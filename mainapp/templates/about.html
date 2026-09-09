@@ -3,460 +3,598 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FIXIT | About Our Mission</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIXIT | About Us & Our Mission</title>
+    <meta name="description" content="Learn about FIXIT's mission to redefine home maintenance with certified professionals, transparent pricing, and quality guarantees.">
 
-  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
 
-  <!-- Bootstrap & Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Bootstrap 5 & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-  <!-- Google Fonts -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500&display=swap"
-    rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- GSAP & Lenis Smooth Scroll -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
 
-  <!-- GSAP & Plugins -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://unpkg.com/split-type"></script>
-  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <style>
+        :root {
+            --bg-page: #ffffff;
+            --bg-subtle: #f8fafc;
+            --bg-card: #ffffff;
+            --text-heading: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-soft: #eff6ff;
+            --primary-border: #bfdbfe;
+            --accent-emerald: #059669;
+            --border-color: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.05);
+            --shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
+            --shadow-xl: 0 20px 35px -10px rgba(15, 23, 42, 0.08);
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-xl: 24px;
+            --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-  <style>
-    .about-hero {
-      height: 70vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      text-align: center;
-    }
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-    .about-hero-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1), transparent 70%);
-      z-index: -1;
-    }
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-heading);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
 
-    .story-section {
-      padding: 100px 0;
-    }
+        /* Navbar */
+        .simple-navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+            transition: var(--transition);
+            z-index: 1030;
+        }
 
-    .story-image-wrapper {
-      position: relative;
-      border-radius: 30px;
-      overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-    }
+        .brand-logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
 
-    .story-image-wrapper img {
-      width: 100%;
-      height: auto;
-      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
+        .brand-icon-box {
+            width: 38px;
+            height: 38px;
+            background: var(--primary);
+            color: #ffffff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+        }
 
-    .story-image-wrapper:hover img {
-      transform: scale(1.05);
-    }
+        .brand-name {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            margin: 0;
+        }
 
-    .stats-grid {
-      margin-top: 50px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 30px;
-    }
+        .brand-name span {
+            color: var(--primary);
+        }
 
-    .stat-item h3 {
-      font-size: 2.5rem;
-      color: var(--primary);
-      margin-bottom: 5px;
-    }
+        .nav-link-simple {
+            color: var(--text-body) !important;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 8px 16px !important;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
 
-    .stat-item p {
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      font-size: 0.8rem;
-    }
+        .nav-link-simple:hover,
+        .nav-link-simple.active {
+            color: var(--primary) !important;
+            background-color: var(--primary-soft);
+        }
 
-    .how-it-works-alt {
-      padding: 100px 0;
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 50px;
-      margin: 50px 0;
-    }
+        .dropdown-menu-simple {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 10px;
+            box-shadow: var(--shadow-lg);
+            min-width: 250px;
+        }
 
-    .step-pill {
-      background: var(--bg-card);
-      border: 1px solid var(--glass-border);
-      padding: 40px;
-      border-radius: 24px;
-      height: 100%;
-      transition: all 0.4s ease;
-    }
+        .dropdown-item-simple {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            color: var(--text-body);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.92rem;
+            font-weight: 500;
+        }
 
-    .step-pill:hover {
-      border-color: var(--primary);
-      transform: translateY(-5px);
-    }
+        .dropdown-item-simple:hover {
+            background-color: var(--bg-subtle);
+            color: var(--primary);
+        }
 
-    .step-num {
-      width: 50px;
-      height: 50px;
-      background: var(--primary);
-      color: white;
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 1.2rem;
-      margin-bottom: 25px;
-    }
+        .btn-simple-primary {
+            background-color: var(--primary);
+            color: #ffffff !important;
+            font-weight: 600;
+            font-size: 0.92rem;
+            padding: 10px 22px;
+            border-radius: 50px;
+            border: 1px solid transparent;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
 
-    .step-pill h3 {
-      font-size: 1.4rem;
-      margin-bottom: 15px;
-    }
+        .btn-simple-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
 
-    .step-pill p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      margin-bottom: 0;
-    }
+        .btn-simple-outline {
+            background-color: transparent;
+            color: var(--text-body) !important;
+            font-weight: 600;
+            font-size: 0.92rem;
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
 
-    /* Read More Custom Styles */
-    #moreText {
-      display: none;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
+        .btn-simple-outline:hover {
+            background-color: var(--bg-subtle);
+            color: var(--text-heading) !important;
+        }
 
-    #moreText.show {
-      display: inline;
-      opacity: 1;
-    }
+        .btn-menu-trigger {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
 
-    #readMoreBtn {
-      background: transparent;
-      border: 1px solid var(--primary);
-      color: var(--primary);
-      padding: 10px 25px;
-      border-radius: 50px;
-      margin-top: 20px;
-      transition: all 0.3s ease;
-    }
+        /* Page Hero */
+        .about-hero-clean {
+            padding: 140px 0 80px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            text-align: center;
+        }
 
-    #readMoreBtn:hover {
-      background: var(--primary);
-      color: white;
-    }
-  </style>
+        .pill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--primary-soft);
+            border: 1px solid var(--primary-border);
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+        }
+
+        .about-title {
+            font-size: clamp(2.4rem, 4vw, 3.4rem);
+            font-weight: 800;
+            margin-bottom: 18px;
+            color: var(--text-heading);
+        }
+
+        .about-title span {
+            color: var(--primary);
+        }
+
+        .about-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Story Section */
+        .section-wrap {
+            padding: 90px 0;
+        }
+
+        .story-card-img {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 12px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .story-card-img img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-lg);
+            display: block;
+        }
+
+        .value-card-simple {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px 24px;
+            height: 100%;
+            transition: var(--transition);
+        }
+
+        .value-card-simple:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-md);
+        }
+
+        .value-icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+        }
+
+        /* Read More Block */
+        #moreStoryText {
+            display: none;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Stats */
+        .stats-box-about {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 40px 25px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        /* Footer */
+        .footer-simple {
+            background-color: var(--bg-subtle);
+            border-top: 1px solid var(--border-color);
+            padding: 70px 0 30px;
+        }
+
+        .footer-link-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-link-list li {
+            margin-bottom: 10px;
+        }
+
+        .footer-link-list a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-link-list a:hover {
+            color: var(--primary);
+            padding-left: 4px;
+        }
+    </style>
 </head>
 
 <body>
 
-  <!-- Custom Cursor -->
-  <div class="cursor-dot"></div>
-  <div class="cursor-outline"></div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top simple-navbar">
+        <div class="container">
+            <button class="btn-menu-trigger me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#fixitOffcanvas">
+                <i class="bi bi-grid"></i>
+            </button>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
-    <div class="container">
-      <a class="navbar-brand menu-icon me-3" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop">
-        <i class="bi bi-list"></i>
-      </a>
-      <a class="navbar-brand brand-title" href="{% url 'home' %}">FIXIT</a>
+            <a class="brand-logo-wrap" href="{% url 'home' %}">
+                <div class="brand-icon-box">
+                    <i class="bi bi-tools"></i>
+                </div>
+                <h1 class="brand-name">FIX<span>IT</span></h1>
+            </a>
 
-      <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarNav">
-        <i class="bi bi-list"></i>
-      </button>
+            <button class="navbar-toggler border-0 ms-auto d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navCollapseAbout">
+                <i class="bi bi-list fs-2 text-dark"></i>
+            </button>
 
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav align-items-center">
-          <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-          <li class="nav-item"><a class="nav-link active" href="{% url 'about' %}">About</a></li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Services</a>
-            <ul class="dropdown-menu dropdown-menu-dark">
-              <li><a class="dropdown-item" href="{% url 'plumbing' %}">Plumbing</a></li>
-              <li><a class="dropdown-item" href="{% url 'electrician' %}">Electrician</a></li>
-              <li><a class="dropdown-item" href="{% url 'gardening' %}">Gardening</a></li>
-              <li><a class="dropdown-item" href="{% url 'cleaning' %}">Cleaning</a></li>
-              <li><a class="dropdown-item" href="{% url 'painting' %}">Painting</a></li>
-            </ul>
-          </li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'contactus' %}">Contact</a></li>
-          <li class="nav-item ms-lg-4">
-            <a href="{% url 'user_reg' %}" class="btn btn-primary-custom btn-premium py-2 px-4 shadow-sm">Get
-              Started</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Offcanvas Redesign -->
-  <div class="offcanvas offcanvas-start bg-dark text-white" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop">
-    <div class="offcanvas-header border-bottom border-secondary">
-      <div>
-        <h5 class="offcanvas-title brand-title m-0" id="staticBackdropLabel">FIXIT</h5>
-        <p class="text-muted small mb-0">Premium Home Services</p>
-      </div>
-      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-    </div>
-    <div class="offcanvas-body d-flex flex-column justify-content-between">
-      <div class="nav-links-wrapper">
-        <a href="{% url 'user_reg' %}" class="offcanvas-link">
-          <i class="bi bi-person-plus"></i> User Registration
-        </a>
-        <a href="{% url 'workerregister' %}" class="offcanvas-link">
-          <i class="bi bi-tools"></i> Worker Registration
-        </a>
-        <div class="my-4 border-bottom border-secondary opacity-25"></div>
-        <a href="{% url 'user_login' %}" class="offcanvas-link">
-          <i class="bi bi-box-arrow-in-right"></i> User Login
-        </a>
-        <a href="{% url 'worker_login' %}" class="offcanvas-link">
-          <i class="bi bi-briefcase"></i> Worker Login
-        </a>
-      </div>
-
-      <div class="offcanvas-footer mt-auto">
-        <p class="text-muted small mb-3 letter-spacing-2">STAY CONNECTED</p>
-        <div class="d-flex gap-3">
-          <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            <div class="collapse navbar-collapse justify-content-end" id="navCollapseAbout">
+                <ul class="navbar-nav align-items-center gap-1">
+                    <li class="nav-item"><a class="nav-link-simple" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link-simple active" href="{% url 'about' %}">About</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link-simple dropdown-toggle" href="{% url 'services' %}" role="button" data-bs-toggle="dropdown">Services</a>
+                        <ul class="dropdown-menu dropdown-menu-simple">
+                            <li><a class="dropdown-item-simple" href="{% url 'plumbing' %}"><i class="bi bi-droplet"></i> Plumbing</a></li>
+                            <li><a class="dropdown-item-simple" href="{% url 'electrician' %}"><i class="bi bi-lightning-charge"></i> Electrician</a></li>
+                            <li><a class="dropdown-item-simple" href="{% url 'painting' %}"><i class="bi bi-paint-bucket"></i> Painting</a></li>
+                            <li><a class="dropdown-item-simple" href="{% url 'cleaning' %}"><i class="bi bi-stars"></i> Deep Cleaning</a></li>
+                            <li><a class="dropdown-item-simple" href="{% url 'gardening' %}"><i class="bi bi-tree"></i> Gardening</a></li>
+                            <li><hr class="dropdown-divider my-2"></li>
+                            <li><a class="dropdown-item-simple text-primary fw-bold" href="{% url 'services' %}">View All Services</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link-simple" href="{% url 'contactus' %}">Contact</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <a href="{% url 'user_login' %}" class="btn-simple-outline py-2 px-3">Sign In</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a href="{% url 'user_reg' %}" class="btn-simple-primary py-2 px-4">Book a Pro</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
+    </nav>
 
-  <!-- Hero Section -->
-  <section class="about-hero">
-    <div class="about-hero-bg"></div>
-    <div class="container">
-      <span class="hero-tagline reveal">Our Mission</span>
-      <h1 class="hero-title reveal">We Architect <span>Better</span> Homes</h1>
-    </div>
-  </section>
-
-  <!-- Story Section -->
-  <section class="story-section">
-    <div class="container">
-      <div class="row align-items-center g-5">
-        <div class="col-lg-6 reveal">
-          <div class="story-image-wrapper">
-            <img src="{% static 'images/about-img.jpg' %}" alt="Our Story" class="img-fluid">
-          </div>
+    <!-- Offcanvas -->
+    <div class="offcanvas offcanvas-start bg-white" tabindex="-1" id="fixitOffcanvas">
+        <div class="offcanvas-header p-4 border-bottom">
+            <div class="d-flex align-items-center gap-2">
+                <div class="brand-icon-box"><i class="bi bi-tools"></i></div>
+                <h5 class="brand-name mb-0">FIX<span>IT</span></h5>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
-        <div class="col-lg-6 reveal">
-          <span class="hero-tagline">Since 2024</span>
-          <h2 class="mb-4">Crafting Excellence in Every Corner</h2>
-          <p class="text-muted mb-4" style="font-size: 1.1rem;">
-            Welcome to FIXIT! We provide top-quality home services, including plumbing, electrical repairs, gardening,
-            cleaning, painting, and more.
-            Our skilled professionals ensure the best service at your convenience. Available 24/7, we guarantee
-            satisfaction for all your home maintenance needs.
-          </p>
-          <div id="moreText">
-            <p class="text-muted mb-4" style="font-size: 1.1rem;">
-              From fixing a leaky faucet to painting your entire house, we cover it all with precision and care.
-              Our team of certified professionals brings years of experience, ensuring that every job is completed
-              efficiently and to the highest standards.
-              We use advanced tools and techniques to provide quick, reliable solutions, saving you time and effort.
-              With a commitment to excellence and customer satisfaction, FIXIT is your trusted partner for maintaining a
-              comfortable and well-functioning home.
+        <div class="offcanvas-body p-4 d-flex flex-column justify-content-between">
+            <div>
+                <p class="text-uppercase text-muted small fw-bold mb-3">Portals</p>
+                <a href="{% url 'user_reg' %}" class="dropdown-item-simple py-2 mb-2"><i class="bi bi-person-plus"></i> Customer Registration</a>
+                <a href="{% url 'user_login' %}" class="dropdown-item-simple py-2 mb-2"><i class="bi bi-box-arrow-in-right"></i> Customer Login</a>
+                <a href="{% url 'workerregister' %}" class="dropdown-item-simple py-2 mb-2"><i class="bi bi-tools"></i> Join as a Pro</a>
+                <a href="{% url 'worker_login' %}" class="dropdown-item-simple py-2 mb-2"><i class="bi bi-briefcase"></i> Pro Dashboard</a>
+            </div>
+            <div class="pt-4 border-top">
+                <a href="{% url 'contactus' %}" class="text-decoration-none text-muted small">Need assistance? Contact our team</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <section class="about-hero-clean">
+        <div class="container">
+            <div class="pill-badge">
+                <i class="bi bi-bullseye"></i> Our Purpose & Story
+            </div>
+            <h1 class="about-title">Making Home Maintenance <span>Simple & Trustworthy</span></h1>
+            <p class="about-subtitle">
+                We bridge the gap between discerning homeowners and certified, background-checked craftsmen. Reliable quality, upfront pricing, and absolute peace of mind.
             </p>
-          </div>
-          <button id="readMoreBtn" onclick="toggleReadMore()">Read More</button>
+        </div>
+    </section>
 
-          <div class="stats-grid">
-            <div class="stat-item">
-              <h3 class="counter">500</h3>
-              <p>Projects Done</p>
+    <!-- Our Story Section -->
+    <section class="section-wrap">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <div class="story-card-img">
+                        <img src="{% static 'images/aboutpic1.jpg' %}" alt="Our Story at FIXIT">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <span class="text-uppercase text-primary small fw-bold letter-spacing-1 d-block mb-2">Our Foundation</span>
+                    <h2 class="mb-3 fs-1 fw-bold">Built to Eliminate Friction in Home Services</h2>
+                    <p class="text-muted mb-3" style="font-size: 1.05rem; line-height: 1.7;">
+                        Finding a reliable tradesperson used to mean unpredictable pricing, unverified credentials, and missed appointments. FIXIT was founded with a singular vision: to bring standardized quality, transparent rates, and vetted experts to every household.
+                    </p>
+                    <div id="moreStoryText">
+                        <p class="text-muted mb-3" style="font-size: 1.05rem; line-height: 1.7;">
+                            Every specialist on our network is personally vetted, skill-benchmarked, and backed by our comprehensive $10,000 property protection policy and 30-day rework guarantee.
+                        </p>
+                    </div>
+                    <button class="btn btn-outline-primary rounded-pill px-4 py-2 mt-2 fw-semibold" id="toggleStoryBtn" onclick="toggleStory()">
+                        Read More <i class="bi bi-chevron-down ms-1"></i>
+                    </button>
+                </div>
             </div>
-            <div class="stat-item">
-              <h3 class="counter">50</h3>
-              <p>Expert Workers</p>
+        </div>
+    </section>
+
+    <!-- Core Values -->
+    <section class="section-wrap" style="background-color: var(--bg-subtle);">
+        <div class="container">
+            <div class="text-center max-w-600 mx-auto mb-5">
+                <span class="text-uppercase text-primary small fw-bold d-block mb-2">Our Pillars</span>
+                <h2 class="fs-1 fw-bold mb-3">The Principles That Guide Us</h2>
+                <p class="text-muted">How we ensure an exceptional experience for every homeowner.</p>
             </div>
-            <div class="stat-item">
-              <h3 class="counter">24</h3>
-              <p>Hours Support</p>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="value-card-simple">
+                        <div class="value-icon-box"><i class="bi bi-shield-check"></i></div>
+                        <h4 class="fw-bold mb-2">Rigorous Vetting</h4>
+                        <p class="text-muted mb-0">Identity screening, police background checks, and practical trade skill evaluations for all technicians.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="value-card-simple">
+                        <div class="value-icon-box"><i class="bi bi-currency-dollar"></i></div>
+                        <h4 class="fw-bold mb-2">Price Transparency</h4>
+                        <p class="text-muted mb-0">Clear diagnostic and job rates provided in writing before any repair commences. No hidden fees.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+                    <div class="value-card-simple">
+                        <div class="value-icon-box"><i class="bi bi-award"></i></div>
+                        <h4 class="fw-bold mb-2">30-Day Guarantee</h4>
+                        <p class="text-muted mb-0">If any serviced item or repair fails within 30 days, we re-dispatch our senior specialist at zero charge.</p>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- How It Works -->
-  <section class="how-it-works-alt">
-    <div class="container">
-      <div class="section-label reveal text-center mb-5">
-        <span class="hero-tagline">Process</span>
-        <h2>How It Works</h2>
-      </div>
-      <div class="row g-4">
-        <div class="col-md-3 reveal">
-          <div class="step-pill">
-            <div class="step-num">01</div>
-            <h3>Book Online</h3>
-            <p>Submit your requirements and preferred time through our simple booking system.</p>
-          </div>
+    <!-- Stats Box -->
+    <section class="section-wrap">
+        <div class="container">
+            <div class="stats-box-about">
+                <div class="row g-4 align-items-center text-center">
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-item">
+                            <div class="stat-num">15k+</div>
+                            <p class="text-muted mb-0 fw-medium">Homes Serviced</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-item">
+                            <div class="stat-num">500+</div>
+                            <p class="text-muted mb-0 fw-medium">Certified Technicians</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-item">
+                            <div class="stat-num">4.9★</div>
+                            <p class="text-muted mb-0 fw-medium">Average Review</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-item">
+                            <div class="stat-num">30m</div>
+                            <p class="text-muted mb-0 fw-medium">Avg Arrival Time</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-3 reveal">
-          <div class="step-pill">
-            <div class="step-num gold">02</div>
-            <h3>Site Visit</h3>
-            <p>Our expert visits as per your schedule for a detailed assessment and quote.</p>
-          </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-simple">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4 col-md-6">
+                    <a class="brand-logo-wrap mb-3 d-inline-flex" href="{% url 'home' %}">
+                        <div class="brand-icon-box"><i class="bi bi-tools"></i></div>
+                        <span class="brand-name">FIX<span>IT</span></span>
+                    </a>
+                    <p class="text-muted small line-height-lg mb-0">
+                        Reliable home repair and maintenance services. We connect you with certified professionals for all your home care requirements.
+                    </p>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h6 class="fw-bold mb-3 text-uppercase text-dark small">Services</h6>
+                    <ul class="footer-link-list">
+                        <li><a href="{% url 'plumbing' %}">Plumbing</a></li>
+                        <li><a href="{% url 'electrician' %}">Electrician</a></li>
+                        <li><a href="{% url 'painting' %}">Painting</a></li>
+                        <li><a href="{% url 'cleaning' %}">Cleaning</a></li>
+                        <li><a href="{% url 'gardening' %}">Gardening</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h6 class="fw-bold mb-3 text-uppercase text-dark small">Company</h6>
+                    <ul class="footer-link-list">
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        <li><a href="{% url 'contactus' %}">Contact</a></li>
+                        <li><a href="{% url 'user_reg' %}">Book a Pro</a></li>
+                        <li><a href="{% url 'workerregister' %}">Partner Portal</a></li>
+                        <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h6 class="fw-bold mb-3 text-uppercase text-dark small">Need Assistance?</h6>
+                    <p class="text-muted small">Our dispatch team is available Monday through Saturday to answer questions.</p>
+                    <a href="{% url 'contactus' %}" class="btn-simple-primary py-2 px-3">Contact Support</a>
+                </div>
+            </div>
+
+            <div class="mt-5 pt-3 border-top text-center text-muted small">
+                © 2026 FIXIT Technologies Inc. All rights reserved.
+            </div>
         </div>
-        <div class="col-md-3 reveal">
-          <div class="step-pill">
-            <div class="step-num">03</div>
-            <h3>Fast Repair</h3>
-            <p>Get the job done with precision after your approval of the work plan.</p>
-          </div>
-        </div>
-        <div class="col-md-3 reveal">
-          <div class="step-pill">
-            <div class="step-num">04</div>
-            <h3>Easy Pay</h3>
-            <p>Complete your payment securely via any UPI app or cash after satisfaction.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </footer>
 
-  <!-- Footer-like CTA -->
-  <section class="py-5 text-center reveal">
-    <div class="container">
-      <div class="glass-card p-5 border-radius-30"
-        style="background: var(--glass); border: 1px solid var(--glass-border); border-radius: 40px;">
-        <h2 class="mb-4">Ready to fix your home?</h2>
-        <a href="{% url 'services' %}" class="btn-premium btn-primary-custom">Browse Our Services</a>
-      </div>
-    </div>
-  </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const lenis = new Lenis({ duration: 1.1, smooth: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Initialize Lenis Smooth Scroll
-    const lenis = new Lenis()
-    function raf(time) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
-    }
-    requestAnimationFrame(raf)
-
-    // GSAP Animations
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Custom Cursor
-    const cursorDot = document.querySelector('.cursor-dot');
-    const cursorOutline = document.querySelector('.cursor-outline');
-
-    window.addEventListener('mousemove', (e) => {
-      const posX = e.clientX;
-      const posY = e.clientY;
-
-      gsap.set(cursorDot, { x: posX, y: posY });
-      gsap.to(cursorOutline, {
-        x: posX - 20,
-        y: posY - 20,
-        duration: 0.5,
-        ease: "power3.out"
-      });
-    });
-
-    // Split Text Animation
-    const splitTitles = new SplitType('.hero-title', { types: 'chars,words' });
-    gsap.from(splitTitles.chars, {
-      opacity: 0,
-      y: 50,
-      rotateX: -90,
-      stagger: 0.02,
-      duration: 1,
-      ease: "back.out(1.7)",
-      delay: 0.5
-    });
-
-    // Scroll Reveal
-    const reveals = document.querySelectorAll('.reveal');
-    reveals.forEach(el => {
-      gsap.from(el, {
-        scrollTrigger: {
-          trigger: el,
-          start: "top 85%",
-          toggleActions: "play none none none"
-        },
-        opacity: 0,
-        y: 50,
-        duration: 1,
-        ease: "power3.out"
-      });
-    });
-
-    // Counter Animation
-    const counters = document.querySelectorAll('.counter');
-    counters.forEach(counter => {
-      const target = +counter.innerText;
-      gsap.from(counter, {
-        scrollTrigger: {
-          trigger: counter,
-          start: "top 90%"
-        },
-        innerText: 0,
-        duration: 2,
-        snap: { innerText: 1 },
-        ease: "power2.out"
-      });
-    });
-
-    // Toggle Read More
-    function toggleReadMore() {
-      const moreText = document.getElementById('moreText');
-      const btnText = document.getElementById('readMoreBtn');
-
-      if (moreText.style.display === 'none' || moreText.style.display === '') {
-        moreText.style.display = 'block';
-        setTimeout(() => moreText.style.opacity = '1', 10);
-        btnText.textContent = 'Read Less';
-      } else {
-        moreText.style.opacity = '0';
-        setTimeout(() => moreText.style.display = 'none', 500);
-        btnText.textContent = 'Read More';
-      }
-    }
-
-    // Navbar Scroll Effect
-    window.addEventListener('scroll', () => {
-      const nav = document.querySelector('.custom-navbar');
-      if (window.scrollY > 50) {
-        nav.classList.add('scrolled');
-      } else {
-        nav.classList.remove('scrolled');
-      }
-    });
-  </script>
+        function toggleStory() {
+            const moreText = document.getElementById('moreStoryText');
+            const btn = document.getElementById('toggleStoryBtn');
+            if (moreText.style.display === 'block') {
+                moreText.style.display = 'none';
+                btn.innerHTML = 'Read More <i class="bi bi-chevron-down ms-1"></i>';
+            } else {
+                moreText.style.display = 'block';
+                btn.innerHTML = 'Show Less <i class="bi bi-chevron-up ms-1"></i>';
+            }
+        }
+    </script>
 </body>
 
 </html>

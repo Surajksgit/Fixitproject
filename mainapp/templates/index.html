@@ -5,396 +5,2152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FIXIT | Premium Home Services</title>
+    <title>FIXIT | Professional Home Maintenance & Repair Services</title>
+    <meta name="description" content="Book trusted, background-checked plumbers, electricians, painters, cleaners, and gardeners. Transparent pricing, 30-minute rapid dispatch, and 30-day guarantee.">
 
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
 
-    <!-- Bootstrap & Icons -->
+    <!-- Bootstrap 5 & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <!-- GSAP & Plugins -->
+    <!-- GSAP & Lenis Smooth Scroll -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/split-type"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
 
     <style>
-        /* In-page overrides or specific tweaks */
-        #chatbot-container {
-            z-index: 1000;
+        /* ==========================================================================
+           FIXIT Simple & Elegant Design System
+           ========================================================================== */
+        :root {
+            --bg-page: #ffffff;
+            --bg-subtle: #f8fafc;
+            --bg-card: #ffffff;
+            --text-heading: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+            
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-soft: #eff6ff;
+            --primary-border: #bfdbfe;
+            
+            --accent-emerald: #059669;
+            --accent-emerald-soft: #ecfdf5;
+            
+            --border-color: #e2e8f0;
+            --border-hover: #cbd5e1;
+            
+            --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+            --shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
+            --shadow-xl: 0 20px 35px -10px rgba(15, 23, 42, 0.08);
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-xl: 24px;
+            
+            --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Emergency Visibility Fix */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            opacity: 1 !important;
-            visibility: visible !important;
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .reveal {
-            opacity: 1 !important;
-            visibility: visible !important;
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-heading);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.25;
+        }
+
+        /* ==========================================================================
+           Navbar (Simple & Crisp)
+           ========================================================================== */
+        .simple-navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+            transition: var(--transition);
+            z-index: 1030;
+        }
+
+        .simple-navbar.scrolled {
+            padding: 12px 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .brand-logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .brand-icon-box {
+            width: 38px;
+            height: 38px;
+            background: var(--primary);
+            color: #ffffff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+        }
+
+        .brand-name {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-name span {
+            color: var(--primary);
+        }
+
+        .nav-link-simple {
+            color: var(--text-body) !important;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 8px 16px !important;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .nav-link-simple:hover,
+        .nav-link-simple.active {
+            color: var(--primary) !important;
+            background-color: var(--primary-soft);
+        }
+
+        .dropdown-menu-simple {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 10px;
+            box-shadow: var(--shadow-lg);
+            min-width: 250px;
+            margin-top: 10px !important;
+        }
+
+        .dropdown-item-simple {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            color: var(--text-body);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.92rem;
+            font-weight: 500;
+        }
+
+        .dropdown-item-simple i {
+            font-size: 1.1rem;
+            color: var(--primary);
+            width: 30px;
+            height: 30px;
+            background: var(--primary-soft);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dropdown-item-simple:hover {
+            background-color: var(--bg-subtle);
+            color: var(--primary);
+        }
+
+        .btn-simple-primary {
+            background-color: var(--primary);
+            color: #ffffff !important;
+            font-weight: 600;
+            font-size: 0.92rem;
+            padding: 10px 22px;
+            border-radius: 50px;
+            border: 1px solid transparent;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .btn-simple-primary:hover {
+            background-color: var(--primary-hover);
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-simple-outline {
+            background-color: transparent;
+            color: var(--text-body) !important;
+            font-weight: 600;
+            font-size: 0.92rem;
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .btn-simple-outline:hover {
+            background-color: var(--bg-subtle);
+            border-color: var(--border-hover);
+            color: var(--text-heading) !important;
+        }
+
+        /* Menu Trigger Button */
+        .btn-menu-trigger {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-menu-trigger:hover {
+            background: var(--primary-soft);
+            color: var(--primary);
+            border-color: var(--primary-border);
+        }
+
+        /* ==========================================================================
+           Hero Section (Simple & Spacious)
+           ========================================================================== */
+        .hero-section-simple {
+            padding: 140px 0 80px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            position: relative;
+        }
+
+        .pill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--primary-soft);
+            border: 1px solid var(--primary-border);
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+        }
+
+        .pill-dot {
+            width: 7px;
+            height: 7px;
+            background-color: var(--accent-emerald);
+            border-radius: 50%;
+        }
+
+        .hero-title-simple {
+            font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+            font-weight: 800;
+            color: var(--text-heading);
+            line-height: 1.15;
+            margin-bottom: 20px;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-title-simple span {
+            color: var(--primary);
+        }
+
+        .hero-desc-simple {
+            font-size: 1.12rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            max-width: 540px;
+            margin-bottom: 32px;
+        }
+
+        /* Clean Booking Bar */
+        .booking-bar-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 8px;
+            box-shadow: var(--shadow-lg);
+            max-width: 580px;
+            margin-bottom: 35px;
+        }
+
+        .booking-bar-inner {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .booking-input-group {
+            flex: 1;
+            min-width: 170px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .booking-input-group i {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .booking-input-group select,
+        .booking-input-group input {
+            border: none;
+            background: transparent;
+            color: var(--text-heading);
+            font-size: 0.92rem;
+            font-weight: 500;
+            width: 100%;
+            outline: none;
+        }
+
+        .booking-input-group input::placeholder {
+            color: var(--text-light);
+        }
+
+        /* Hero Social Proof */
+        .social-proof-wrap {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .avatar-group {
+            display: flex;
+        }
+
+        .avatar-group img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            margin-left: -8px;
+            object-fit: cover;
+        }
+
+        .avatar-group img:first-child {
+            margin-left: 0;
+        }
+
+        .proof-info {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        .proof-info strong {
+            color: var(--text-heading);
+        }
+
+        .proof-stars {
+            color: #f59e0b;
+            font-size: 0.82rem;
+        }
+
+        /* Hero Visual Showcase */
+        .hero-img-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 14px;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+        }
+
+        .hero-img-card img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-lg);
+            display: block;
+        }
+
+        .hero-float-card {
+            position: absolute;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px 18px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .float-card-top {
+            top: 25px;
+            left: -20px;
+        }
+
+        .float-card-bottom {
+            bottom: 25px;
+            right: -20px;
+        }
+
+        .float-icon-wrap {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+        }
+
+        .icon-emerald {
+            background: var(--accent-emerald-soft);
+            color: var(--accent-emerald);
+        }
+
+        .icon-blue {
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        /* ==========================================================================
+           Stats Strip
+           ========================================================================== */
+        .stats-section {
+            padding: 40px 0;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat-item {
+            text-align: center;
+            position: relative;
+        }
+
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 15%;
+            height: 70%;
+            width: 1px;
+            background-color: var(--border-color);
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* ==========================================================================
+           Section Typography & Containers
+           ========================================================================== */
+        .section-wrap {
+            padding: 90px 0;
+        }
+
+        .section-header-simple {
+            text-align: center;
+            max-width: 620px;
+            margin: 0 auto 55px;
+        }
+
+        .section-tag {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .section-heading-simple {
+            font-size: clamp(1.9rem, 3.2vw, 2.6rem);
+            font-weight: 800;
+            color: var(--text-heading);
+            margin-bottom: 14px;
+        }
+
+        .section-subtitle-simple {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ==========================================================================
+           Services Cards (Simple & Clean)
+           ========================================================================== */
+        .service-card-simple {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+        }
+
+        .service-card-simple:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .service-img-wrap {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            background-color: var(--bg-subtle);
+        }
+
+        .service-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .service-card-simple:hover .service-img-wrap img {
+            transform: scale(1.05);
+        }
+
+        .service-badge-tag {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .service-price-chip {
+            position: absolute;
+            bottom: 14px;
+            right: 14px;
+            background: var(--text-heading);
+            color: #ffffff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .service-content-wrap {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .service-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 10px;
+        }
+
+        .service-text {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin-bottom: 18px;
+            line-height: 1.6;
+        }
+
+        .service-checklist {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .service-checklist li {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .service-checklist li i {
+            color: var(--accent-emerald);
+            font-size: 0.95rem;
+        }
+
+        .service-footer-wrap {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .service-more-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+
+        .service-more-link:hover {
+            color: var(--primary-hover);
+            gap: 10px;
+        }
+
+        /* ==========================================================================
+           How It Works (Clean 3-Step)
+           ========================================================================== */
+        .step-card-simple {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px 24px;
+            height: 100%;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .step-card-simple:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-md);
+        }
+
+        .step-num-pill {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            border: 1px solid var(--primary-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .step-heading {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 10px;
+        }
+
+        .step-desc {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* ==========================================================================
+           Why Choose Us (Clean Features)
+           ========================================================================== */
+        .feature-box-simple {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            height: 100%;
+            transition: var(--transition);
+        }
+
+        .feature-box-simple:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-md);
+        }
+
+        .feature-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 18px;
+        }
+
+        .feature-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 8px;
+        }
+
+        .feature-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* ==========================================================================
+           Testimonials (Clean & Trustworthy)
+           ========================================================================== */
+        .review-card-simple {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition);
+        }
+
+        .review-card-simple:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-hover);
+        }
+
+        .review-text {
+            font-size: 0.94rem;
+            color: var(--text-body);
+            line-height: 1.65;
+            margin-bottom: 20px;
+        }
+
+        .review-client-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .review-client-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .review-client-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin: 0;
+        }
+
+        .review-client-service {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* ==========================================================================
+           Call To Action Banner (Simple & Elegant)
+           ========================================================================== */
+        .cta-simple-wrap {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            border-radius: var(--radius-xl);
+            padding: 55px 40px;
+            color: #ffffff;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .cta-simple-title {
+            color: #ffffff;
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .cta-simple-desc {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.05rem;
+            margin-bottom: 0;
+        }
+
+        .btn-cta-white {
+            background: #ffffff;
+            color: var(--primary) !important;
+            font-weight: 700;
+            padding: 12px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-cta-white:hover {
+            background: var(--bg-subtle);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-cta-transparent {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff !important;
+            font-weight: 600;
+            padding: 12px 26px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-cta-transparent:hover {
+            background: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+        }
+
+        /* ==========================================================================
+           FAQ Accordion (Clean Borders)
+           ========================================================================== */
+        .accordion-simple .accordion-item {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md) !important;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .accordion-simple .accordion-button {
+            background: #ffffff;
+            color: var(--text-heading);
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 18px 22px;
+            box-shadow: none !important;
+        }
+
+        .accordion-simple .accordion-button:not(.collapsed) {
+            background: var(--bg-subtle);
+            color: var(--primary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .accordion-simple .accordion-body {
+            padding: 20px 22px;
+            color: var(--text-muted);
+            font-size: 0.94rem;
+            line-height: 1.7;
+        }
+
+        /* ==========================================================================
+           Footer (Clean Multi-column)
+           ========================================================================== */
+        .footer-simple {
+            background-color: var(--bg-subtle);
+            border-top: 1px solid var(--border-color);
+            padding: 70px 0 30px;
+        }
+
+        .footer-logo-name {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            margin-bottom: 14px;
+        }
+
+        .footer-logo-name span {
+            color: var(--primary);
+        }
+
+        .footer-bio {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .footer-col-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 18px;
+        }
+
+        .footer-link-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-link-list li {
+            margin-bottom: 10px;
+        }
+
+        .footer-link-list a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-link-list a:hover {
+            color: var(--primary);
+            padding-left: 4px;
+        }
+
+        .newsletter-input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .newsletter-input {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 9px 16px;
+            font-size: 0.9rem;
+            outline: none;
+            width: 100%;
+        }
+
+        .newsletter-input:focus {
+            border-color: var(--primary);
+        }
+
+        .footer-bottom {
+            margin-top: 50px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .footer-social-link {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-social-link:hover {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+        }
+
+        /* ==========================================================================
+           Clean AI Chatbot
+           ========================================================================== */
+        #chatbot-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 360px;
+            max-width: calc(100vw - 30px);
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            display: none;
+            overflow: hidden;
+            z-index: 1050;
+        }
+
+        .chatbot-header-clean {
+            background: var(--primary);
+            padding: 16px 20px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chatbot-body-clean {
+            height: 300px;
+            overflow-y: auto;
+            padding: 16px;
+            background: var(--bg-subtle);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-bubble {
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: 0.88rem;
+            max-width: 85%;
+            line-height: 1.5;
+        }
+
+        .chat-bubble.bot {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--text-body);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-bubble.user {
+            background: var(--primary);
+            color: #ffffff;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-chips-scroll {
+            padding: 0 16px 10px;
+            background: var(--bg-subtle);
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .chat-chips-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .chat-chip {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--primary);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chat-chip:hover {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+        }
+
+        .chat-input-row {
+            padding: 12px 16px;
+            background: #ffffff;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input-text {
+            flex: 1;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 8px 14px;
+            font-size: 0.88rem;
+            outline: none;
+        }
+
+        .chat-input-text:focus {
+            border-color: var(--primary);
+        }
+
+        .chat-btn-send {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chat-btn-send:hover {
+            background: var(--primary-hover);
+        }
+
+        #chatbot-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            z-index: 1040;
+            font-size: 1.35rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        #chatbot-toggle:hover {
+            transform: scale(1.06);
+            background: var(--primary-hover);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 991.98px) {
+            .hero-section-simple {
+                padding-top: 110px;
+                text-align: center;
+            }
+            .hero-desc-simple {
+                margin: 0 auto 30px;
+            }
+            .booking-bar-card {
+                margin: 0 auto 30px;
+            }
+            .social-proof-wrap {
+                justify-content: center;
+                margin-bottom: 40px;
+            }
+            .hero-float-card {
+                display: none;
+            }
+            .stat-item:not(:last-child)::after {
+                display: none;
+            }
+            .stat-item {
+                margin-bottom: 20px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Custom Cursor -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-outline"></div>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
+    <!-- ==========================================================================
+         Navigation Header
+         ========================================================================== -->
+    <nav class="navbar navbar-expand-lg fixed-top simple-navbar">
         <div class="container">
-            <a class="navbar-brand menu-icon me-3" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop">
-                <i class="bi bi-list"></i>
-            </a>
-            <a class="navbar-brand brand-title" href="{% url 'home' %}">FIXIT</a>
-
-            <button class="navbar-toggler custom-toggler border-0" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="toggler-icon top-bar"></span>
-                <span class="toggler-icon middle-bar"></span>
-                <span class="toggler-icon bottom-bar"></span>
+            <!-- Offcanvas Menu Trigger -->
+            <button class="btn-menu-trigger me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#fixitOffcanvas" aria-label="Open Navigation Drawer">
+                <i class="bi bi-grid"></i>
             </button>
 
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center">
-                    <li class="nav-item"><a class="nav-link active" href="{% url 'home' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+            <!-- Brand Logo -->
+            <a class="brand-logo-wrap" href="{% url 'home' %}">
+                <div class="brand-icon-box">
+                    <i class="bi bi-tools"></i>
+                </div>
+                <h1 class="brand-name">FIX<span>IT</span></h1>
+            </a>
+
+            <!-- Mobile Toggler -->
+            <button class="navbar-toggler border-0 ms-auto d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navSimpleCollapse">
+                <i class="bi bi-list fs-2 text-dark"></i>
+            </button>
+
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse justify-content-end" id="navSimpleCollapse">
+                <ul class="navbar-nav align-items-center gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-simple active" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-simple" href="{% url 'about' %}">About</a>
+                    </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Services</a>
-                        <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="{% url 'plumbing' %}">Plumbing</a></li>
-                            <li><a class="dropdown-item" href="{% url 'electrician' %}">Electrician</a></li>
-                            <li><a class="dropdown-item" href="{% url 'gardening' %}">Gardening</a></li>
-                            <li><a class="dropdown-item" href="{% url 'cleaning' %}">Cleaning</a></li>
-                            <li><a class="dropdown-item" href="{% url 'painting' %}">Painting</a></li>
+                        <a class="nav-link nav-link-simple dropdown-toggle" href="{% url 'services' %}" id="serviceDropdownLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Services
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-simple" aria-labelledby="serviceDropdownLink">
+                            <li>
+                                <a class="dropdown-item-simple" href="{% url 'plumbing' %}">
+                                    <i class="bi bi-droplet"></i>
+                                    <div>
+                                        <div>Plumbing</div>
+                                        <small class="text-muted">Leaks, piping & fixtures</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item-simple" href="{% url 'electrician' %}">
+                                    <i class="bi bi-lightning-charge"></i>
+                                    <div>
+                                        <div>Electrical</div>
+                                        <small class="text-muted">Wiring & panel upgrades</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item-simple" href="{% url 'painting' %}">
+                                    <i class="bi bi-paint-bucket"></i>
+                                    <div>
+                                        <div>Painting</div>
+                                        <small class="text-muted">Interior & exterior coats</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item-simple" href="{% url 'cleaning' %}">
+                                    <i class="bi bi-stars"></i>
+                                    <div>
+                                        <div>Deep Cleaning</div>
+                                        <small class="text-muted">Sanitization & move-in care</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item-simple" href="{% url 'gardening' %}">
+                                    <i class="bi bi-tree"></i>
+                                    <div>
+                                        <div>Gardening</div>
+                                        <small class="text-muted">Lawn care & landscaping</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider my-2"></li>
+                            <li>
+                                <a class="dropdown-item-simple text-primary fw-bold" href="{% url 'services' %}">
+                                    <i class="bi bi-arrow-right-circle"></i> View All Services
+                                </a>
+                            </li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'contactus' %}">Contact</a></li>
-                    <li class="nav-item ms-lg-4">
-                        <a href="user_reg/" class="btn btn-primary-custom btn-premium py-2 px-4 shadow-sm">Get
-                            Started</a>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-simple" href="{% url 'contactus' %}">Contact</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a href="{% url 'user_login' %}" class="btn-simple-outline py-2 px-3">
+                            <i class="bi bi-person"></i> Sign In
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a href="{% url 'user_reg' %}" class="btn-simple-primary py-2 px-4">
+                            Book a Pro <i class="bi bi-arrow-right"></i>
+                        </a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Offcanvas Redesign -->
-    <div class="offcanvas offcanvas-start bg-dark text-white" data-bs-backdrop="static" tabindex="-1"
-        id="staticBackdrop">
-        <div class="offcanvas-header border-bottom border-secondary">
-            <div>
-                <h5 class="offcanvas-title brand-title m-0" id="staticBackdropLabel">FIXIT</h5>
-                <p class="text-muted small mb-0">Premium Home Services</p>
+    <!-- ==========================================================================
+         Offcanvas Side Menu (Clean Light Theme)
+         ========================================================================== -->
+    <div class="offcanvas offcanvas-start bg-white" tabindex="-1" id="fixitOffcanvas">
+        <div class="offcanvas-header p-4 border-bottom">
+            <div class="d-flex align-items-center gap-2">
+                <div class="brand-icon-box">
+                    <i class="bi bi-tools"></i>
+                </div>
+                <div>
+                    <h5 class="brand-name mb-0">FIX<span>IT</span></h5>
+                    <small class="text-muted">Professional Home Services</small>
+                </div>
             </div>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="offcanvas-body d-flex flex-column justify-content-between">
-            <div class="nav-links-wrapper">
-                <a href="user_reg/" class="offcanvas-link">
-                    <i class="bi bi-person-plus"></i> User Registration
+        <div class="offcanvas-body p-4 d-flex flex-column justify-content-between">
+            <div>
+                <p class="text-uppercase text-muted small fw-bold mb-3">Customer Portal</p>
+                <a href="{% url 'user_reg' %}" class="dropdown-item-simple py-2 px-2 mb-2">
+                    <i class="bi bi-person-plus"></i> Customer Registration
                 </a>
-                <a href="workerregister/" class="offcanvas-link">
-                    <i class="bi bi-tools"></i> Worker Registration
+                <a href="{% url 'user_login' %}" class="dropdown-item-simple py-2 px-2 mb-2">
+                    <i class="bi bi-box-arrow-in-right"></i> Customer Login
                 </a>
-                <div class="my-4 border-bottom border-secondary opacity-25"></div>
-                <a href="user_login/" class="offcanvas-link">
-                    <i class="bi bi-box-arrow-in-right"></i> User Login
+
+                <div class="my-4 border-bottom"></div>
+
+                <p class="text-uppercase text-muted small fw-bold mb-3">Service Partner Portal</p>
+                <a href="{% url 'workerregister' %}" class="dropdown-item-simple py-2 px-2 mb-2">
+                    <i class="bi bi-tools"></i> Join as a Technician
                 </a>
-                <a href="worker/login/" class="offcanvas-link">
+                <a href="{% url 'worker_login' %}" class="dropdown-item-simple py-2 px-2 mb-2">
                     <i class="bi bi-briefcase"></i> Worker Login
                 </a>
-                <a href="#" class="offcanvas-link disabled opacity-50">
-                    <i class="bi bi-bell"></i> Notifications
+
+                <div class="my-4 border-bottom"></div>
+
+                <a href="{% url 'privacy_policy' %}" class="dropdown-item-simple py-2 px-2 text-muted">
+                    <i class="bi bi-shield-check"></i> Privacy Policy
                 </a>
-                <a href="#" class="offcanvas-link disabled opacity-50">
-                    <i class="bi bi-question-circle"></i> Support
+                <a href="{% url 'contactus' %}" class="dropdown-item-simple py-2 px-2 text-muted">
+                    <i class="bi bi-headset"></i> Support Desk
                 </a>
             </div>
 
-            <div class="offcanvas-footer mt-auto">
-                <p class="text-muted small mb-3 letter-spacing-2">STAY CONNECTED</p>
-                <div class="d-flex gap-3">
-                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            <div class="pt-4 border-top">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="small text-muted">Call Support</span>
+                    <a href="tel:+18005553494" class="small text-primary fw-bold text-decoration-none">+1 (800) FIX-PROS</a>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="#" class="footer-social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="footer-social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="footer-social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="footer-social-link"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-bg"></div>
+    <!-- ==========================================================================
+         Hero Section
+         ========================================================================== -->
+    <section class="hero-section-simple">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-7 hero-content">
-                    <span class="hero-tagline">The future of home maintenance</span>
-                    <h1 class="hero-title">Elevate Your <span>Living</span> Experience</h1>
-                    <p class="hero-desc">Experience premium renovation and maintenance services with FIXIT. We
-                        provide expert plumbing, electrical, and landscaping solutions at your doorstep.</p>
-                    <div class="hero-btns">
-                        <a href="{% url 'services' %}" class="btn-premium btn-primary-custom">
-                            Book a Service <i class="bi bi-arrow-right"></i>
-                        </a>
-                        <a href="{% url 'about' %}" class="btn-premium btn-outline-custom">
-                            Learn More
-                        </a>
+            <div class="row align-items-center g-5">
+                <div class="col-lg-7">
+                    <!-- Status Badge -->
+                    <div class="pill-badge">
+                        <span class="pill-dot"></span>
+                        <span>Verified Home Specialists • 30-Min Rapid Dispatch</span>
+                    </div>
+
+                    <!-- Main Headline -->
+                    <h1 class="hero-title-simple">
+                        Effortless Home Repairs & Maintenance, <span>Done Right.</span>
+                    </h1>
+
+                    <!-- Subtitle -->
+                    <p class="hero-desc-simple">
+                        Connect with certified plumbers, electricians, painters, cleaners, and landscapers. Transparent upfront pricing, backed by our 30-day guarantee.
+                    </p>
+
+                    <!-- Simple Booking Search Widget -->
+                    <div class="booking-bar-card">
+                        <form id="heroBookingForm" onsubmit="handleServiceRedirect(event)">
+                            <div class="booking-bar-inner">
+                                <div class="booking-input-group">
+                                    <i class="bi bi-wrench-adjustable"></i>
+                                    <select id="serviceSelectField" aria-label="Select Service">
+                                        <option value="{% url 'plumbing' %}">Plumbing</option>
+                                        <option value="{% url 'electrician' %}">Electrical</option>
+                                        <option value="{% url 'painting' %}">Painting</option>
+                                        <option value="{% url 'cleaning' %}">Deep Cleaning</option>
+                                        <option value="{% url 'gardening' %}">Gardening</option>
+                                    </select>
+                                </div>
+                                <div class="booking-input-group">
+                                    <i class="bi bi-geo-alt"></i>
+                                    <input type="text" id="pincodeField" placeholder="Enter Pincode / Area" required>
+                                </div>
+                                <button type="submit" class="btn-simple-primary">
+                                    Find Pro <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Social Proof -->
+                    <div class="social-proof-wrap">
+                        <div class="avatar-group">
+                            <img src="{% static 'images/client-1.jpg' %}" alt="Client 1">
+                            <img src="{% static 'images/client-2.jpg' %}" alt="Client 2">
+                            <img src="{% static 'images/userprofile.jpg' %}" alt="Client 3">
+                            <img src="{% static 'images/female_avatarjpg.jpg' %}" alt="Client 4">
+                        </div>
+                        <div class="proof-info">
+                            <div class="proof-stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <span><strong>4.9 / 5.0 rating</strong> from 15,000+ satisfied homeowners</span>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-5 d-none d-lg-block">
-                    <div class="hero-image-wrapper">
-                        <img src="{% static 'images/home-image1.png' %}" alt="FIXIT" class="img-fluid floating-img">
+
+                <!-- Hero Image Card -->
+                <div class="col-lg-5">
+                    <div class="hero-img-card">
+                        <img src="{% static 'images/home-image1.png' %}" alt="FIXIT Professional Service">
+                        
+                        <!-- Floating Badge 1 -->
+                        <div class="hero-float-card float-card-top">
+                            <div class="float-icon-wrap icon-emerald">
+                                <i class="bi bi-check-circle-fill"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold fs-6">100% Verified</h6>
+                                <small class="text-muted">Background Checked</small>
+                            </div>
+                        </div>
+
+                        <!-- Floating Badge 2 -->
+                        <div class="hero-float-card float-card-bottom">
+                            <div class="float-icon-wrap icon-blue">
+                                <i class="bi bi-clock-history"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold fs-6">30-Min Dispatch</h6>
+                                <small class="text-muted">On-Time Arrival</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Services Highlights -->
-    <section class="services-section">
+    <!-- ==========================================================================
+         Stats Counter Strip
+         ========================================================================== -->
+    <section class="stats-section">
         <div class="container">
-            <div class="section-label reveal">
-                <span class="hero-tagline">What we do</span>
-                <h2>Our Premium Services</h2>
+            <div class="row g-4 align-items-center">
+                <div class="col-6 col-lg-3">
+                    <div class="stat-item">
+                        <div class="stat-value"><span class="counter">15</span>k+</div>
+                        <p class="stat-label">Completed Jobs</p>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="stat-item">
+                        <div class="stat-value">4.9<span class="fs-4 text-warning">★</span></div>
+                        <p class="stat-label">Customer Rating</p>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="stat-item">
+                        <div class="stat-value"><span class="counter">500</span>+</div>
+                        <p class="stat-label">Certified Experts</p>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="stat-item">
+                        <div class="stat-value">99.8%</div>
+                        <p class="stat-label">On-Time Arrival</p>
+                    </div>
+                </div>
             </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         Core Services Grid
+         ========================================================================== -->
+    <section class="section-wrap" style="background-color: var(--bg-subtle);">
+        <div class="container">
+            <div class="section-header-simple">
+                <span class="section-tag">What We Offer</span>
+                <h2 class="section-heading-simple">Explore Our Core Services</h2>
+                <p class="section-subtitle-simple">Specialized solutions for every corner of your home, executed with precision and care.</p>
+            </div>
+
             <div class="row g-4">
-                <div class="col-md-4 reveal">
-                    <div class="service-card">
-                        <div class="service-icon"><i class="bi bi-droplet"></i></div>
-                        <h3>Plumbing</h3>
-                        <p>Certified experts for leak repairs, installations, and full system upgrades. Reliable
-                            solutions 24/7.</p>
-                        <a href="{% url 'plumbing' %}"
-                            class="btn btn-link text-primary p-0 mt-3 text-decoration-none">Explore <i
-                                class="bi bi-chevron-right"></i></a>
+                <!-- Plumbing -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card-simple">
+                        <div class="service-img-wrap">
+                            <img src="{% static 'images/pro-plumbin2.jpg' %}" alt="Plumbing Services">
+                            <span class="service-badge-tag"><i class="bi bi-droplet-fill text-primary"></i> Plumbing</span>
+                            <span class="service-price-chip">From $49</span>
+                        </div>
+                        <div class="service-content-wrap">
+                            <h3 class="service-name">Plumbing Services</h3>
+                            <p class="service-text">Expert leak repairs, fixture installations, drain cleaning, and 24/7 emergency pipe repair.</p>
+                            <ul class="service-checklist">
+                                <li><i class="bi bi-check2"></i> Leak detection & pipe fixing</li>
+                                <li><i class="bi bi-check2"></i> Tap & faucet replacement</li>
+                                <li><i class="bi bi-check2"></i> Water heater maintenance</li>
+                            </ul>
+                            <div class="service-footer-wrap">
+                                <a href="{% url 'plumbing' %}" class="service-more-link">
+                                    Learn More <i class="bi bi-arrow-right"></i>
+                                </a>
+                                <a href="{% url 'user_reg' %}" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book Now</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4 reveal">
-                    <div class="service-card">
-                        <div class="service-icon"><i class="bi bi-lightning-charge"></i></div>
-                        <h3>Electrical</h3>
-                        <p>Safety-first electrical work including wiring, panel upgrades, and smart home installations.
-                        </p>
-                        <a href="{% url 'electrician' %}"
-                            class="btn btn-link text-primary p-0 mt-3 text-decoration-none">Explore <i
-                                class="bi bi-chevron-right"></i></a>
+
+                <!-- Electrical -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card-simple">
+                        <div class="service-img-wrap">
+                            <img src="{% static 'images/pro-elec.jpg' %}" alt="Electrical Services">
+                            <span class="service-badge-tag"><i class="bi bi-lightning-charge-fill text-warning"></i> Electrical</span>
+                            <span class="service-price-chip">From $59</span>
+                        </div>
+                        <div class="service-content-wrap">
+                            <h3 class="service-name">Electrical Services</h3>
+                            <p class="service-text">Licensed electricians for safe wiring, breaker repairs, smart light setups, and EV charger installs.</p>
+                            <ul class="service-checklist">
+                                <li><i class="bi bi-check2"></i> Main panel & fuse upgrades</li>
+                                <li><i class="bi bi-check2"></i> Ceiling fan & light fitting</li>
+                                <li><i class="bi bi-check2"></i> Short-circuit diagnostics</li>
+                            </ul>
+                            <div class="service-footer-wrap">
+                                <a href="{% url 'electrician' %}" class="service-more-link">
+                                    Learn More <i class="bi bi-arrow-right"></i>
+                                </a>
+                                <a href="{% url 'user_reg' %}" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book Now</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4 reveal">
-                    <div class="service-card">
-                        <div class="service-icon"><i class="bi bi-paint-bucket"></i></div>
-                        <h3>Painting</h3>
-                        <p>Transform your space with our precision painting services. Interior and exterior specialists.
-                        </p>
-                        <a href="{% url 'painting' %}"
-                            class="btn btn-link text-primary p-0 mt-3 text-decoration-none">Explore <i
-                                class="bi bi-chevron-right"></i></a>
+
+                <!-- Painting -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card-simple">
+                        <div class="service-img-wrap">
+                            <img src="{% static 'images/painting.jpg' %}" alt="Painting Services">
+                            <span class="service-badge-tag"><i class="bi bi-paint-bucket text-info"></i> Painting</span>
+                            <span class="service-price-chip">From $89</span>
+                        </div>
+                        <div class="service-content-wrap">
+                            <h3 class="service-name">Painting & Finish</h3>
+                            <p class="service-text">Clean interior and exterior wall painting with low-VOC paints and thorough surface preparation.</p>
+                            <ul class="service-checklist">
+                                <li><i class="bi bi-check2"></i> Accent walls & room painting</li>
+                                <li><i class="bi bi-check2"></i> Drywall patch & repair</li>
+                                <li><i class="bi bi-check2"></i> Waterproof exterior coatings</li>
+                            </ul>
+                            <div class="service-footer-wrap">
+                                <a href="{% url 'painting' %}" class="service-more-link">
+                                    Learn More <i class="bi bi-arrow-right"></i>
+                                </a>
+                                <a href="{% url 'user_reg' %}" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cleaning -->
+                <div class="col-lg-6 col-md-6">
+                    <div class="service-card-simple">
+                        <div class="service-img-wrap">
+                            <img src="{% static 'images/cleaning.jpg' %}" alt="Deep Cleaning">
+                            <span class="service-badge-tag"><i class="bi bi-stars text-info"></i> Cleaning</span>
+                            <span class="service-price-chip">From $69</span>
+                        </div>
+                        <div class="service-content-wrap">
+                            <h3 class="service-name">Deep Home Cleaning</h3>
+                            <p class="service-text">Comprehensive sanitization, move-in scrubbing, kitchen deep cleaning, and upholstery care.</p>
+                            <ul class="service-checklist">
+                                <li><i class="bi bi-check2"></i> Eco-friendly sanitizing products</li>
+                                <li><i class="bi bi-check2"></i> Floor scrubbing & stain removal</li>
+                            </ul>
+                            <div class="service-footer-wrap">
+                                <a href="{% url 'cleaning' %}" class="service-more-link">
+                                    Learn More <i class="bi bi-arrow-right"></i>
+                                </a>
+                                <a href="{% url 'user_reg' %}" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gardening -->
+                <div class="col-lg-6 col-md-12">
+                    <div class="service-card-simple">
+                        <div class="service-img-wrap">
+                            <img src="{% static 'images/gardening.jpg' %}" alt="Gardening & Lawn Care">
+                            <span class="service-badge-tag"><i class="bi bi-tree-fill text-success"></i> Gardening</span>
+                            <span class="service-price-chip">From $55</span>
+                        </div>
+                        <div class="service-content-wrap">
+                            <h3 class="service-name">Gardening & Lawn Care</h3>
+                            <p class="service-text">Lawn mowing, hedge trimming, tree pruning, soil fertilization, and garden landscape care.</p>
+                            <ul class="service-checklist">
+                                <li><i class="bi bi-check2"></i> Seasonal plant maintenance</li>
+                                <li><i class="bi bi-check2"></i> Sprinkler & irrigation setups</li>
+                            </ul>
+                            <div class="service-footer-wrap">
+                                <a href="{% url 'gardening' %}" class="service-more-link">
+                                    Learn More <i class="bi bi-arrow-right"></i>
+                                </a>
+                                <a href="{% url 'user_reg' %}" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book Now</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Chatbot -->
-    <div class="chatbotcircle" id="chatbot-container"
-        style="position: fixed; bottom: 30px; right: 30px; width: 350px; background: #1a1a1a; border: 1px solid var(--glass-border); border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); display: none; overflow: hidden; color: white;">
-        <div id="chatbot-header"
-            style="background: var(--primary); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-            <span class="fw-bold">FIXIT Assistant</span>
-            <button id="close-chatbot"
-                style="background: none; border: none; color: white; font-size: 1.5rem;">&times;</button>
-        </div>
-        <div id="chatbot-body" style="height: 300px; overflow-y: auto; padding: 20px; background: #1a1a1a;">
-            <div id="chatbot-messages" class="d-flex flex-column gap-3"></div>
-        </div>
-        <div style="padding: 20px; background: #222;">
-            <input type="text" id="chatbot-input" placeholder="How can we help?"
-                style="width: 100%; padding: 12px; border: 1px solid #333; border-radius: 12px; background: #111; color: white; margin-bottom: 10px;">
-            <div class="d-flex gap-2">
-                <button id="send-message" class="btn btn-primary w-100 rounded-pill">Send</button>
-                <button id="clear-chat" class="btn btn-outline-secondary rounded-circle"><i
-                        class="bi bi-trash"></i></button>
+    <!-- ==========================================================================
+         How It Works (3 Steps)
+         ========================================================================== -->
+    <section class="section-wrap">
+        <div class="container">
+            <div class="section-header-simple">
+                <span class="section-tag">Simple Process</span>
+                <h2 class="section-heading-simple">How FIXIT Works</h2>
+                <p class="section-subtitle-simple">Book and complete your repair in three straightforward steps.</p>
             </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="step-card-simple">
+                        <div class="step-num-pill">1</div>
+                        <h3 class="step-heading">Choose Your Service</h3>
+                        <p class="step-desc">Select the required service, tell us your repair details, and select a time that suits your schedule.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="step-card-simple">
+                        <div class="step-num-pill">2</div>
+                        <h3 class="step-heading">Matched With A Pro</h3>
+                        <p class="step-desc">A qualified and vetted specialist arrives at your address with proper tools to inspect and repair.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="step-card-simple">
+                        <div class="step-num-pill">3</div>
+                        <h3 class="step-heading">Done & Guaranteed</h3>
+                        <p class="step-desc">Review the completed work, pay securely online, and enjoy our 30-day workmanship guarantee.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         Why FIXIT (Feature Highlights)
+         ========================================================================== -->
+    <section class="section-wrap" style="background-color: var(--bg-subtle);">
+        <div class="container">
+            <div class="section-header-simple">
+                <span class="section-tag">Why Choose Us</span>
+                <h2 class="section-heading-simple">Quality & Reliability You Can Count On</h2>
+                <p class="section-subtitle-simple">We built FIXIT to make home maintenance trustworthy, simple, and transparent.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-box-simple">
+                        <div class="feature-icon-box"><i class="bi bi-shield-check"></i></div>
+                        <h4 class="feature-title">Vetted Professionals</h4>
+                        <p class="feature-desc">All technicians undergo background verification and skill assessments before joining.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-box-simple">
+                        <div class="feature-icon-box"><i class="bi bi-tag"></i></div>
+                        <h4 class="feature-title">Clear Upfront Pricing</h4>
+                        <p class="feature-desc">No hidden charges or surprise fees. You receive a clear estimate before work begins.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-box-simple">
+                        <div class="feature-icon-box"><i class="bi bi-award"></i></div>
+                        <h4 class="feature-title">30-Day Guarantee</h4>
+                        <p class="feature-desc">If the same issue reoccurs within 30 days, we'll return to fix it at zero extra charge.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-box-simple">
+                        <div class="feature-icon-box"><i class="bi bi-headset"></i></div>
+                        <h4 class="feature-title">Dedicated Support</h4>
+                        <p class="feature-desc">Our customer care team is available to assist you with scheduling and questions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         Testimonials
+         ========================================================================== -->
+    <section class="section-wrap">
+        <div class="container">
+            <div class="section-header-simple">
+                <span class="section-tag">Customer Stories</span>
+                <h2 class="section-heading-simple">Loved by Homeowners</h2>
+                <p class="section-subtitle-simple">Read what our customers have to say about their experience with FIXIT.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="review-card-simple">
+                        <div>
+                            <div class="proof-stars mb-3">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="review-text">"Had an emergency leak under the bathroom sink. The plumber was here in 30 minutes, diagnosed the issue, and fixed the pipe cleanly. Very professional service!"</p>
+                        </div>
+                        <div class="review-client-wrap">
+                            <img src="{% static 'images/client-1.jpg' %}" alt="David M." class="review-client-avatar">
+                            <div>
+                                <h6 class="review-client-name">David Miller</h6>
+                                <span class="review-client-service">Plumbing Service</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="review-card-simple">
+                        <div>
+                            <div class="proof-stars mb-3">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="review-text">"The electrician upgraded our circuit breaker panel and installed smart switches in our living room. Super clean work and very polite."</p>
+                        </div>
+                        <div class="review-client-wrap">
+                            <img src="{% static 'images/female_avatarjpg.jpg' %}" alt="Sarah J." class="review-client-avatar">
+                            <div>
+                                <h6 class="review-client-name">Sarah Jenkins</h6>
+                                <span class="review-client-service">Electrical Service</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+                    <div class="review-card-simple">
+                        <div>
+                            <div class="proof-stars mb-3">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="review-text">"The painting team did a fantastic job with our master bedroom and hallway. Everything was taped properly, with zero paint drips. Highly recommended!"</p>
+                        </div>
+                        <div class="review-client-wrap">
+                            <img src="{% static 'images/client-2.jpg' %}" alt="Marcus V." class="review-client-avatar">
+                            <div>
+                                <h6 class="review-client-name">Marcus Vance</h6>
+                                <span class="review-client-service">Painting Service</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         Dual CTA Banner
+         ========================================================================== -->
+    <section class="section-wrap pt-0">
+        <div class="container">
+            <div class="cta-simple-wrap">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-7">
+                        <h2 class="cta-simple-title">Ready To Fix Or Improve Your Home?</h2>
+                        <p class="cta-simple-desc">Book certified technicians in minutes or register as a skilled partner on our network.</p>
+                    </div>
+                    <div class="col-lg-5 text-lg-end">
+                        <div class="d-flex flex-column flex-sm-row justify-content-lg-end gap-3">
+                            <a href="{% url 'user_reg' %}" class="btn-cta-white">
+                                Book A Service <i class="bi bi-arrow-right"></i>
+                            </a>
+                            <a href="{% url 'workerregister' %}" class="btn-cta-transparent">
+                                Join As Partner
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         FAQ Accordion
+         ========================================================================== -->
+    <section class="section-wrap" style="background-color: var(--bg-subtle);">
+        <div class="container">
+            <div class="section-header-simple">
+                <span class="section-tag">FAQs</span>
+                <h2 class="section-heading-simple">Frequently Asked Questions</h2>
+                <p class="section-subtitle-simple">Quick answers to common questions about our services and booking.</p>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="accordion accordion-simple" id="faqAccordionSimple">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faqOneHeading">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqOneCollapse" aria-expanded="true" aria-controls="faqOneCollapse">
+                                    How quickly can a technician arrive?
+                                </button>
+                            </h2>
+                            <div id="faqOneCollapse" class="accordion-collapse collapse show" aria-labelledby="faqOneHeading" data-bs-parent="#faqAccordionSimple">
+                                <div class="accordion-body">
+                                    For urgent repairs, our technicians can typically arrive within 30 to 45 minutes depending on your location. You can also schedule for any convenient date and time in advance.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faqTwoHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqTwoCollapse" aria-expanded="false" aria-controls="faqTwoCollapse">
+                                    Are FIXIT technicians background checked?
+                                </button>
+                            </h2>
+                            <div id="faqTwoCollapse" class="accordion-collapse collapse" aria-labelledby="faqTwoHeading" data-bs-parent="#faqAccordionSimple">
+                                <div class="accordion-body">
+                                    Yes. Every professional on our platform completes identity verification, criminal background screening, and hands-on skill benchmarking.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faqThreeHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqThreeCollapse" aria-expanded="false" aria-controls="faqThreeCollapse">
+                                    How does pricing and payment work?
+                                </button>
+                            </h2>
+                            <div id="faqThreeCollapse" class="accordion-collapse collapse" aria-labelledby="faqThreeHeading" data-bs-parent="#faqAccordionSimple">
+                                <div class="accordion-body">
+                                    We maintain transparent standard pricing. Before any major repair begins, the technician shares a clear estimate. You only pay after the job is completed to your satisfaction.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faqFourHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqFourCollapse" aria-expanded="false" aria-controls="faqFourCollapse">
+                                    What is the 30-Day Workmanship Guarantee?
+                                </button>
+                            </h2>
+                            <div id="faqFourCollapse" class="accordion-collapse collapse" aria-labelledby="faqFourHeading" data-bs-parent="#faqAccordionSimple">
+                                <div class="accordion-body">
+                                    If the same issue occurs again within 30 days of the repair date, we will send an expert to re-evaluate and fix it at no additional cost.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         AI Assistant Chatbot (Clean Light)
+         ========================================================================== -->
+    <div id="chatbot-container">
+        <div class="chatbot-header-clean">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-chat-dots-fill"></i>
+                <span class="fw-bold">FIXIT Assistant</span>
+            </div>
+            <button id="close-chatbot" style="background: none; border: none; color: #ffffff; font-size: 1.2rem; cursor: pointer;">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <div class="chatbot-body-clean" id="chatbot-body">
+            <div id="chatbot-messages">
+                <div class="chat-bubble bot">
+                    👋 Hello! How can I assist you with your home repair or maintenance today?
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick chips -->
+        <div class="chat-chips-scroll">
+            <button class="chat-chip" onclick="askBotQuick('Plumbing rates')">🔧 Plumbing</button>
+            <button class="chat-chip" onclick="askBotQuick('Electrical quote')">⚡ Electrician</button>
+            <button class="chat-chip" onclick="askBotQuick('How to book')">❓ How to book</button>
+            <button class="chat-chip" onclick="askBotQuick('Warranty info')">🛡️ Warranty</button>
+        </div>
+
+        <div class="chat-input-row">
+            <input type="text" id="chatbot-input" class="chat-input-text" placeholder="Type your question...">
+            <button id="send-message" class="chat-btn-send" aria-label="Send">
+                <i class="bi bi-send-fill"></i>
+            </button>
         </div>
     </div>
 
-    <button id="chatbot-toggle"
-        style="position: fixed; bottom: 30px; right: 30px; background: var(--primary); color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4); z-index: 1000; font-size: 1.5rem;">
-        <i class="bi bi-chat-dots"></i>
+    <!-- Floating Chatbot Toggle -->
+    <button id="chatbot-toggle" aria-label="Open Chatbot">
+        <i class="bi bi-chat-dots-fill"></i>
     </button>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Initialize Lenis Smooth Scroll
-        const lenis = new Lenis()
-        function raf(time) {
-            lenis.raf(time)
-            requestAnimationFrame(raf)
-        }
-        requestAnimationFrame(raf)
+    <!-- ==========================================================================
+         Footer
+         ========================================================================== -->
+    <footer class="footer-simple">
+        <div class="container">
+            <div class="row g-5">
+                <!-- Brand Info -->
+                <div class="col-lg-4 col-md-6">
+                    <a class="brand-logo-wrap mb-3 d-inline-flex" href="{% url 'home' %}">
+                        <div class="brand-icon-box">
+                            <i class="bi bi-tools"></i>
+                        </div>
+                        <span class="brand-name">FIX<span>IT</span></span>
+                    </a>
+                    <p class="footer-bio">
+                        Reliable home repair and maintenance services. We connect you with certified professionals for all your electrical, plumbing, painting, cleaning, and gardening needs.
+                    </p>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="footer-social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="footer-social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="footer-social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="footer-social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
 
-        // GSAP Animations
+                <!-- Services Links -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="footer-col-title">Services</h5>
+                    <ul class="footer-link-list">
+                        <li><a href="{% url 'plumbing' %}">Plumbing</a></li>
+                        <li><a href="{% url 'electrician' %}">Electrician</a></li>
+                        <li><a href="{% url 'painting' %}">Painting</a></li>
+                        <li><a href="{% url 'cleaning' %}">Cleaning</a></li>
+                        <li><a href="{% url 'gardening' %}">Gardening</a></li>
+                        <li><a href="{% url 'services' %}">All Services</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company Links -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="footer-col-title">Company</h5>
+                    <ul class="footer-link-list">
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        <li><a href="{% url 'contactus' %}">Contact Us</a></li>
+                        <li><a href="{% url 'user_reg' %}">Book a Pro</a></li>
+                        <li><a href="{% url 'workerregister' %}">Become Partner</a></li>
+                        <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="footer-col-title">Newsletter</h5>
+                    <p class="footer-bio">Subscribe to get seasonal home maintenance tips and exclusive discounts.</p>
+                    <form onsubmit="handleSimpleNewsletter(event)">
+                        <div class="newsletter-input-group">
+                            <input type="email" class="newsletter-input" placeholder="Your email address" required>
+                            <button type="submit" class="btn-simple-primary py-2 px-3">
+                                <i class="bi bi-send"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <small class="text-muted d-block mt-2">No spam. Unsubscribe anytime.</small>
+                </div>
+            </div>
+
+            <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+                <p class="mb-0">© 2026 FIXIT Inc. All rights reserved.</p>
+                <div class="d-flex gap-3">
+                    <a href="{% url 'privacy_policy' %}" class="text-muted text-decoration-none">Privacy Policy</a>
+                    <a href="{% url 'about' %}" class="text-muted text-decoration-none">Terms of Service</a>
+                    <a href="{% url 'contactus' %}" class="text-muted text-decoration-none">Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ==========================================================================
+        // 1. Lenis Smooth Scroll
+        // ==========================================================================
+        const lenis = new Lenis({
+            duration: 1.1,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // ==========================================================================
+        // 2. Animated Stats Counter
+        // ==========================================================================
         gsap.registerPlugin(ScrollTrigger);
 
-        // Custom Cursor
-        const cursorDot = document.querySelector('.cursor-dot');
-        const cursorOutline = document.querySelector('.cursor-outline');
-
-        window.addEventListener('mousemove', (e) => {
-            const posX = e.clientX;
-            const posY = e.clientY;
-
-            // Immediate dot position
-            gsap.set(cursorDot, { x: posX, y: posY });
-
-            // Lagging outline position
-            gsap.to(cursorOutline, {
-                x: posX - 20,
-                y: posY - 20,
-                duration: 0.5,
-                ease: "power3.out"
-            });
-        });
-
-        // Cursor Hover Effects
-        const interactiveElements = document.querySelectorAll('a, button, .menu-icon, .service-card');
-        interactiveElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                document.body.classList.add('cursor-hover');
-            });
-            el.addEventListener('mouseleave', () => {
-                document.body.classList.remove('cursor-hover');
-            });
-        });
-
-        // Split Text Animation
-        const splitTitles = new SplitType('.hero-title', { types: 'chars,words' });
-
-        gsap.from(splitTitles.chars, {
-            opacity: 0,
-            y: 50,
-            rotateX: -90,
-            stagger: 0.02,
-            duration: 1,
-            ease: "back.out(1.7)",
-            delay: 0.5
-        });
-
-        // Hero Reveal
-        const heroTl = gsap.timeline();
-        heroTl.from('.hero-tagline', { opacity: 0, x: -20, duration: 0.8, delay: 0.2 })
-            .from('.hero-desc', { opacity: 0, y: 20, duration: 0.8 }, "-=0.4")
-            .from('.hero-btns', { opacity: 0, y: 20, duration: 0.8 }, "-=0.6")
-            .from('.floating-img', { opacity: 0, scale: 0.8, duration: 1.2, ease: "power4.out" }, "-=1");
-
-        // Scroll Animations
-        const reveals = document.querySelectorAll('.reveal');
-        reveals.forEach(el => {
-            gsap.from(el, {
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(counter => {
+            const target = +counter.innerText;
+            gsap.from(counter, {
                 scrollTrigger: {
-                    trigger: el,
-                    start: "top 85%",
-                    toggleActions: "play none none none"
+                    trigger: counter,
+                    start: "top 92%"
                 },
-                opacity: 0,
-                y: 50,
-                duration: 1,
-                ease: "power3.out"
+                innerText: 0,
+                duration: 1.8,
+                snap: { innerText: 1 },
+                ease: "power2.out"
             });
         });
 
-        // Floating Animation for Hero Image
-        gsap.to('.floating-img', {
-            y: 20,
-            duration: 2,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut"
-        });
-
-        // Navbar Scroll Effect
+        // ==========================================================================
+        // 3. Navbar Sticky Effect on Scroll
+        // ==========================================================================
         window.addEventListener('scroll', () => {
-            const nav = document.querySelector('.custom-navbar');
-            if (window.scrollY > 50) {
+            const nav = document.querySelector('.simple-navbar');
+            if (window.scrollY > 30) {
                 nav.classList.add('scrolled');
             } else {
                 nav.classList.remove('scrolled');
             }
         });
 
-        // Chatbot Logic (Preserved)
+        // ==========================================================================
+        // 4. Form Actions
+        // ==========================================================================
+        function handleServiceRedirect(e) {
+            e.preventDefault();
+            const serviceUrl = document.getElementById('serviceSelectField').value;
+            const pincode = document.getElementById('pincodeField').value.trim();
+            if (serviceUrl) {
+                window.location.href = serviceUrl + (pincode ? '?area=' + encodeURIComponent(pincode) : '');
+            }
+        }
+
+        function handleSimpleNewsletter(e) {
+            e.preventDefault();
+            alert('Thank you for subscribing to FIXIT updates!');
+            e.target.reset();
+        }
+
+        // ==========================================================================
+        // 5. Simple AI Chatbot
+        // ==========================================================================
         const chatbotContainer = document.getElementById("chatbot-container");
         const chatbotToggle = document.getElementById("chatbot-toggle");
         const closeChatbot = document.getElementById("close-chatbot");
         const chatbotMessages = document.getElementById("chatbot-messages");
         const chatbotInput = document.getElementById("chatbot-input");
         const sendMessageButton = document.getElementById("send-message");
-        const clearChatButton = document.getElementById("clear-chat");
 
         chatbotToggle.addEventListener("click", () => {
-            chatbotContainer.style.display = chatbotContainer.style.display === "none" ? "block" : "none";
+            const isHidden = chatbotContainer.style.display === "none" || chatbotContainer.style.display === "";
+            chatbotContainer.style.display = isHidden ? "block" : "none";
+            if (isHidden) chatbotInput.focus();
         });
 
         closeChatbot.addEventListener("click", () => {
             chatbotContainer.style.display = "none";
         });
 
-        sendMessageButton.addEventListener("click", sendMessage);
-        chatbotInput.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
+        sendMessageButton.addEventListener("click", () => sendSimpleMsg());
+        chatbotInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") sendSimpleMsg();
+        });
 
-        function sendMessage() {
+        function askBotQuick(text) {
+            chatbotInput.value = text;
+            sendSimpleMsg();
+        }
+
+        function sendSimpleMsg() {
             const text = chatbotInput.value.trim();
-            if (text) {
-                addMessage(text, "user");
-                chatbotInput.value = "";
-                setTimeout(() => addMessage(getBotResponse(text), "bot"), 600);
-            }
+            if (!text) return;
+
+            addChatMsg(text, "user");
+            chatbotInput.value = "";
+
+            setTimeout(() => {
+                addChatMsg(getReply(text), "bot");
+            }, 500);
         }
 
-        clearChatButton.addEventListener("click", () => chatbotMessages.innerHTML = "");
-
-        function addMessage(text, sender) {
+        function addChatMsg(text, sender) {
             const div = document.createElement("div");
-            div.style.padding = "10px 15px";
-            div.style.borderRadius = "15px";
-            div.style.maxWidth = "85%";
-            div.style.fontSize = "0.9rem";
-
-            if (sender === "user") {
-                div.style.background = "var(--primary)";
-                div.style.alignSelf = "flex-end";
-                div.style.color = "white";
-            } else {
-                div.style.background = "#333";
-                div.style.alignSelf = "flex-start";
-                div.style.color = "#eee";
-            }
-
-            div.textContent = text;
+            div.className = `chat-bubble ${sender}`;
+            div.innerHTML = text;
             chatbotMessages.appendChild(div);
-            chatbotMessages.parentElement.scrollTop = chatbotMessages.parentElement.scrollHeight;
+            const body = document.getElementById("chatbot-body");
+            body.scrollTop = body.scrollHeight;
         }
 
-        function getBotResponse(msg) {
-            msg = msg.toLowerCase();
-            if (msg.includes("hi") || msg.includes("hello")) return "Hello! How can FIXIT help you today?";
-            if (msg.includes("service")) return "We offer Plumbing, Electrical, Painting, Cleaning, and Gardening. Which one do you need?";
-            if (msg.includes("plumb")) return "Our plumbers are expert leak hunters. Should I book one for you?";
-            if (msg.includes("price") || msg.includes("cost")) return "Costs vary by job complexity. We offer free estimates!";
-            return "I'm not sure about that, but our team can help! Call us at +123-456-7890.";
+        function getReply(msg) {
+            const q = msg.toLowerCase();
+            if (q.includes("hi") || q.includes("hello")) return "Hello! How can we help you with your home today?";
+            if (q.includes("plumb")) return "🔧 Our plumbers can help with leaks, taps, and drain repairs from $49. <a href='{% url 'plumbing' %}' class='text-primary fw-bold text-decoration-none'>Book Plumber</a>";
+            if (q.includes("elec")) return "⚡ Licensed electricians available for wiring, switches, and panels from $59. <a href='{% url 'electrician' %}' class='text-primary fw-bold text-decoration-none'>Book Electrician</a>";
+            if (q.includes("paint")) return "🎨 Painting services available for interior and exterior walls from $89. <a href='{% url 'painting' %}' class='text-primary fw-bold text-decoration-none'>Explore Painting</a>";
+            if (q.includes("clean")) return "🧹 Deep cleaning and home sanitization starting from $69. <a href='{% url 'cleaning' %}' class='text-primary fw-bold text-decoration-none'>Book Cleaning</a>";
+            if (q.includes("garden")) return "🌿 Lawn mowing, pruning, and garden care from $55. <a href='{% url 'gardening' %}' class='text-primary fw-bold text-decoration-none'>Book Gardener</a>";
+            if (q.includes("price") || q.includes("cost") || q.includes("rate")) return "💳 We provide transparent upfront estimates before starting any job.";
+            if (q.includes("warranty") || q.includes("guarantee")) return "🛡️ All services include a 30-day workmanship guarantee.";
+            return "Have more questions? Call our team at <a href='tel:+18005553494' class='text-primary text-decoration-none'>+1 (800) FIX-PROS</a> or <a href='{% url 'user_reg' %}' class='text-primary fw-bold text-decoration-none'>Register to Book</a>.";
         }
     </script>
 </body>
